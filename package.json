@@ -1,0 +1,21 @@
+{
+  "name": "WebFinalProject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heovang097/WebFinalProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Heovang097/WebFinalProject/issues"
+  },
+  "homepage": "https://github.com/Heovang097/WebFinalProject#readme"
+}
