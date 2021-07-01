@@ -5,6 +5,8 @@ const exphbs = require("express-handlebars");
 app.use(morgan("dev"));
 const PORT = 3000;
 
+
+
 app.engine('hbs', exphbs({
     defaultLayout: "main.hbs",
 }));
@@ -18,6 +20,10 @@ app.get("/home", function(req,res) {
     res.render("home");
 });
 
+// app.get("/main1", function(req, res){
+//     res.render("mainpage", {layout: 'main1.hbs'});
+// });
+
 app.get("/away", function(req,res) {
     res.render("away");
     //res.sendFile(__dirname + "/bs4/album.html");
@@ -28,6 +34,7 @@ app.use(express.urlencoded({
 }))
 
 app.use("/", require('./controllers/category.route.js'));
+app.use("/mainpage", require('./controllers/mainpage.route.js'));
 
 app.listen(PORT, function () {
     console.log(`listening on at address: http://localhost:${PORT}`);
