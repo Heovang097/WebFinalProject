@@ -3,7 +3,8 @@ const categoriesModel = require("../models/category.model");
 const router = express.Router();
 
 router.get('/index/', async function(req,res) {
-    const list = await categoriesModel.all();
+    const categoryList = await categoriesModel.all();
+    const articleList = await articleModel.all();
     console.log(list);
     res.render("home",{
         categories: list,
