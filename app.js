@@ -35,6 +35,7 @@ app.use(express.urlencoded({
 
 app.use("/", require('./controllers/category.route.js'));
 app.use("/mainpage", require('./controllers/mainpage.route.js'));
+app.use("/category", require('./controllers/category.route'));
 
 app.listen(PORT, function () {
     console.log(`listening on at address: http://localhost:${PORT}`);
