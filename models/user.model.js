@@ -1,18 +1,19 @@
-const db = require("../utils/db.js");
+const db = require('../utils/db');
 
 module.exports = {
-    all() {
-        return db("user");
-    },
-    add(userInfo) {
-        return db("user").insert(userInfo);
-    },
-    edit(userInfo){
+  all() {
+    return db('users');
+  },
 
-    },
-    get(id) {
-        return db("user").where({
-            "userID": id
-        });
-    }
-}
+  add(user) {
+    return db('users').insert(user);
+  },
+
+  async findByUsername(username) {
+    const rows = await db('users').where('username', username);
+    if (rows.length === 0)
+      return null;
+
+    return rows[0];
+  },
+};
