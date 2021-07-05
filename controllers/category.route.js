@@ -1,28 +1,42 @@
 const express = require("express");
 const categoriesModel = require("../models/category.model");
+const userModel = require("../models/user.model");
 const router = express.Router();
 
-router.get('/index/', async function(req,res) {
+router.get('/user', async function(req,res) {
     const categoryList = await categoriesModel.all();
-    const articleList = await articleModel.all();
-    console.log(list);
-    res.render("home",{
-        categories: list,
-        empty: list.length === 0,
+    const userID = req.query.id;
+    const userInfo = await userModel.get(userID);
+    console.log(userInfo);
+    res.render("user",{
+        categories: categoryList,
+        empty: categoryList.length === 0
     })
 })
 
-// router.post('/add/', async function(req, res) {
-//     const category = {
-//         CatName: req.body.txtCatName
-//     }
-//     await categoriesModel.add(category);
-//     const list = await categoriesModel.all();
-//     res.render("common",{
-//         categories: list,
-//         empty: list.length === 0,
-//     });
-// })
+router.get('/index', async function(req,res) {
+    const categoryList = await categoriesModel.all();
+    res.render("user",{
+        categories: categoryList,
+        empty: categoryList.length === 0
+    })
+})
+
+router.post('/user', async function(req, res) {
+    const userInfo = {
+        userName: req.body.userName,
+        penName: req.body.penName,
+        emailAddress: req.body.emailAddress,
+        dob: req.body.dob,
+        password: req.body.password
+    }
+    await userModel.add(userInfo);
+    const list = await categoriesModel.all();
+    res.render("home",{
+        categories: list,
+        empty: list.length === 0,
+    });
+})
 
 module.exports = router;
 

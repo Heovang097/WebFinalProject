@@ -1,0 +1,30 @@
+<div class="card text-left">
+    <img class="card-img-top" src="holder.js/100px180/" alt="">
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Họ tên</label>
+                <textarea class="form-control" name="userName" id="user-name" rows="1">{{userName}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Bút danh</label>
+                <textarea class="form-control" name="penName" rows="1">{{penName}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Ngày sinh</label>
+                <textarea class="form-control" name="dob" rows="1">{{dob}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Email address</label>
+                <input type="email" class="form-control" name="emailAddress" placeholder="name@example.com" rows="1" value ="{{emailAddress}}">
+            </div>
+            <div class="form-group">
+                <label for="">Mật khẩu</label>
+                <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" value={{password}}>
+            </div>
+            <button type="submit" class="btn btn-dark" enabled=>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Save</button>
+        </form>
+    </div>
+</div>
