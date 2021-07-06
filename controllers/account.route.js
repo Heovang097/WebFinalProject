@@ -19,12 +19,12 @@ router.post('/register', async function(req, res) {
     const hash = bcrypt.hashSync(req.body.raw_password, 10);
     const dob = moment(req.body.raw_dob, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const user = {
-        username: req.body.username,
-        password: hash,
-        dob: dob,
-        name: req.body.name,
-        email: req.body.email,
-        permission: 0
+        Username: req.body.username,
+        Password: hash,
+        DOB: dob,
+        Name: req.body.name,
+        Email: req.body.email,
+        Permission: 0
     }
 
     await userModel.add(user);
