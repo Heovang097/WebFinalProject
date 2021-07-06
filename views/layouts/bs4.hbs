@@ -91,45 +91,7 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-3">
-        <div class="card mb-3">
-          <h4 class="card-header">
-            Categories
-          </h4>
-          <div class="list-group list-group-flush">
-            {{#each lcCategories}}
-            <a href="/products/byCat/{{CatID}}"
-              class="list-group-item list-group-item-action {{#if IsActive}}active{{/if}}">
-              <i class="fa fa-caret-right" aria-hidden="true"></i>
-              {{CatName}}
-              {{#if ProductCount}}
-              <span class="badge badge-pill badge-danger float-right">{{ProductCount}}</span>
-              {{/if}}
-            </a>
-            {{/each}}
-            {{!-- <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-              The current link item
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-            <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A
-              disabled link
-              item</a>--}}
-          </div>
-        </div>
-        <div class="card">
-          <h4 class="card-header">
-            Featured
-          </h4>
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-9">
+      <div class="col-sm-12">
         {{{body}}}
       </div>
     </div>
