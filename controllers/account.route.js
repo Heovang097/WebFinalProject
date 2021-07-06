@@ -56,7 +56,7 @@ router.post('/login', async function(req, res) {
         })
     }
 
-    const ret = bcrypt.compareSync(req.body.password, user.password);
+    const ret = bcrypt.compareSync(req.body.password, user.Password);
     if (ret === false) {
         return res.render('vwAccount/login', {
             layout: false,
@@ -64,7 +64,7 @@ router.post('/login', async function(req, res) {
         })
     }
 
-    delete user.password;
+    delete user.Password;
     req.session.auth = true;
     req.session.authUser = user;
     const url = req.session.retUrl || '/';

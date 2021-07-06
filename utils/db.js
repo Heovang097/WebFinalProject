@@ -7,10 +7,6 @@ const knex = require('knex')({
         port: 3306,
         database: "bdt",
     },
-    pool: {
-        min: 0,
-        max: 50
-    }
 });
 
 module.exports = knex;
