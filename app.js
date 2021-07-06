@@ -1,34 +1,20 @@
-const express = require("express")
-const app = express(); 
-const morgan = require("morgan");
-const exphbs = require("express-handlebars");
-app.use(morgan("dev"));
-const PORT = 3000;
+const express = require('express');
+const morgan = require('morgan');
 
-app.engine('hbs', exphbs({
-    defaultLayout: "main.hbs",
-}));
-app.set('view engine', 'hbs');
-
-app.get("/", function(req,res) {
-    res.send("<b> Hello </b> World");
-});
-
-app.get("/home", function(req,res) {
-    res.render("home");
-});
-
-app.get("/away", function(req,res) {
-    res.render("away");
-    //res.sendFile(__dirname + "/bs4/album.html");
-});
+const app = express();
+app.use(morgan('dev'));
 
 app.use(express.urlencoded({
-    extended:true
-}))
+  extended: true
+}));
+app.use('/public', express.static('public'))
 
-app.use("/", require('./controllers/category.route.js'));
+require('./middlewares/session.mdw')(app);
+require('./middlewares/view.mdw')(app);
+require('./middlewares/locals.mdw')(app);
+require('./middlewares/routes.mdw.js')(app);
 
+const PORT = 3000;
 app.listen(PORT, function () {
-    console.log(`listening on at address: http://localhost:${PORT}`);
+  console.log(`EC Web App listening at http://localhost:${PORT}`);
 });
