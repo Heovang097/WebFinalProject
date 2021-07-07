@@ -1,0 +1,32 @@
+{{#section 'js'}}
+<script src="https://cdn.tiny.cloud/1/m4zhypnx9ouptuxtx7ibv7qndzp79hrqocbbjyasva701uya/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    document.title = 'Editor';
+    tinymce.init({
+        selector: '#txtContent',
+        plugins: 'paste image link autolink lists table media',
+        menubar: false,
+        toolbar: [
+        'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+        ],
+    });
+</script>
+{{/section}}
+
+<div class="card">
+    <h4 class="card-header">
+        WYSIWYG Editor
+    </h4>
+    <div class="card-body">
+        <form method="POST">
+        <div class="form-group">
+            <label for="txtContent">Content</label>
+            <textarea id="txtContent" name="content" rows="20" autofocus></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Save
+        </button>
+        </form>
+    </div>
+</div>
