@@ -1,37 +1,38 @@
 {{#section 'css'}}
-<link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<link rel="stylesheet" 
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
 {{/section}}
 
 {{#section 'js'}}
 <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+  	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script>
-  $('#frmRegister').on('submit', function (e) {
-    e.preventDefault();
+	document.title = "Register";
+	$('#frmRegister').on('submit', function (e) {
+		e.preventDefault();
 
-    const username = $('#txtUsername').val();
-    if (username.length === 0) {
-      alert('Invalid data.');
-      return;
-    }
+		const username = $('#txtUsername').val();
+		if (username.length === 0) {
+		alert('Invalid data.');
+		return;
+		}
 
-    $.getJSON(`/account/is-available?user=${username}`, function (data) {
-      if (data === false) {
-        alert('Not available!');
-      } else {
-        $('#frmRegister').off('submit').submit();
-      }
-    });
-  })
+		$.getJSON(`/account/is-available?user=${username}`, function (data) {
+		if (data === false) {
+			alert('Not available!');
+		} else {
+			$('#frmRegister').off('submit').submit();
+		}
+		});
+	})
 
-  $('#txtDOB').datetimepicker({
-    format: 'd/m/Y',
-    timepicker: false,
-    mask: true
-  });
+	$('#txtDOB').datetimepicker({
+		format: 'd/m/Y',
+		timepicker: false,
+		mask: true
+	});
 
-  $('#txtUsername').focus();
+	$('#txtUsername').focus();
 </script>
 {{/section}}
 
