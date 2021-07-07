@@ -13,5 +13,6 @@ module.exports = function(app) {
     });
 
     app.use('/account/', require('../controllers/account.route'));
-    app.use('/products/', require('../controllers/article.route'));
+    app.use('/', require('../controllers/article.route'));
+    app.use('/writer', require('../controllers/writer.route'));
 }

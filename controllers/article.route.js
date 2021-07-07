@@ -1,5 +1,5 @@
 const express = require('express');
-const productModel = require('../models/article.model');
+const articleModel = require('../models/article.model');
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/:cat/:branch/:id', async function(req, res) {
     }
 
     const list = await productModel.findByCatID(catId);
-    res.render('vwProducts/byCat', {
+    res.render('vwArticles/byCat', {
         products: list,
         empty: list.length === 0
     });
