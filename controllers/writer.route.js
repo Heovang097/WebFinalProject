@@ -4,9 +4,9 @@ const auth = require('../middlewares/auth.mdw')
 
 const router = express.Router()
 
-router.get('/editor', auth, async function(req, res) {
-    const user = req.session.authUser
-    if (user.PenName != null) {
+router.get('/editor', auth, function(req, res) {
+    if (req.session.writer) {
+        console.log(req.session.writer)
         res.render('../views/vwWriter/editor.hbs')
         return
     }
@@ -14,6 +14,17 @@ router.get('/editor', auth, async function(req, res) {
     res.redirect(url)
 })
 
-router.post('/publish', auth)
+router.post('/editor', auth, async function(req, res) {
+    const article = {
+        UserID: req.session.UserID,
+        BranchID: req.body.branch,
+        ImageLink: image,
+        Title: req.body.title,
+        Abstract: req.body.abstract,
+        Content: req.body.content,
+        IsPremium: req.body.premium,
+        State: 0,
+    }
+})
 
 module.exports = router

@@ -24,7 +24,8 @@ router.post('/register', async function(req, res) {
         DOB: dob,
         Name: req.body.name,
         Email: req.body.email,
-        Permission: 0
+        Permission: 0,
+        Avatar: 'https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png',
     }
 
     await userModel.add(user);
@@ -65,6 +66,8 @@ router.post('/login', async function(req, res) {
     }
 
     delete user.Password;
+    delete user.Permission;
+    req.session.writer = (user.PenName != null);
     req.session.auth = true;
     req.session.authUser = user;
     const url = req.session.retUrl || '/';
