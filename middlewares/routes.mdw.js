@@ -14,4 +14,5 @@ module.exports = function(app) {
 
     app.use('/account/', require('../controllers/account.route'));
     app.use('/products/', require('../controllers/article.route'));
+    app.use('/mainpage/', require('../controllers/mainpage.route'));
 }

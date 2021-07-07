@@ -34,5 +34,19 @@ module.exports = {
         return db('articles')
             .where('ArtID', id)
             .del();
+    },
+    mostViewArticles(){
+        return db('articles').orderBy('Views', 'desc');
+    },
+    newestArticles(){
+        return db('articles').orderBy('DateOfPublish', 'desc');
+    },
+    newestArticleByCat(){
+        const sql = `
+                SELECT * 
+                from articles
+                WHERE DateOfPublish = (SELECT MAX(DateOfPublish) FROM articles a WHERE a.ArtID = articles.artID)
+            `;
+        return db.raw(sql);
     }
 };
