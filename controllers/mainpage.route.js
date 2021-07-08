@@ -21,12 +21,12 @@ router.get('/', async function(req, res){
 	const newestArticles = TakeNewArticles(10, newestArticlesRaw);
 	const raw_newestArticleByCat = await articlesModel.newestArticleByCat();
 	const newestArticleByCat = raw_newestArticleByCat[0];
-	console.log(newestArticleByCat);
+	// console.log(newestArticleByCat);
+	console.log(res.locals.lcCategories);
 	res.render('vwMainpage/mainpage', {
 		mostViewArticles: mostViewArticles,
 		newestArticles: newestArticles,
-		newestArticleByCat:  newestArticleByCat,
-		layout: 'bs4.hbs'
+		newestArticleByCat:  newestArticleByCat
 	});
 });
 

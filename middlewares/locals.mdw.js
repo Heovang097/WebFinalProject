@@ -1,3 +1,4 @@
+const branchModel = require('../models/branch.model');
 const categoryModel = require('../models/category.model');
 
 module.exports = function(app) {
@@ -13,9 +14,12 @@ module.exports = function(app) {
     })
 
     app.use(async function(req, res, next) {
-        const raw_data = await categoryModel.all();
-        const list = raw_data[0];
-        // list[1].IsActive = true;
+        const list = await categoryModel.all();
+        console.log(list.length);
+        for(let i = 0; i < list.length; i++) {
+            const branchList = await branchModel.findAllByCatId(list[i].CatID);
+            list[i].branchList = branchList;
+        }
         res.locals.lcCategories = list;
         next();
     })
