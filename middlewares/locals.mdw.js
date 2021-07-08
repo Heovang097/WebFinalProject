@@ -1,4 +1,25 @@
-const categoryModel = require('../models/category.model');
+const branchModel = require('../models/branch.model');
+
+function groupBy(key, array) {
+    var result = [];
+    for (var i = 0; i < array.length; i++) {
+        var added = false;
+        for (var j = 0; j < result.length; j++) {
+            if (result[j][key] == array[i][key]) {
+                result[j].items.push(array[i]);
+                added = true;
+                break;
+            }
+        }
+        if (!added) {
+            var entry = { items: [] };
+            entry[key] = array[i][key];
+            entry.items.push(array[i]);
+            result.push(entry);
+        }
+    }
+    return result;
+}
 
 module.exports = function(app) {
 
@@ -12,11 +33,12 @@ module.exports = function(app) {
         next();
     })
 
+    // Name Categories and Branches
     app.use(async function(req, res, next) {
-        const raw_data = await categoryModel.all();
-        const list = raw_data[0];
-        // list[1].IsActive = true;
-        res.locals.lcCategories = list;
-        next();
+        const rows = await branchModel.all();
+        data = Object.values(JSON.parse(JSON.stringify(rows)));
+        dict = data.reduce((p, c) => (p[c.CatName] ? p[c.CatName].push(c) : p[c.CatName] = [c], p), {});
+        res.locals.category = Object.keys(dict).map(k => ({ CatName: k, branch: dict[k] }));
+        next()
     })
 }
