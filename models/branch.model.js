@@ -9,6 +9,10 @@ module.exports = {
         return db('branches').where('BranchID', id);
     },
 
+    findBranchByLink(link){
+        return db('branches').where('BranchLink', link);
+    },
+
     add(article) {
         return db('branches').insert(article);
     },

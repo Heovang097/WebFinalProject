@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+const { findAllByCatId } = require('./branch.model');
 
 module.exports = {
     all() {
@@ -21,6 +22,8 @@ module.exports = {
         return rows[0];
     },
 
+
+
     patch(article) {
         const id = article.ArtID;
         delete article.ArtID;
@@ -36,17 +39,45 @@ module.exports = {
             .del();
     },
     mostViewArticles(){
-        return db('articles').orderBy('Views', 'desc');
+        // return db('articles').orderBy('Views', 'desc');
+        const sql = `SELECT *
+FROM articles a, branches b, categories c
+WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
+ORDER BY Views DESC`;
+        return db.raw(sql);
     },
     newestArticles(){
-        return db('articles').orderBy('DateOfPublish', 'desc');
+        // return db('articles').orderBy('DateOfPublish', 'desc');
+        const sql = `SELECT *
+FROM articles a, branches b, categories c
+WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
+ORDER BY DateOfPublish DESC`;
+        return db.raw(sql);
     },
     newestArticleByCat(){
-        const sql = `
-                SELECT * 
-                from articles
-                WHERE DateOfPublish = (SELECT MAX(DateOfPublish) FROM articles a WHERE a.ArtID = articles.artID)
+        const sql = `SELECT * 
+        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+        INNER JOIN categories c1 on b1.CatID = c1.CatID
+        WHERE DateOfPublish = (
+        SELECT MAX(DateOfPublish)
+        from (articles a INNER JOIN branches b on a.BranchID = b.BranchID)
+        INNER JOIN categories c on b.CatID = c.CatID
+         WHERE c1.CatID = c.CatID)
             `;
+        return db.raw(sql);
+    },
+    allByCatID(CatID){
+        const sql = `SELECT * 
+from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+INNER JOIN categories c1 on b1.CatID = c1.CatID
+WHERE c1.CatID = ${CatID}`;
+        return db.raw(sql);
+    },
+    allByBranchID(BranchID){
+        const sql = `SELECT * 
+        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+        INNER JOIN categories c1 on b1.CatID = c1.CatID
+        WHERE b1.BranchID = ${BranchID}`;
         return db.raw(sql);
     }
 };
