@@ -9,7 +9,7 @@ module.exports = {
         return db('branches').where('BranchID', id);
     },
 
-    findBranchByLink(link){
+    findBranchByLink(link) {
         return db('branches').where('BranchLink', link);
     },
 
@@ -23,4 +23,8 @@ module.exports = {
             return null;
         return rows;
     },
+
+    withCategory(id) {
+        return db('branches').join('categories', 'branches.CatID', 'categories.CatID').select('BranchID', 'CatName', 'BranchName');
+    }
 };
