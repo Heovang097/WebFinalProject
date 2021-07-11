@@ -10,7 +10,7 @@ module.exports = {
     },
 
     add(article) {
-        return db('products').insert(article);
+        return db('articles').insert(article);
     },
 
     async findByBranchId(id) {
