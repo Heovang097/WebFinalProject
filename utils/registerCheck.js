@@ -1,3 +1,8 @@
+$('#txtDOB').datetimepicker({
+	format: 'd/m/Y',
+	timepicker: false,
+	mask: true
+});
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
@@ -81,12 +86,6 @@ $('#frmRegister').on('submit', function (e) {
 			$('#frmRegister').off('submit').submit();
 		}
 	});
-})
-
-$('#txtDOB').datetimepicker({
-	format: 'd/m/Y',
-	timepicker: false,
-	mask: true
 });
 
 $('#txtUsername').focus();
