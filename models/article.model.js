@@ -10,6 +10,18 @@ module.exports = {
         return db('articles').where('ArtID', id);
     },
 
+    async detail(id) {
+        const rows = await db('articles')
+            .where('ArtID', id)
+            .join('branches', 'articles.BranchID', 'branches.BranchID')
+            .join('categories', 'branches.CatID', 'categories.CatID')
+            .join('users', 'articles.UserID', 'users.UserID')
+            .select('ArtID', 'Username', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Abstract', 'Content', 'Premium', 'State')
+        if (rows.length === 0)
+            return null
+        return rows[0]
+    },
+
     insert(article) {
         return db('articles').insert(article);
     },
