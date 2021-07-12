@@ -3,27 +3,31 @@ const multer = require('multer')
 const path = require('path')
 
 const articleModel = require('../models/article.model')
+const tagModel = require('../models/tag.model')
 const auth = require('../middlewares/auth.mdw')
 
 const router = express.Router()
 
-router.get('/publish', auth, function(req, res) {
-    if (req.session.writer) {
-        res.render('../views/vwWriter/publish.hbs')
+router.get('/test', function(req, res) {
+    res.json(res.locals.lcCategories)
+})
+
+router.get('/post', auth, function(req, res) {
+    if (req.session.isWriter) {
+        res.render('../views/vwWriter/post.hbs')
         return
     }
     const url = req.headers.referer || '/'
     res.redirect(url)
 })
 
-router.post('/publish', auth, async function(req, res) {
+router.post('/post', auth, async function(req, res) {
     const storage = multer.diskStorage({
         destination: function(req, file, cb) {
             cb(null, './public/articles')
         },
         filename: function(req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-            console.log(path.extname(file.originalname))
             cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
         }
     })
@@ -32,22 +36,37 @@ router.post('/publish', auth, async function(req, res) {
         storage
     })
 
-    upload.single('cover')(req, res, function(err) {
+    upload.single('cover')(req, res, async function(err) {
         if (err) {
             console.log(err);
         } else {
+            // save article in database
             const article = {
-                UserID: req.session.UserID,
+                UserID: req.session.authUser.UserID,
                 BranchID: req.body.branch,
                 ImageLink: req.file.path,
                 Title: req.body.title,
                 Abstract: req.body.abstract,
                 Content: req.body.content,
-                IsPremium: req.body.premium === "on",
+                Premium: req.body.premium === "on",
                 State: 0,
             }
-            const tags = req.body.tags.split(',')
-            console.log(tags)
+            console.log(article)
+            await articleModel.insert(article)
+
+            // save tags in data
+            var listTags = req.body.tags.split(',')
+            var query = await articleModel.count()
+            query = query[0]
+            const id = query.count + 1
+            var tags = []
+            listTags.forEach(element => {
+                var obj = {}
+                obj['ArticleID'] = id
+                obj['TagName'] = element
+                tags.push(obj)
+            })
+            await tagModel.insert(tags)
         }
     })
 })
