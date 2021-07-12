@@ -16,7 +16,6 @@ module.exports = function(app) {
     // Name Categories and Branches
     app.use(async function(req, res, next) {
         const list = await categoryModel.all();
-        console.log(list.length);
         for (let i = 0; i < list.length; i++) {
             const branchList = await branchModel.findAllByCatId(list[i].CatID);
             list[i].branchList = branchList;

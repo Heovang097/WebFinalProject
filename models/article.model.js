@@ -10,7 +10,7 @@ module.exports = {
         return db('articles').where('ArtID', id);
     },
 
-    add(article) {
+    insert(article) {
         return db('articles').insert(article);
     },
 
@@ -21,8 +21,6 @@ module.exports = {
 
         return rows[0];
     },
-
-
 
     patch(article) {
         const id = article.ArtID;
@@ -38,7 +36,7 @@ module.exports = {
             .where('ArtID', id)
             .del();
     },
-    mostViewArticles(){
+    mostViewArticles() {
         // return db('articles').orderBy('Views', 'desc');
         const sql = `SELECT *
 FROM articles a, branches b, categories c
@@ -46,7 +44,7 @@ WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
 ORDER BY Views DESC`;
         return db.raw(sql);
     },
-    newestArticles(){
+    newestArticles() {
         // return db('articles').orderBy('DateOfPublish', 'desc');
         const sql = `SELECT *
 FROM articles a, branches b, categories c
@@ -54,7 +52,7 @@ WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
 ORDER BY DateOfPublish DESC`;
         return db.raw(sql);
     },
-    newestArticleByCat(){
+    newestArticleByCat() {
         const sql = `SELECT * 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
         INNER JOIN categories c1 on b1.CatID = c1.CatID
@@ -66,18 +64,21 @@ ORDER BY DateOfPublish DESC`;
             `;
         return db.raw(sql);
     },
-    allByCatID(CatID){
+    allByCatID(CatID) {
         const sql = `SELECT * 
 from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
 INNER JOIN categories c1 on b1.CatID = c1.CatID
 WHERE c1.CatID = ${CatID}`;
         return db.raw(sql);
     },
-    allByBranchID(BranchID){
+    allByBranchID(BranchID) {
         const sql = `SELECT * 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
         INNER JOIN categories c1 on b1.CatID = c1.CatID
         WHERE b1.BranchID = ${BranchID}`;
         return db.raw(sql);
+    },
+    count() {
+        return db('articles').count('ArtID as count');
     }
 };
