@@ -25,6 +25,6 @@ module.exports = {
     },
 
     withCategory(id) {
-        return db('branches').join('categories', 'branches.CatID', 'categories.CatID').select('BranchID', 'CatName', 'BranchName');
+        return db('branches').join('categories', 'branches.CatID', 'categories.CatID');
     }
 };

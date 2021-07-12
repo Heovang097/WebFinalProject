@@ -7,8 +7,12 @@ const auth = require('../middlewares/auth.mdw')
 
 const router = express.Router()
 
+router.get('/test', function(req, res) {
+    res.json(res.locals.lcCategories)
+})
+
 router.get('/post', auth, function(req, res) {
-    if (req.session.writer) {
+    if (req.session.isWriter) {
         res.render('../views/vwWriter/post.hbs')
         return
     }
