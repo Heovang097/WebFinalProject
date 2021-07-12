@@ -6,8 +6,8 @@ module.exports = {
     },
     findTagsByArticle(id) {
         return db('tags').where('ArticleID', id);
-    }
-    insertTags(tags) {
+    },
+    insert(tags) {
         return db('tags').insert(tags);
     }
 };

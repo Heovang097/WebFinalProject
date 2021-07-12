@@ -1,7 +1,7 @@
 module.exports = function(app) {
     app.get('/', function(req, res) {
         // res.send('<b>Hello</b> World!');
-        res.render('home');
+        res.redirect('/mainpage')
     });
 
     app.get('/about', function(req, res) {

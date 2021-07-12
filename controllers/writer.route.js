@@ -3,6 +3,7 @@ const multer = require('multer')
 const path = require('path')
 
 const articleModel = require('../models/article.model')
+const tagModel = require('../models/tag.model')
 const auth = require('../middlewares/auth.mdw')
 
 const router = express.Router()
@@ -41,7 +42,7 @@ router.post('/post', auth, async function(req, res) {
         } else {
             // save article in database
             const article = {
-                UserID: req.session.UserID,
+                UserID: req.session.authUser.UserID,
                 BranchID: req.body.branch,
                 ImageLink: req.file.path,
                 Title: req.body.title,
@@ -50,6 +51,7 @@ router.post('/post', auth, async function(req, res) {
                 Premium: req.body.premium === "on",
                 State: 0,
             }
+            console.log(article)
             await articleModel.insert(article)
 
             // save tags in data
@@ -64,7 +66,7 @@ router.post('/post', auth, async function(req, res) {
                 obj['TagName'] = element
                 tags.push(obj)
             })
-            await articleModel.insert(tags)
+            await tagModel.insert(tags)
         }
     })
 })
