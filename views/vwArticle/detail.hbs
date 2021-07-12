@@ -1,0 +1,16 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/mainpage">Home</a></li>
+    <li class="breadcrumb-item"><a href="/{{article.CatLink}}">{{article.CatName}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="/{{article.CatLink}}/{{article.BranchLink}}">{{article.BranchName}}</a></li>
+  </ol>
+</nav>
+<div class="container-fluid d-flex">
+	<div class="row justify-content-center">
+		<div class="col-sm-9">
+			<img src="/{{article.ImageLink}}" class="img-fluid" alt="">
+			<h2>{{article.Title}}</h2>
+			{{{article.Content}}}
+		</div>
+	</div>
+</div>

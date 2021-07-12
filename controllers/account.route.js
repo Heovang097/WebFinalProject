@@ -67,7 +67,7 @@ router.post('/login', async function(req, res) {
 
     delete user.Password;
     delete user.Permission;
-    req.session.writer = (user.PenName != null);
+    req.session.isWriter = (user.PenName != null);
     req.session.auth = true;
     req.session.authUser = user;
     const url = req.session.retUrl || '/';

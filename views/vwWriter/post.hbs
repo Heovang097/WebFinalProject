@@ -46,6 +46,19 @@
 		    </div>
 
             <div class="form-group">
+                <label for="chooseBranch">Chuyên mục</label>
+                <select class="selectpicker" id="chooseBranch" name="branch">
+                    {{#each lcCategories}}
+                    <optgroup label="{{CatName}}">
+                        {{#each branchList}}
+                            <option value='{{BranchID}}'>{{BranchName}}</option>
+                        {{/each}}
+                    </optgroup>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="txtCover">Ảnh đại diên</label>
                 <input type="file" class="form-control" id="txtCover" name="cover" multiple>
 		    </div>
@@ -59,18 +72,10 @@
                 <label for="txtContent">Nội dung</label>
                 <textarea id="txtContent" name="content" rows="20"></textarea>
             </div>
-
+            
             <div class="form-group">
-                <label for="chooseBranch">Chuyên mục</label>
-                <select class="selectpicker" id="chooseBranch" name="branch">
-                    {{#each category}}
-                    <optgroup label="{{CatName}}">
-                        {{#each branch}}
-                            <option>{{BranchName}}</option>
-                        {{/each}}
-                    </optgroup>
-                    {{/each}}
-                </select>
+                <label for="tags">Tags</label>
+                <input name="tags" id="tags"/>
             </div>
 
             <div class="pretty p-switch">
@@ -80,14 +85,9 @@
                 </div>
             </div>
             
-            <div class="form-group">
-                <label for="tags">Tags</label>
-                <input name="tags" id="tags"/>
-            </div>
-            
             <button type="submit" class="btn btn-success">
                 <i class="fa fa-check" aria-hidden="true"></i>
-                Save
+                Lưu
             </button>
         </form>
     </div>

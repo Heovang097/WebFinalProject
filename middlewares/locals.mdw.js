@@ -1,6 +1,33 @@
 const branchModel = require('../models/branch.model');
 const categoryModel = require('../models/category.model');
 
+function groupCat(data) {
+    list = []
+    data.forEach(element => {
+        found = list.some(el => el.CatID === element.CatID)
+        if (!found) {
+            list.push({
+                CatID: element.CatID,
+                CatName: element.CatName,
+                CatLink: element.CatLink,
+                branchList: [],
+            })
+        }
+        branchList = list.find((o, i) => {
+            if (o.CatID === element.CatID) {
+                list[i].branchList.push({
+                    BranchID: element.BranchID,
+                    CatID: element.CatID,
+                    BranchName: element.BranchName,
+                    BranchLink: element.BranchLink,
+                })
+            }
+        });
+    });
+
+    return list
+}
+
 module.exports = function(app) {
 
     app.use(function(req, res, next) {
@@ -9,24 +36,16 @@ module.exports = function(app) {
         }
         res.locals.auth = req.session.auth;
         res.locals.authUser = req.session.authUser;
-        res.locals.writer = req.session.writer;
+        res.locals.isWriter = req.session.isWriter;
         next();
     })
 
     // Name Categories and Branches
     app.use(async function(req, res, next) {
-        const list = await categoryModel.all();
-        console.log(list.length);
-        for (let i = 0; i < list.length; i++) {
-            const branchList = await branchModel.findAllByCatId(list[i].CatID);
-            list[i].branchList = branchList;
-        }
-        res.locals.lcCategories = list;
-
         const rows = await branchModel.withCategory();
-        data = Object.values(JSON.parse(JSON.stringify(rows)));
-        dict = data.reduce((p, c) => (p[c.CatName] ? p[c.CatName].push(c) : p[c.CatName] = [c], p), {});
-        res.locals.category = Object.keys(dict).map(k => ({ CatName: k, branch: dict[k] }));
+        const data = Object.values(JSON.parse(JSON.stringify(rows)));
+        const list = groupCat(data)
+        res.locals.lcCategories = list;
         next()
     })
 }
