@@ -3,17 +3,11 @@ module.exports = function(app) {
         // res.send('<b>Hello</b> World!');
         res.redirect('/mainpage')
     });
-
-    app.get('/about', function(req, res) {
-        res.render('about');
+    app.get('/404', function(req, res) {
+        res.sendfile('404.html')
     });
-
-    app.get('/bs4', function(req, res) {
-        res.sendFile(__dirname + '/bs4.html');
-    });
-
-    app.use('/account/', require('../controllers/account.route'));
-    app.use('/mainpage/', require('../controllers/mainpage.route'));
-    app.use('/', require('../controllers/article.route'));
+    app.use('/account', require('../controllers/account.route'));
+    app.use('/mainpage', require('../controllers/mainpage.route'));
+    app.use('/article', require('../controllers/article.route'));
     app.use('/writer', require('../controllers/writer.route'));
 }

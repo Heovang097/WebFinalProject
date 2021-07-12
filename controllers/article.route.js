@@ -3,6 +3,8 @@ const articleModel = require('../models/article.model');
 
 const router = express.Router();
 
-router.get('/:id', async function(req, res) {});
+router.get('/:id', async function(req, res) {
+    res.render('../views/vwArticle/detail.hbs')
+});
 
 module.exports = router;
