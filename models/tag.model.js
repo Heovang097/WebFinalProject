@@ -9,5 +9,8 @@ module.exports = {
     },
     insert(tags) {
         return db('tags').insert(tags);
+    },
+    name() {
+        return db('tags').distinct('TagName').select('TagName')
     }
 };
