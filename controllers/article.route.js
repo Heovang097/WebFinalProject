@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get('/:id', async function(req, res) {
     const article = await articleModel.detail(req.params.id)
-    console.log(article)
     if (article === null) {
         res.redirect('/404')
         return
@@ -14,6 +13,7 @@ router.get('/:id', async function(req, res) {
     res.render('../views/vwArticle/detail.hbs', {
         article,
     })
+    await articleModel.increaseView(article.ArtID, article.Views + 1)
 });
 
 module.exports = router;

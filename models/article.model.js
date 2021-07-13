@@ -16,7 +16,7 @@ module.exports = {
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'Username', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Abstract', 'Content', 'Premium', 'State')
+            .select('ArtID', 'Username', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Abstract', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
             return null
         return rows[0]
@@ -26,12 +26,8 @@ module.exports = {
         return db('articles').insert(article);
     },
 
-    async findByBranchId(id) {
-        const rows = await db('products').where('BranchID', id);
-        if (rows.length === 0)
-            return null;
-
-        return rows[0];
+    increaseView(id, views) {
+        return db('articles').where('ArtID', id).update('Views', views)
     },
 
     patch(article) {
@@ -90,7 +86,7 @@ WHERE c1.CatID = ${CatID}`;
         WHERE b1.BranchID = ${BranchID}`;
         return db.raw(sql);
     },
-    count() {
-        return db('articles').count('ArtID as count');
+    maxID() {
+        return db('articles').max('ArtID as maxID');
     }
 };
