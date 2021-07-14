@@ -23,14 +23,21 @@ router.get('/:id', async function(req, res) {
     comments = await commentModel.findCommentsByArticle(req.params.id)
     comments.forEach(element => {
         element.Date = capitalizeFirstLetter(moment(element.Date).format('LLLL'))
+        element.MyComment = false
+        if (req.session.auth === true) {
+            element.MyComment = (element.UserID === req.session.authUser.UserID)
+        }
     });
     res.render('../views/vwArticle/detail.hbs', {
         article,
         tags,
         comments,
     })
-    console.log(comments)
     await articleModel.increaseView(article.ArtID, article.Views + 1)
 });
+
+router.post('/comment/add', function(req, res) {
+    res.json("Hello world")
+})
 
 module.exports = router;

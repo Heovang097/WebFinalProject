@@ -10,6 +10,17 @@ module.exports = {
         return db('articles').where('ArtID', id);
     },
 
+    async relatedArticle(ArtID, BranchID) {
+        const rows = await db('articles')
+            .where('BranchID', id)
+            .whereNot('ArtID', id)
+            .orderBy('RAND()')
+            .limit(5)
+        if (rows.length === 0)
+            return null
+        return rows
+    },
+
     async detail(id) {
         const rows = await db('articles')
             .where('ArtID', id)
