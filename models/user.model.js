@@ -15,4 +15,14 @@ module.exports = {
             return null;
         return rows[0];
     },
+
+    updateAvailable(id,state){
+        return db('users').where('UserID', id).update({Available: state});
+    },
+    updateOTP(id, otp){
+        return db('users').where('UserID', id).update('OTP', otp);
+    },
+    updatePassword(id, pass){
+        return db('users').where('UserID', id).update('Password', pass);
+    }
 };

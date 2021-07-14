@@ -59,8 +59,8 @@
           </div>
           <div class="form-group">
             <div class="input-group">
-              <input class="form-control form-control-lg border-right-0 border" placeholder="Password" type="password"
-                name="password">
+              <input class="form-control form-control-lg border-right-0 border" placeholder="OTP" type="text"
+                name="OTP">
               <span class="input-group-append">
                 <div class="input-group-text bg-white">
                   <i class="fa fa-key" aria-hidden="true"></i>
@@ -68,24 +68,16 @@
               </span>
             </div>
           </div>
-          <div class="form-group d-flex">
-            <div>
-              <a class="btn btn-lg btn-outline-info btn-block" href="/" role="button">
-                <i class="fa fa-home" aria-hidden="true"></i>
-                Home
-              </a>
-            </div>
-            <div class="flex-fill ml-1">
+            <div class="flex-fill">
+		    <!-- confirm OTP and redirect to reset 
+		    if fail, show error at this page like login page-->
               <button class="btn btn-info btn-lg btn-block" type="submit">
                 <i class="fa fa-sign-in" aria-hidden="true"></i>
-                Sign In
+                Kiểm tra OTP
               </button>
             </div>
           </div>
         </form>
-        <a href='./forget'>
-        <small  class="form-text text-muted float-right" style="color:red !important; font-weight: bold;">Quên mật khẩu?</small>
-        </a>
       </div>
     </div>
   </div>
