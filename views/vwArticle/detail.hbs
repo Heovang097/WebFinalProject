@@ -1,3 +1,15 @@
+{{#section 'js'}}
+<script language="javascript" type="text/javascript">
+	function limitText(limitField, limitCount, limitNum) {
+		if (limitField.value.length > limitNum) {
+			limitField.value = limitField.value.substring(0, limitNum);
+		} else {
+			limitCount.value = limitNum - limitField.value.length;
+		}
+	}
+</script>
+{{/section}}
+
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/mainpage">Home</a></li>
@@ -8,9 +20,56 @@
 <div class="container-fluid d-flex">
 	<div class="row justify-content-center">
 		<div class="col-sm-9">
-			<h2>{{article.Title}}</h2>
-			<img src="/{{article.ImageLink}}" class="img-fluid" alt="">
-			{{{article.Content}}}
+			<div class="shadow-lg p-3 mb-3">
+				<h2>{{article.Title}}</h2>
+				<a class="badge badge-pill badge-primary">
+					<i class="fa fa-user-circle" aria-hidden="true"></i>
+					{{article.PenName}}
+				</a>
+				<span class="badge badge-pill badge-success">
+					<i class="fa fa-eye" aria-hidden="true"></i>
+					{{article.Views}}
+				</span>
+				<a class="badge badge-pill badge-dark" href="#comments">
+					<i class="fa fa-comments" aria-hidden="true"></i>
+					{{comments.length}}
+				</a>
+				<span class="badge badge-pill badge-info">
+					<i class="fa fa-calendar" aria-hidden="true"></i>
+					{{article.DateOfPublish}}
+				</span>	
+				<br>
+				<img src="/{{article.ImageLink}}" class="img-fluid" alt="">
+				{{{article.Content}}}
+			</div>
+			<div class="shadow p-3 mb-3">
+				<i class="fa fa-tags" aria-hidden="true"></i>
+				<strong>Tags: </strong>
+				{{#each tags}}
+					<button type="button" class="btn btn-outline-info" onclick="location.href='/tags/{{TagName}}'">{{TagName}}</button>
+				{{/each}}
+			</div>
+			<div id="comments">
+				{{#each comments}}
+				<div class="card p-2 mt-3">
+					<div class="d-flex">
+						<a href="/users/info/{{UserID}}">
+							<img src="{{avatar}}" width="40" height="40" alt="">
+						</a>
+						<div class="flex-grow-1 pl-2">
+							<a class="h6 m-0" href="/users/info/{{UserID}}">{{Name}}</a>
+							<p class="small m-0 text-muted">{{Date}}</p>
+						</div>
+						<div class>
+							
+						</div>
+					</div>
+					<div class="card-body p-0">
+						<p class="card-text h7 mb-1">{{Content}}</p>
+					</div>
+				</div>
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>

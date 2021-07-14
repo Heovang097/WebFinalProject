@@ -16,7 +16,7 @@ module.exports = {
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'Username', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Abstract', 'Content', 'Premium', 'State', 'Views')
+            .select('ArtID', 'PenName', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
             return null
         return rows[0]

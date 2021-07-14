@@ -1,18 +1,35 @@
 const express = require('express');
 const articleModel = require('../models/article.model');
+const tagsModel = require('../models/tag.model');
+const commentsModel = require('../models/comment.model');
 const moment = require('moment');
+moment.locale("vi")
+const commentModel = require('../models/comment.model');
 
 const router = express.Router();
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 router.get('/:id', async function(req, res) {
     const article = await articleModel.detail(req.params.id)
+    article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'))
     if (article === null) {
         res.redirect('/404')
         return
     }
+    const tags = await tagsModel.findTagsByArticle(req.params.id)
+    comments = await commentModel.findCommentsByArticle(req.params.id)
+    comments.forEach(element => {
+        element.Date = capitalizeFirstLetter(moment(element.Date).format('LLLL'))
+    });
     res.render('../views/vwArticle/detail.hbs', {
         article,
+        tags,
+        comments,
     })
+    console.log(comments)
     await articleModel.increaseView(article.ArtID, article.Views + 1)
 });
 
