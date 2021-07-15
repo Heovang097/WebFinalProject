@@ -10,6 +10,6 @@ module.exports = {
             .select('avatar', 'Name', 'comments.UserID', 'CommentID', 'Content', 'Date');
     },
     insert(comment) {
-        return db('comments').insert(tags);
+        return db('comments').insert(comment);
     },
 };

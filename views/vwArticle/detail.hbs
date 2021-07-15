@@ -79,7 +79,7 @@
 					</div>
 					<div class="card-body">
 						<form method="POST" action="/comment/add/{{article.ArtID}}" id="form">
-							<textarea id="commentContent"class="form-control" name="limitedtextarea" id="" rows="3" placeholder="Mời bạn bình luận tại đây" maxlength="1000" onkeydown="limitText(1000)" onkeyup="limitText(1000)" required></textarea>	
+							<textarea id="commentContent"class="form-control" name="comment" id="" rows="3" placeholder="Mời bạn bình luận tại đây" maxlength="1000" onkeydown="limitText(1000)" onkeyup="limitText(1000)" required></textarea>	
 							<span id="commentCountdown"></span>
 							<button id="submit" class="btn btn-primary my-2 float-right" type="submit">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
