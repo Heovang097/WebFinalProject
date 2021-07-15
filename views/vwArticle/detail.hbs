@@ -5,21 +5,37 @@
 		const countdown = limit - $("#commentContent").val().length
 		$("#commentCountdown").text(`Số kí tự còn lại là ${countdown}`)
 	}
-	const countdown = 1000 - $("#commentContent").val().length
-	$("#commentCountdown").text(`Số kí tự còn lại là ${countdown}`)
-	$("#form").on("submit", function(e){
-		e.preventDefault();
-		$.ajax({
-			url: "comment/add",
-			method: "post"
-		}).done(d=>{
-			Swal.fire({
-				title: 'Error!',
-				text: 'Do you want to continue',
-				icon: 'error',
-				confirmButtonText: 'Cool'
+	$(document).ready(function(){
+		const countdown = 1000 - $("#commentContent").val().length
+		$("#commentCountdown").text(`Số kí tự còn lại là ${countdown}`)
+		$("#submit,#commentContent").on( "click", function(){
+			$.ajax({
+				url: location.protocol + '//' + location.host + '/api/auth',
+				method: "get",
+				success: function(data){
+					if (data === false){
+						$("#commentContent").blur();
+						Swal.fire({
+							icon: 'warning',
+							title: 'Đăng nhập để tham gia bình luận'
+						}).then((result)=>{
+							
+						})
+					}
+					else {
+						$('#form').off('submit').submit();
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					Swal.fire({
+						title: 'Error!',
+						text: 'error ' + textStatus + " " + errorThrown,
+						icon: 'error',
+						confirmButtonText: 'OK'
+					})
+				}
 			})
-		});
+		})
 	})
 </script>
 {{/section}}
@@ -65,7 +81,7 @@
 						<form method="POST" action="/comment/add/{{article.ArtID}}" id="form">
 							<textarea id="commentContent"class="form-control" name="limitedtextarea" id="" rows="3" placeholder="Mời bạn bình luận tại đây" maxlength="1000" onkeydown="limitText(1000)" onkeyup="limitText(1000)" required></textarea>	
 							<span id="commentCountdown"></span>
-							<button class="btn btn-primary my-2 float-right" type="submit">
+							<button id="submit" class="btn btn-primary my-2 float-right" type="submit">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
 								Gửi bình luận
 							</button>
