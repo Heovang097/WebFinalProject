@@ -12,9 +12,15 @@ router.post('/add/:id', auth, async function(req, res) {
         Content: req.body.comment,
         Date: moment().format(),
     }
-    console.log(comment)
     await commentModel.insert(comment)
-    res.redirect(`/article/${req.params.id}`)
+    res.redirect(`/article/${req.params.id}#comment`)
+})
+
+router.post('/delete/:id', auth, async function(req, res) {
+    const ArtID = await commentModel.findArticle(req.params.id)
+    await commentModel.delete(req.session.authUser.UserID, req.params.id)
+    res.json(true)
+    console.log(true)
 })
 
 module.exports = router
