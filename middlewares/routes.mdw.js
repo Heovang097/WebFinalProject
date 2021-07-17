@@ -10,6 +10,7 @@ module.exports = function(app) {
     app.use('/mainpage', require('../controllers/mainpage.route'));
     app.use('/article', require('../controllers/article.route'));
     app.use('/writer', require('../controllers/writer.route'));
+    app.use('/editor', require('../controllers/editor.route'));
     app.use('/comment', require('../controllers/comment.route'));
     app.use('/api', require('../controllers/api.route'));
 }
