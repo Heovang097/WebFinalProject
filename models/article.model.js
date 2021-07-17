@@ -1,5 +1,6 @@
 const db = require('../utils/db');
 const { findAllByCatId } = require('./branch.model');
+const Config = require('../utils/config');
 
 module.exports = {
     all() {
@@ -99,5 +100,32 @@ WHERE c1.CatID = ${CatID}`;
     },
     maxID() {
         return db('articles').max('ArtID as maxID');
+    },
+    async allByEditorID(EditorID) {
+        Config
+        const sql = `SELECT * 
+        FROM branch_user as bu, articles as a 
+        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID} AND a.State = ${Config.ARTICLE_STATE.PENDING}`
+        const rows = await db.raw(sql);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
+    },
+    deny(id, reason) {
+        return db('articles')
+        .where('ArtID', id)
+        .update({
+            "State": Config.ARTICLE_STATE.DENIED,
+            "Reason": reason,
+        });
+    },
+    approve(id, tag, dateOfPublish) {
+        return db('articles')
+        .where('ArtID', id)
+        .update({
+            "State": Config.ARTICLE_STATE.APPROVED,
+            'Tag': tag,
+            "DateOfPublish": dateOfPublish
+        });
     }
 };
