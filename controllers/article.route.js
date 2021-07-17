@@ -13,13 +13,16 @@ function capitalizeFirstLetter(string) {
 }
 
 router.get('/:id', async function(req, res) {
+    //Article
     const article = await articleModel.detail(req.params.id)
     article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'))
     if (article === null) {
         res.redirect('/404')
         return
     }
+    //tags
     const tags = await tagsModel.findTagsByArticle(req.params.id)
+        //comment
     comments = await commentModel.findCommentsByArticle(req.params.id)
     comments.forEach(element => {
         element.Date = capitalizeFirstLetter(moment(element.Date).format('LLLL'))
@@ -28,6 +31,9 @@ router.get('/:id', async function(req, res) {
             element.MyComment = (element.UserID === req.session.authUser.UserID)
         }
     });
+    const relatedArticle = await articleModel.relatedArticle(req.params.id, article.BranchID, moment())
+    console.log(relatedArticle[0])
+    console.log(moment())
     res.render('../views/vwArticle/detail.hbs', {
         article,
         tags,
