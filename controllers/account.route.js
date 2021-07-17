@@ -20,15 +20,15 @@ var transporter = nodemailer.createTransport({
 
 const router = express.Router();
 
-router.get('/profile', auth, function (req, res) {
+router.get('/profile', auth, function(req, res) {
     res.render('vwAccount/profile');
 });
 
-router.get('/register', function (req, res) {
+router.get('/register', function(req, res) {
     res.render('vwAccount/register');
 })
 
-router.post('/register', async function (req, res) {
+router.post('/register', async function(req, res) {
     const hash = bcrypt.hashSync(req.body.raw_password, 10);
     const dob = moment(req.body.raw_dob, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const user = {
@@ -45,7 +45,7 @@ router.post('/register', async function (req, res) {
     res.render('vwAccount/register');
 })
 
-router.get('/is-available', async function (req, res) {
+router.get('/is-available', async function(req, res) {
     const username = req.query.user;
     const user = await userModel.findByUsername(username);
     if (user === null) {
@@ -55,13 +55,13 @@ router.get('/is-available', async function (req, res) {
     res.json(false);
 })
 
-router.get('/login', async function (req, res) {
+router.get('/login', async function(req, res) {
     res.render('vwAccount/login', {
         layout: false
     });
 });
 
-router.post('/login', async function (req, res) {
+router.post('/login', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     var err_message = 'Tên đăng nhập không tồn tại';
     if (user.Available == 0) err_message = 'Tài khoản hiện đang không kích hoạt'
@@ -93,12 +93,12 @@ router.post('/login', async function (req, res) {
     req.session.isWriter = (user.PenName != null);
     req.session.auth = true;
     req.session.authUser = user;
-    
+
     const url = req.session.retUrl || '/';
     res.redirect(url);
 })
 
-router.post('/logout', auth, async function (req, res) {
+router.post('/logout', auth, async function(req, res) {
     req.session.auth = false;
     req.session.authUser = null;
     req.session.retUrl = '';
@@ -106,13 +106,13 @@ router.post('/logout', auth, async function (req, res) {
     res.redirect(url);
 })
 
-router.get('/forget', function (req, res) {
+router.get('/forget', function(req, res) {
     res.render('vwAccount/forget', {
         layout: false
     });
 })
 
-router.post('/forget', async function (req, res) {
+router.post('/forget', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     console.log(user);
     if (user == null) {
@@ -133,7 +133,7 @@ Bạn đã <b>yêu cầu</b> làm mới mật khẩu, một mã OTP đã đượ
 Team Báo điện tử </b>`
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             console.log(error);
         } else {
@@ -146,13 +146,13 @@ Team Báo điện tử </b>`
     res.redirect('/account/confirm');
 })
 
-router.get('/confirm', function (req, res) {
+router.get('/confirm', function(req, res) {
     res.render('vwAccount/confirm', {
         layout: false
     });
 })
 
-router.post('/confirm', async function (req, res) {
+router.post('/confirm', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     console.log("check otp: ", user.OTP == req.body.OTP)
     if (user.Available == 1) {
@@ -172,13 +172,13 @@ router.post('/confirm', async function (req, res) {
     })
 })
 
-router.get('/reset', function (req, res) {
+router.get('/reset', function(req, res) {
     res.render('vwAccount/reset', {
         layout: false
     });
 })
 
-router.post('/reset', async function (req, res) {
+router.post('/reset', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     const hash = bcrypt.hashSync(req.body.password, 10);
     await userModel.updatePassword(user.UserID, hash);
