@@ -15,9 +15,11 @@ require('./middlewares/session.mdw')(app);
 require('./middlewares/view.mdw')(app);
 require('./middlewares/locals.mdw')(app);
 require('./middlewares/routes.mdw.js')(app);
+const schedule = require('./middlewares/schedule.mdw')
+setInterval(schedule.updateState, 60000)
 
 const PORT = 3000;
 
 app.listen(PORT, function() {
-    console.log(`EC Web App listening at http://localhost:${PORT}`);
+    console.log(`News listening at http://localhost:${PORT}`);
 });

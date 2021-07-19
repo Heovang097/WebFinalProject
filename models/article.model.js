@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const { findAllByCatId } = require('./branch.model');
 const Config = require('../utils/config');
+const { default: knex } = require('knex');
 
 module.exports = {
     all() {
@@ -11,14 +12,24 @@ module.exports = {
         return db('articles').where('ArtID', id);
     },
 
+    // Update State
+    updateState() {
+        const query = `Update articles
+        SET State = 0
+        where DateOfPublish <= NOW()`
+        return db.raw(query)
+    },
+
+    // Bai viet lien quan
     relatedArticle(ArtID, BranchID) {
-        const query = `select ArtID, Title, UserID, ImageLink, DateOfPublish, NOW(), Abstract, Views, Premium from articles
-        where BranchID = ${BranchID} and ArtID != ${ArtID} and DateOfPublish <= NOW()
+        const query = `select ArtID, Title, UserID, ImageLink, DateOfPublish, Abstract, Views, Premium from articles
+        where BranchID = ${BranchID} and ArtID != ${ArtID} and State = 0
         order by rand()
         limit 5;`
         return db.raw(query)
     },
 
+    // Chi tiet bai viet
     async detail(id) {
         const rows = await db('articles')
             .where('ArtID', id)
@@ -31,14 +42,17 @@ module.exports = {
         return rows[0]
     },
 
+    // Them bai viet
     insert(article) {
         return db('articles').insert(article);
     },
 
+    // Dem view
     increaseView(id, views) {
         return db('articles').where('ArtID', id).update('Views', views)
     },
 
+    // update bai viet
     patch(article) {
         const id = article.ArtID;
         delete article.ArtID;
@@ -48,6 +62,7 @@ module.exports = {
             .update(article);
     },
 
+    //Xoa bai viet
     del(id) {
         return db('articles')
             .where('ArtID', id)
@@ -110,19 +125,19 @@ WHERE c1.CatID = ${CatID}`;
     },
     deny(id, reason) {
         return db('articles')
-        .where('ArtID', id)
-        .update({
-            "State": Config.ARTICLE_STATE.DENIED,
-            "Reason": reason,
-        });
+            .where('ArtID', id)
+            .update({
+                "State": Config.ARTICLE_STATE.DENIED,
+                "Reason": reason,
+            });
     },
     approve(id, tag, dateOfPublish) {
         return db('articles')
-        .where('ArtID', id)
-        .update({
-            "State": Config.ARTICLE_STATE.APPROVED,
-            'Tag': tag,
-            "DateOfPublish": dateOfPublish
-        });
+            .where('ArtID', id)
+            .update({
+                "State": Config.ARTICLE_STATE.APPROVED,
+                'Tag': tag,
+                "DateOfPublish": dateOfPublish
+            });
     }
 };
