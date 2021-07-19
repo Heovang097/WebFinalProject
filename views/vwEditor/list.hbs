@@ -26,7 +26,7 @@ $('.date-of-publish').datetimepicker({
             {{#each this.articleList}}
             <div class="col-sm-4 mb-3">
                 <div class="card h-100">
-                    <img src="{{ImageLink}}"" class=" card-img-top"">
+                    <img src="../{{ImageLink}}" class="card-img-top">
                     <div class="card-body">
                         <h4 class="card-title">{{Title}}</h4>
                         <p class="card-text">{{Abstract}}</p>
@@ -115,6 +115,7 @@ $('.date-of-publish').datetimepicker({
                                         {{#each lcCategories}}
                                         <option value="{{CatID}}">{{CatName}}</option>
                                         {{/each}}
+                                        <option value="1">Test option</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
