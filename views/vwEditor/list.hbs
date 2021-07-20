@@ -112,7 +112,7 @@ $('.date-of-publish').datetimepicker({
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
                                     <select name="CatID" class="form-control" id="exampleFormControlSelect1">
-                                        {{#each lcCategories}}
+                                        {{#each ../lcCategories}}
                                         <option value="{{CatID}}">{{CatName}}</option>
                                         {{/each}}
                                         <option value="1">Test option</option>

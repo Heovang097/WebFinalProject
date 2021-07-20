@@ -6,13 +6,14 @@ const router = express.Router();
 
 router.get("/list", async function(req, res) {
     const articleList = await articleModel.allByEditorID(req.session.authUser.UserID);
-    console.log(`====== Article List by Editor ID: ${req.session.authUser.UserID} ======`);
-    console.log(articleList);
-    console.log(`================================`);
+    // console.log(`====== Article List by Editor ID: ${req.session.authUser.UserID} ======`);
+    // console.log(articleList);
+    // console.log(`================================`);
 	console.log(res.locals.lcCategories);
     res.render("vwEditor/list", {
         empty: articleList.length == 0,
         articleList: articleList,
+        categories: res.locals.lcCategories,
     })
 });
 
