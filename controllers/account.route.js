@@ -144,7 +144,7 @@ router.get('/confirm', function(req, res){
 
 router.post('/confirm', async function(req, res){
     const user = await userModel.findByUsername(req.body.username);
-    console.log("check otp: ", user.OTP == req.body.OTP)
+    // console.log("check otp: ", user.OTP == req.body.OTP)
     if (user.Available == 1){
     return res.render('vwAccount/confirm', {
         layout: false,
