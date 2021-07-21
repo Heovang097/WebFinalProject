@@ -61,7 +61,7 @@ router.post('/post', auth, async function(req, res) {
                 Content: req.body.content,
                 Premium: req.body.premium === "on",
                 State: 0,
-                View: 0,
+                Views: 0,
             }
             await articleModel.insert(article)
 

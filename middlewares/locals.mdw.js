@@ -37,6 +37,8 @@ module.exports = function(app) {
         res.locals.auth = req.session.auth;
         res.locals.authUser = req.session.authUser;
         res.locals.isWriter = req.session.isWriter;
+        res.locals.isEditor = req.session.isEditor;
+        res.locals.isAdmin = req.session.isAdmin;
         next();
     })
 

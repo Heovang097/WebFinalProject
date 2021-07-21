@@ -7,13 +7,14 @@ const otpGenerator = require('otp-generator');
 
 const userModel = require('../models/user.model');
 const auth = require('../middlewares/auth.mdw');
+const Config = require('../utils/config');
 
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'longlcqt@gmail.com',
-    pass: 'long2810'
-  }
+    service: 'gmail',
+    auth: {
+        user: 'longlcqt@gmail.com',
+        pass: 'long2810'
+    }
 });
 
 
@@ -80,10 +81,19 @@ router.post('/login', async function(req, res) {
     }
 
     delete user.Password;
+    switch (user.Permission) {
+        case Config.PERMISSION.EDITOR:
+            req.session.isEditor = true;
+            break;
+        case Config.PERMISSION.ADMIN:
+            req.session.isAdmin = true;
+            break;
+    }
     delete user.Permission;
     req.session.isWriter = (user.PenName != null);
     req.session.auth = true;
     req.session.authUser = user;
+
     const url = req.session.retUrl || '/';
     res.redirect(url);
 })
@@ -96,22 +106,22 @@ router.post('/logout', auth, async function(req, res) {
     res.redirect(url);
 })
 
-router.get('/forget', function(req, res){
+router.get('/forget', function(req, res) {
     res.render('vwAccount/forget', {
         layout: false
     });
 })
 
-router.post('/forget', async function(req, res){
+router.post('/forget', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     console.log(user);
-    if (user == null){
+    if (user == null) {
         return res.render('vwAccount/forget', {
             layout: false,
             err_message: 'Tên tài khoản không tồn tại'
         })
     }
-    var otp = otpGenerator.generate(6, {alphabets:false, upperCase:false, specialChars:false});
+    var otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
     var mailOptions = {
         from: 'longlcqt@gmail.com',
         to: user.Email,
@@ -123,7 +133,7 @@ Bạn đã <b>yêu cầu</b> làm mới mật khẩu, một mã OTP đã đượ
 Team Báo điện tử </b>`
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             console.log(error);
         } else {
@@ -136,23 +146,23 @@ Team Báo điện tử </b>`
     res.redirect('/account/confirm');
 })
 
-router.get('/confirm', function(req, res){
+router.get('/confirm', function(req, res) {
     res.render('vwAccount/confirm', {
         layout: false
     });
 })
 
-router.post('/confirm', async function(req, res){
+router.post('/confirm', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
-    // console.log("check otp: ", user.OTP == req.body.OTP)
-    if (user.Available == 1){
-    return res.render('vwAccount/confirm', {
-        layout: false,
-        err_message: 'Tài khoản không yêu cầu làm mới mật khẩu',
-        user: user
-    })
+    console.log("check otp: ", user.OTP == req.body.OTP)
+    if (user.Available == 1) {
+        return res.render('vwAccount/confirm', {
+            layout: false,
+            err_message: 'Tài khoản không yêu cầu làm mới mật khẩu',
+            user: user
+        })
     }
-    if (user.OTP == req.body.OTP){
+    if (user.OTP == req.body.OTP) {
         return res.redirect('/account/reset');
     }
     return res.render('vwAccount/confirm', {
@@ -162,13 +172,13 @@ router.post('/confirm', async function(req, res){
     })
 })
 
-router.get('/reset', function(req, res){
+router.get('/reset', function(req, res) {
     res.render('vwAccount/reset', {
         layout: false
     });
 })
 
-router.post('/reset', async function(req, res){
+router.post('/reset', async function(req, res) {
     const user = await userModel.findByUsername(req.body.username);
     const hash = bcrypt.hashSync(req.body.password, 10);
     await userModel.updatePassword(user.UserID, hash);

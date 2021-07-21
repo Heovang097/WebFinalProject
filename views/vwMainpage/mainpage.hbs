@@ -15,71 +15,67 @@
 			-->
 			<ol class="carousel-indicators">
 				{{#each this.mostViewArticles}}
-				<li data-target="#myCarousel" data-slide-to={{@index}} class={{#if @first}}
-					"active"
-				{{/if}}></li>
+				<li data-target="#myCarousel" data-slide-to={{@index}} class={{#if @first}} "active" {{/if}}></li>
 				{{/each}}
 			</ol>
-			
+
 			<div class="carousel-inner">
 				{{#each this.mostViewArticles}}
 				{{#if @first}}
 				<div class="carousel-item active">
-				{{else}}
-				<div class="carousel-item">
-				{{/if}}
-					<div class="jumbotron text-white rounded bg-dark">
-						<div class="row">
-							<div class="col-md-6 px-0 h-100">
-								<strong
-									class="d-inline-block mb-2 mx-2 text-primary">{{CatName}}</strong>
-								<h1 class="display-5 font-italic">{{Title}}</h1>
-								<p class="lead my-3"> {{DateOfPublish}}</p>
-								<p class="lead mb-0"><a href="#"
-										class="text-white font-weight-bold">Continue
-										reading...</a></p>
-							</div>
-							<div class="col-md-6 d-none d-lg-block h-100">
-								<img src="/{{ImageLink}}"  class="d-flex w-100" alt="">
+					{{else}}
+					<div class="carousel-item">
+						{{/if}}
+						<div class="jumbotron text-white rounded bg-dark">
+							<div class="row">
+								<div class="col-md-6 px-0 h-100">
+									<strong class="d-inline-block mb-2 mx-2 text-primary">{{CatName}}</strong>
+									<h1 class="display-5 font-italic">{{Title}}</h1>
+									<p class="lead my-3"> {{DateOfPublish}}</p>
+									<p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue
+											reading...</a></p>
+								</div>
+								<div class="col-md-6 d-none d-lg-block h-100">
+									<img src="/{{ImageLink}}" class="d-flex w-100" alt="">
+								</div>
 							</div>
 						</div>
 					</div>
+					{{/each}}
 				</div>
-				{{/each}}
+				<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
 			</div>
-			<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
-			</a>
-			<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="sr-only">Next</span>
-			</a>
-			</div>
+		</div>
 	</div>
-</div>
-  <div class="container my-4">
-  <h1>Top bài viết mới nhất</h1>
-  <!--Carousel Wrapper-->
-  <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+	<div class="container my-4">
+		<h1>Top bài viết mới nhất</h1>
+		<!--Carousel Wrapper-->
+		<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
 
-    <!--Controls-->
-    <div class="controls-top">
-      <a class="carousel-control-prev" href="#multi-item-example" role="button" data-slide="prev">
-	          <span><i class="fa fa-angle-left" aria-hidden="true"></i></span> 
-     		<!-- <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
-      		<span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#multi-item-example" role="button" data-slide="next">
-	          <span><i class="fa fa-angle-right-dark" aria-hidden="true"></i></span>
-		 
-     		<!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
-      		<span class="sr-only">Next</span>
-      </a>
-    </div>
-    <!--/.Controls-->
+			<!--Controls-->
+			<div class="controls-top">
+				<a class="carousel-control-prev" href="#multi-item-example" role="button" data-slide="prev">
+					<span><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+					<!-- <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#multi-item-example" role="button" data-slide="next">
+					<span><i class="fa fa-angle-right-dark" aria-hidden="true"></i></span>
 
-    <!--Indicators--
+					<!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+			<!--/.Controls-->
+
+			<!--Indicators--
     <ol class="carousel-indicators">
 	    {{#each this.newestArticles}}
 		<li data-target="#multi-item-example" data-slide-to=@index ></li>
@@ -87,69 +83,69 @@
     </ol>
     <!--/.Indicators-->
 
-    <!--Slides-->
-    <div class="carousel-inner h-100" >
-      <!--First slide-->
-      {{#each this.newestArticles}}
-	<div class="carousel-item {{#if @first}}active{{/if}} h-100">
-		<div class="row h-100">
-		{{#each this}}
-			<div class="col-md-4 {{#if @first}}{{else}}clearfix d-none d-md-block{{/if}}">
-			<div class="card mb-2 h-100">
-			<img class="card-img-top " src="{{ImageLink}}"
-				alt="Card image cap">
-			<div class="card-body">
-				<h4 class="card-title">{{Title}}</h4>
-				<p class="card-text">{{Abstract}}</p>
+			<!--Slides-->
+			<div class="carousel-inner h-100">
+				<!--First slide-->
+				{{#each this.newestArticles}}
+				<div class="carousel-item {{#if @first}}active{{/if}} h-100">
+					<div class="row h-100">
+						{{#each this}}
+						<div class="col-md-4 {{#if @first}}{{else}}clearfix d-none d-md-block{{/if}}">
+							<div class="card mb-2 h-100">
+								<img class="card-img-top " src="{{ImageLink}}" alt="Card image cap">
+								<div class="card-body">
+									<h4 class="card-title">{{Title}}</h4>
+									<p class="card-text">{{Abstract}}</p>
+								</div>
+								<div class="card-footer">
+									<a class="btn btn-primary">Button</a>
+								</div>
+							</div>
+						</div>
+						{{/each}}
+					</div>
+
+				</div>
+				{{/each}}
+				<!--/.First slide-->
 			</div>
-			<div class="card-footer">
-				<a class="btn btn-primary">Button</a>
-			</div>
-			</div>
-			</div>
-		{{/each}}
+			<!--/.Slides-->
 		</div>
-
+		<!--/.Carousel Wrapper-->
 	</div>
-      {{/each}}
-      <!--/.First slide-->
-    </div>
-    <!--/.Slides-->
-  </div>
-  <!--/.Carousel Wrapper-->
-</div>
 
 
-	{{!-- Start multiple Card  --}}
-  <div class="container">
-	  <h1 class="display-3"> Bài báo mới nhất mỗi chuyên mục</h1>
-	<div class="row mb-2 container">
-	  {{#each this.newestArticleByCat}}
-		<div class="col-md-6">
-			<div class="card h-100">
-				<div class='card-body'>
-					<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-						<div class="col col-md-6 p-4 d-flex flex-column position-static">
-						<strong class="d-inline-block mb-2 text-primary">{{CatName}}</strong>
-						<h4 class="mb-0">{{Title}}</h4>
-						<div class="mb-1 text-muted">{{DateOfPublish}}</div>
-						<!--
+	{{!-- Start multiple Card --}}
+	<div class="container">
+		<h1 class="display-3"> Bài báo mới nhất mỗi chuyên mục</h1>
+		<div class="row mb-2 container">
+			{{#each this.newestArticleByCat}}
+			<div class="col-md-6">
+				<div class="card h-100">
+					<div class='card-body'>
+						<div
+							class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+							<div class="col col-md-6 p-4 d-flex flex-column position-static">
+								<strong class="d-inline-block mb-2 text-primary">{{CatName}}</strong>
+								<h4 class="mb-0">{{Title}}</h4>
+								<div class="mb-1 text-muted">{{DateOfPublish}}</div>
+								<!--
 						<p class="card-text mb-auto">{{Title}}</p>
 						-->
-						</div>
-						<div class="col-auto col-md-6 py-4 d-none d-lg-block">
-						<!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
-						<img src="{{ImageLink}}" class="w-100 mb" alt="">
+							</div>
+							<div class="col-auto col-md-6 py-4 d-none d-lg-block">
+								<!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+								<img src="{{ImageLink}}" class="w-100 mb" alt="">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class='card-footer'>
-					<a href="#" class="stretched-link">Continue reading</a>
+					<div class='card-footer'>
+						<a href="#" class="stretched-link">Continue reading</a>
+					</div>
 				</div>
 			</div>
+			{{/each}}
 		</div>
-	  {{/each}}
-		</div>
-</div>
+	</div>
 
 </div>

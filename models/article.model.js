@@ -1,5 +1,7 @@
 const db = require('../utils/db');
 const { findAllByCatId } = require('./branch.model');
+const Config = require('../utils/config');
+const { default: knex } = require('knex');
 
 module.exports = {
     all() {
@@ -10,26 +12,47 @@ module.exports = {
         return db('articles').where('ArtID', id);
     },
 
+    // Update State
+    updateState() {
+        const query = `Update articles
+        SET State = 0
+        where DateOfPublish <= NOW()`
+        return db.raw(query)
+    },
+
+    // Bai viet lien quan
+    relatedArticle(ArtID, BranchID) {
+        const query = `select ArtID, Title, UserID, ImageLink, DateOfPublish, Abstract, Views, Premium from articles
+        where BranchID = ${BranchID} and ArtID != ${ArtID} and State = 0
+        order by rand()
+        limit 5;`
+        return db.raw(query)
+    },
+
+    // Chi tiet bai viet
     async detail(id) {
         const rows = await db('articles')
             .where('ArtID', id)
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'Username', 'CatName', 'CatLink', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Abstract', 'Content', 'Premium', 'State', 'Views')
+            .select('ArtID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
             return null
         return rows[0]
     },
 
+    // Them bai viet
     insert(article) {
         return db('articles').insert(article);
     },
 
+    // Dem view
     increaseView(id, views) {
         return db('articles').where('ArtID', id).update('Views', views)
     },
 
+    // update bai viet
     patch(article) {
         const id = article.ArtID;
         delete article.ArtID;
@@ -39,6 +62,7 @@ module.exports = {
             .update(article);
     },
 
+    //Xoa bai viet
     del(id) {
         return db('articles')
             .where('ArtID', id)
@@ -88,5 +112,32 @@ WHERE c1.CatID = ${CatID}`;
     },
     maxID() {
         return db('articles').max('ArtID as maxID');
+    },
+    async allByEditorID(EditorID) {
+        Config
+        const sql = `SELECT * 
+        FROM branch_user as bu, articles as a 
+        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID} AND a.State = ${Config.ARTICLE_STATE.PENDING}`
+        const rows = await db.raw(sql);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
+    },
+    deny(id, reason) {
+        return db('articles')
+            .where('ArtID', id)
+            .update({
+                "State": Config.ARTICLE_STATE.DENIED,
+                "Reason": reason,
+            });
+    },
+    approve(id, tag, dateOfPublish) {
+        return db('articles')
+            .where('ArtID', id)
+            .update({
+                "State": Config.ARTICLE_STATE.APPROVED,
+                'Tag': tag,
+                "DateOfPublish": dateOfPublish
+            });
     }
 };

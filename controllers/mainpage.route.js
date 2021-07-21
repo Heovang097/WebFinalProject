@@ -30,7 +30,7 @@ router.get('/', async function(req, res){
 	res.render('vwMainpage/mainpage', {
 		mostViewArticles: mostViewArticles,
 		newestArticles: newestArticles,
-		newestArticleByCat:  newestArticleByCat
+		newestArticleByCat:  newestArticleByCat,
 	});
 });
 
