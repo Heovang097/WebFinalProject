@@ -61,7 +61,7 @@ $('.date-of-publish').datetimepicker({
                         </div>
                         <div class="modal-body">
                             {{!-- Form Từ chối --}}
-                            <form method="POST" id="denyForm{{artID}}">
+                            <form method="POST" id="denyForm{{ArtID}}">
                                 <div class="form-group" hidden>
                                     <label for="txtCatID">#</label>
                                     <input type="text" readonly class="form-control" id="txtCatID" name="ArtID"
@@ -80,7 +80,7 @@ $('.date-of-publish').datetimepicker({
                                 <i class="fa fa-times" aria-hidden="true"></i>
                                 Hủy
                             </button>
-                            <button type="submit" form="denyForm{{artID}}" class="btn btn-success"
+                            <button type="submit" form="denyForm{{ArtID}}" class="btn btn-success"
                                 formaction="/editor/deny/{{ArtID}}">
                                 <i class="fa fa-check" aria-hidden="true"></i>
                                 Xác nhận
@@ -103,7 +103,7 @@ $('.date-of-publish').datetimepicker({
                         </div>
                         <div class="modal-body">
                             {{!-- Form Duyệt --}}
-                            <form method="POST" id="aprroveForm{{artID}}">
+                            <form method="POST" id="approveForm{{ArtID}}">
                                 <div class="form-group" hidden>
                                     <label for="txtCatID">#</label>
                                     <input type="text" readonly class="form-control" id="txtCatID" name="ArtID"
@@ -134,8 +134,8 @@ $('.date-of-publish').datetimepicker({
                                 <i class="fa fa-times" aria-hidden="true"></i>
                                 Hủy
                             </button>
-                            <button type="submit" form="aprroveForm{{artID}}" class="btn btn-success"
-                                formaction="/editor/aprrove/{{ArtID}}">
+                            <button type="submit" form="approveForm{{ArtID}}" class="btn btn-success"
+                                formaction="/editor/approve/{{ArtID}}">
                                 <i class="fa fa-check" aria-hidden="true"></i>
                                 Xác nhận
                             </button>
