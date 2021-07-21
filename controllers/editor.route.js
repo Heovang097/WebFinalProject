@@ -9,9 +9,7 @@ router.get("/list", async function(req, res) {
     // console.log(`====== Article List by Editor ID: ${req.session.authUser.UserID} ======`);
     // console.log(articleList);
     // console.log(`================================`);
-	console.log(res.locals.lcCategories);
     res.render("vwEditor/list", {
-        empty: articleList.length == 0,
         articleList: articleList,
         categories: res.locals.lcCategories,
     })

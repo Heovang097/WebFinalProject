@@ -3,6 +3,48 @@ const { findAllByCatId } = require('./branch.model');
 const Config = require('../utils/config');
 const { default: knex } = require('knex');
 
+const groupArticleByState = function (articlesList) {
+    const approved = [];
+    const denied = [];
+    const pending = [];
+    const published = [];
+    for (let i = 0; i < articlesList.length; i++) {
+        switch (articlesList[i].State) {
+            case Config.ARTICLE_STATE.APPROVED:
+                approved.push(articlesList[i]);
+                break;
+            case Config.ARTICLE_STATE.DENIED:
+                denied.push(articlesList[i]);
+                break;
+            case Config.ARTICLE_STATE.PENDING:
+                pending.push(articlesList[i]);
+                break;
+            case Config.ARTICLE_STATE.PUBLISHED:
+                published.push(articlesList[i]);
+                break;
+        }
+    }
+    return {
+        approved: {
+            list: approved,
+            empty: approved.length === 0,
+        },
+        denied: {
+            list: denied,
+            empty: denied.length === 0,
+        },
+        pending: {
+            list: pending,
+            empty: pending.length === 0,
+        },
+        published: {
+            list: published,
+            empty: published.length === 0,
+        },
+    }
+
+}
+
 module.exports = {
     all() {
         return db('articles');
@@ -117,11 +159,12 @@ WHERE c1.CatID = ${CatID}`;
         Config
         const sql = `SELECT * 
         FROM branch_user as bu, articles as a 
-        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID} AND a.State = ${Config.ARTICLE_STATE.PENDING}`
+        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID}`
         const rows = await db.raw(sql);
-        if (rows.length === 0)
+        if (rows[0].length === 0)
             return null;
-        return rows[0];
+        const articlesList = rows[0];
+        return groupArticleByState(articlesList);
     },
     deny(id, reason) {
         return db('articles')

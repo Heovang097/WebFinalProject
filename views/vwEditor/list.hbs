@@ -4,26 +4,28 @@
 {{/section}}
 
 {{#section 'js'}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script>
-$('.date-of-publish').datetimepicker({
-	format: 'd/m/Y',
-	timepicker: false,
-	mask: true
-});
+    $('.date-of-publish').datetimepicker({
+        format: 'd/m/Y',
+        timepicker: true,
+        mask: true
+    });
 </script>
 {{/section}}
 
+{{!-- Các bài báo chờ duyệt --}}
 <div class="card">
     <h4 class="card-header">
         Các bài báo chờ duyệt
     </h4>
     <div class="card-body">
-        {{#if this.empty}}
+        {{#if this.articleList.pending.empty}}
         <h5 class="card-title">Không có dữ liệu!</h5>
         {{else}}
         <div class="row">
-            {{#each this.articleList}}
+            {{#each this.articleList.pending.list}}
             <div class="col-sm-4 mb-3">
                 <div class="card h-100">
                     <img src="../{{ImageLink}}" class="card-img-top">
@@ -115,7 +117,6 @@ $('.date-of-publish').datetimepicker({
                                         {{#each ../lcCategories}}
                                         <option value="{{CatID}}">{{CatName}}</option>
                                         {{/each}}
-                                        <option value="1">Test option</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -148,8 +149,72 @@ $('.date-of-publish').datetimepicker({
 
             {{/each}}
         </div>
+        {{/if}}
     </div>
+</div>
 
-    {{/if}}
+{{!-- Các bài báo đã duyệt --}}
+<div class="card">
+    <h4 class="card-header">
+        Các bài báo đã duyệt
+    </h4>
+    <div class="card-body">
+        {{#if this.articleList.approved.empty}}
+        <h5 class="card-title">Không có dữ liệu!</h5>
+        {{else}}
+        <div class="row">
+            {{#each this.articleList.approved.list}}
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100">
+                    <img src="../{{ImageLink}}" class="card-img-top">
+                    <div class="card-body">
+                        <h4 class="card-title">{{Title}}</h4>
+                        <p class="card-text">{{Abstract}}</p>
+                    </div>
+                    <div class="card-footer">
+                        {{!-- Icon Duyệt --}}
+                        <button type="button" class="btn btn-success">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Đã Duyệt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+</div>
 
+{{!-- Các bài báo đã từ chối --}}
+<div class="card">
+    <h4 class="card-header">
+        Các bài báo đã từ chối
+    </h4>
+    <div class="card-body">
+        {{#if this.articleList.denied.empty}}
+        <h5 class="card-title">Không có dữ liệu!</h5>
+        {{else}}
+        <div class="row">
+            {{#each this.articleList.denied.list}}
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100">
+                    <img src="../{{ImageLink}}" class="card-img-top">
+                    <div class="card-body">
+                        <h4 class="card-title">{{Title}}</h4>
+                        <p class="card-text">{{Abstract}}</p>
+                    </div>
+                    <div class="card-footer">
+                        {{!-- Icon Từ chối --}}
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Từ chối
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
 </div>
