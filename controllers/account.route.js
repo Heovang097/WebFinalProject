@@ -89,7 +89,6 @@ router.post('/login', async function(req, res) {
             req.session.isAdmin = true;
             break;
     }
-    delete user.Permission;
     req.session.isWriter = (user.PenName != null);
     req.session.auth = true;
     req.session.authUser = user;

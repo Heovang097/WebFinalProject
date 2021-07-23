@@ -13,10 +13,11 @@ function capitalizeFirstLetter(string) {
 }
 
 router.get('/:id', async function(req, res) {
-    req.session.retUrl = req.originalUrl
-        //Article
-    const article = await articleModel.detail(req.params.id)
-    article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'))
+    req.session.retUrl = req.originalUrl;
+    //Article
+    const article = await articleModel.detail(req.params.id);
+    article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'));
+    const auth = req.session.auth
     if (article === null || article.State !== 0) {
         res.redirect('/404')
         return
@@ -36,7 +37,7 @@ router.get('/:id', async function(req, res) {
     const relatedArticle = query[0]
     relatedArticle.forEach(el => {
         el.Time = moment(el.DateOfPublish).fromNow();
-    })
+    });
     res.render('../views/vwArticle/detail.hbs', {
         article,
         tags,
