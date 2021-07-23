@@ -12,13 +12,13 @@
         <ul class="navbar-nav mr-auto">
             {{#each lcCategories}}
             <li class="nav-item dropdown">
-                <a class="nav-link" href="./mainpage/{{CatLink}}" id="dropdownMenuButton" aria-haspopup="true"
+                <a class="nav-link" href="/mainpage/{{CatLink}}" id="dropdownMenuButton" aria-haspopup="true"
                     aria-expanded="false">
                     {{CatName}}
                 </a>
                 <div class="dropdown-menu dm" aria-labelledby="navbarDropdown">
                     {{#each branchList}}
-                    <a class="dropdown-item" href="./mainpage/{{../CatLink}}/{{BranchLink}}/">{{BranchName}}</a>
+                    <a class="dropdown-item" href="/mainpage/{{../CatLink}}/{{BranchLink}}/">{{BranchName}}</a>
                     {{/each}}
                 </div>
             </li>
