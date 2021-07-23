@@ -130,8 +130,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/mainpage">Home</a></li>
-    <li class="breadcrumb-item"><a href="/{{article.CatLink}}">{{article.CatName}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="/{{article.CatLink}}/{{article.BranchLink}}">{{article.BranchName}}</a></li>
+    <li class="breadcrumb-item"><a href="/mainpage/{{article.CatLink}}">{{article.CatName}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="/mainpage/{{article.CatLink}}/{{article.BranchLink}}">{{article.BranchName}}</a></li>
   </ol>
 </nav>
 <div class="container-fluid d-flex">
@@ -156,7 +156,7 @@
 					{{article.DateOfPublish}}
 				</span>	
 				<br>
-				<img src="/{{article.ImageLink}}" class="img-fluid" alt="">
+				<img src="/{{article.ImageLink}}" class="img-fluid mx-auto" alt="">
 				{{{article.Content}}}
 			</div>
 			<div id="comments">
@@ -211,16 +211,32 @@
 				</div>
 				<div class="card-body">
 					{{#each tags}}
-					<button type="button" class="btn btn-outline-info" onclick="location.href='/tags/{{TagName}}'">{{TagName}}</button>
+					<button type="button" class="btn btn-outline-info mb-1" onclick="location.href='/tags/{{TagName}}'">{{TagName}}</button>
 					{{/each}}
 				</div>
 			</div>
-			{{#if related}}
+			{{#if relatedArticle}}
 				<div class="card shadow">
 				<div class="card-header">
 					<i class="fa fa-share-alt" aria-hidden="true"></i>
 					Bài viết liên quan
-
+				</div>
+				<div class="card-body">
+					{{#each relatedArticle}}
+					<a href="/article/{{ArtID}}" class="card mb-3" style="max-width: 540px;">
+						<div class="row no-gutters">
+							<div class="col-sm-4 my-auto">
+								<img src="/{{ImageLink}}" class="img-responsive" width="100%" height="auto" href=>
+							</div>
+							<div class="col-sm-8">
+							<div class="card-body">
+								<h6 class="card-title">{{Title}}</h6>
+								<p class="card-text"><small class="text-muted">{{Time}}</small></p>
+							</div>
+							</div>
+						</div>
+					</a>
+					{{/each}}
 				</div>
 			</div>
 			{{/if}}

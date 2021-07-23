@@ -22,7 +22,7 @@ module.exports = {
 
     // Bai viet lien quan
     relatedArticle(ArtID, BranchID) {
-        const query = `select ArtID, Title, UserID, ImageLink, DateOfPublish, Abstract, Views, Premium from articles
+        const query = `select ArtID, Title, ImageLink, DateOfPublish from articles
         where BranchID = ${BranchID} and ArtID != ${ArtID} and State = 0
         order by rand()
         limit 5;`
@@ -36,7 +36,7 @@ module.exports = {
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
+            .select('ArtID', 'articles.UserID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
             return null
         return rows[0]

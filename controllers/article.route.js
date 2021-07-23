@@ -13,11 +13,12 @@ function capitalizeFirstLetter(string) {
 }
 
 router.get('/:id', async function(req, res) {
-    req.session.retUrl = req.originalUrl
-        //Article
-    const article = await articleModel.detail(req.params.id)
-    article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'))
-    if (article === null) {
+    req.session.retUrl = req.originalUrl;
+    //Article
+    const article = await articleModel.detail(req.params.id);
+    article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'));
+    const auth = req.session.auth
+    if (article === null || article.State !== 0) {
         res.redirect('/404')
         return
     }
@@ -32,19 +33,18 @@ router.get('/:id', async function(req, res) {
             element.MyComment = (element.UserID === req.session.authUser.UserID)
         }
     });
-    const relatedArticle = await articleModel.relatedArticle(req.params.id, article.BranchID, moment())
-    console.log(relatedArticle[0])
-    console.log(moment())
+    const query = await articleModel.relatedArticle(req.params.id, article.BranchID, moment())
+    const relatedArticle = query[0]
+    relatedArticle.forEach(el => {
+        el.Time = moment(el.DateOfPublish).fromNow();
+    });
     res.render('../views/vwArticle/detail.hbs', {
         article,
         tags,
         comments,
+        relatedArticle,
     })
     await articleModel.increaseView(article.ArtID, article.Views + 1)
 });
-
-router.post('/comment/add', function(req, res) {
-    res.json("Hello world")
-})
 
 module.exports = router;

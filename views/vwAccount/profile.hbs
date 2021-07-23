@@ -1,8 +1,62 @@
-<div class="card">
-  <h4 class="card-header">
-    Profile
-  </h4>
-  <div class="card-body">
-    <p class="card-text">Thông tin cá nhân của user đang đăng nhập.</p>
+{{#section 'css'}}
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $('#DOB').datetimepicker({
+        format: 'd/m/Y',
+        timepicker: false,
+        //mask: true
+    });
+</script>
+{{/section}}
+<div class="container-fluid">
+    <div class="card shadow-lg m-3">
+        <h4 class="card-header">
+            Cập nhật thông tin
+        </h4>
+        <div class="card-body">
+            <form action="/account/profile/{{user.UserID}}" method="post">
+                <div class="form-group row">
+                    <label for="Name" class="col-sm-2 col-form-label">Họ tên</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="Name" class="form-control" value="{{user.Name}}" required>
+                    </div>
+                </div>
+                {{#if isWriter}}
+                <div class="form-group row">
+                    <label for="PenName" class="col-sm-2 col-form-label">Bút danh</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="PenName" class="form-control" value="{{user.PenName}}" required>
+                    </div>
+                </div>
+                {{/if}}
+                <div class="form-group row">
+                    <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="Email" class="form-control" value="{{user.Email}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DOB" class="col-sm-2 col-form-label">Ngày tháng năm sinh</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="DOB" id="DOB" class="form-control" 
+                        {{#if user.DOB}}
+                            value="{{user.DOB}}"
+                        {{/if}}>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary float-left">Cập nhật</button>
+                    </div>
+                </div>
+            </form>
+        </div>
   </div>
 </div>
