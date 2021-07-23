@@ -8,7 +8,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script>
     $('.date-of-publish').datetimepicker({
-        format: 'd/m/Y',
+        format: 'd/m/Y H:i',
         timepicker: true,
         mask: true
     });
@@ -120,11 +120,11 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="txtCatName">Tag</label>
+                                    <label>Tag</label>
                                     <input type="text" class="form-control" name="Tag">
                                 </div>
                                 <div class="form-group">
-                                    <label for="txtCatName">Chọn ngày đăng</label>
+                                    <label>Chọn ngày đăng</label>
                                     <input type="text" class="form-control date-of-publish" name="DateOfPublish">
                                 </div>
                             </form>
@@ -144,9 +144,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             {{/each}}
         </div>
         {{/if}}
@@ -172,6 +169,10 @@
                         <p class="card-text">{{Abstract}}</p>
                     </div>
                     <div class="card-footer">
+                        <h5 class="card-title">Ngày đăng</h5>
+                        <p class="card-text">{{DateOfPublish}}</p>
+                        <h5 class="card-title">Tags</h5>
+                        <p class="card-text">{{TagName}}</p>
                         {{!-- Icon Duyệt --}}
                         <button type="button" class="btn btn-success">
                             <i class="fa fa-check" aria-hidden="true"></i>
@@ -205,6 +206,8 @@
                         <p class="card-text">{{Abstract}}</p>
                     </div>
                     <div class="card-footer">
+                        <h5 class="card-title">Lý do</h5>
+                        <p class="card-text">{{Reason}}</p>
                         {{!-- Icon Từ chối --}}
                         <button type="button" class="btn btn-danger">
                             <i class="fa fa-times" aria-hidden="true"></i>

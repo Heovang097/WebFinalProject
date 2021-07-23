@@ -158,8 +158,8 @@ WHERE c1.CatID = ${CatID}`;
     async allByEditorID(EditorID) {
         Config
         const sql = `SELECT * 
-        FROM branch_user as bu, articles as a 
-        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID}`
+        FROM branch_user as bu, articles as a LEFT JOIN tags t on a.ArtID = t.ArticleID
+        WHERE a.BranchID = bu.BranchID AND bu.EditorID = ${EditorID} AND t.ArticleID = a.ArtID`
         const rows = await db.raw(sql);
         if (rows[0].length === 0)
             return null;
@@ -175,11 +175,14 @@ WHERE c1.CatID = ${CatID}`;
             });
     },
     approve(id, tag, dateOfPublish) {
+        db('articles').insert({
+            "ArticleID": id,
+            "TagName": tag,
+        });
         return db('articles')
             .where('ArtID', id)
             .update({
                 "State": Config.ARTICLE_STATE.APPROVED,
-                'Tag': tag,
                 "DateOfPublish": dateOfPublish
             });
     }

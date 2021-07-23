@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const router = express.Router();
 
-router.get("/list", async function(req, res) {
+router.get("/tags", async function(req, res) {
     const articleList = await articleModel.allByEditorID(req.session.authUser.UserID);
     // console.log(`====== Article List by Editor ID: ${req.session.authUser.UserID} ======`);
     // console.log(articleList);
