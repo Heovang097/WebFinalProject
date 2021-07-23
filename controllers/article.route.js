@@ -17,7 +17,7 @@ router.get('/:id', async function(req, res) {
         //Article
     const article = await articleModel.detail(req.params.id)
     article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'))
-    if (article === null) {
+    if (article === null || article.State !== 0) {
         res.redirect('/404')
         return
     }
