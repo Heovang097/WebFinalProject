@@ -16,13 +16,23 @@ module.exports = {
         return rows[0];
     },
 
-    updateAvailable(id,state){
-        return db('users').where('UserID', id).update({Available: state});
+    async findByUserID(UserID) {
+        const rows = await db('users').where('UserID', UserID);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
     },
-    updateOTP(id, otp){
+
+    updateAvailable(id, state) {
+        return db('users').where('UserID', id).update({ Available: state });
+    },
+    updateOTP(id, otp) {
         return db('users').where('UserID', id).update('OTP', otp);
     },
-    updatePassword(id, pass){
+    updatePassword(id, pass) {
         return db('users').where('UserID', id).update('Password', pass);
+    },
+    updateInfo(id, user) {
+        return db('users').where('UserID', id).update(user)
     }
 };
