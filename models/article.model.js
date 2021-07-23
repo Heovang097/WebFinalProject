@@ -22,7 +22,7 @@ module.exports = {
 
     // Bai viet lien quan
     relatedArticle(ArtID, BranchID) {
-        const query = `select ArtID, Title, UserID, ImageLink, DateOfPublish, Abstract, Views, Premium from articles
+        const query = `select ArtID, Title, ImageLink, DateOfPublish from articles
         where BranchID = ${BranchID} and ArtID != ${ArtID} and State = 0
         order by rand()
         limit 5;`
