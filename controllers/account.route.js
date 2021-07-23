@@ -21,8 +21,39 @@ var transporter = nodemailer.createTransport({
 const router = express.Router();
 
 router.get('/profile', auth, function(req, res) {
-    res.render('vwAccount/profile');
+    var dob = null
+    if (req.session.authUser.DOB === null)
+        dob = null
+    else
+        dob = moment(req.session.authUser.DOB).format('DD/MM/YYYY')
+    const user = {
+        UserID: req.session.authUser.UserID,
+        Name: req.session.authUser.Name,
+        PenName: req.session.authUser.PenName,
+        Email: req.session.authUser.Email,
+        DOB: dob,
+    }
+    res.render('vwAccount/profile', {
+        user,
+    });
 });
+
+router.post('/profile/:id', auth, async function(req, res) {
+    const UserID = parseInt(req.params.id);
+    if (UserID !== req.session.authUser.UserID) {
+        res.redirect('/404')
+        next()
+    }
+    var userInfo = req.body
+    userInfo.DOB = moment(userInfo.DOB, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    if (userInfo.DOB === 'Invalid date')
+        userInfo.DOB = null
+    await userModel.updateInfo(UserID, userInfo);
+    User = await userModel.findByUserID(UserID);
+    delete User.Password
+    req.session.authUser = User
+    res.redirect('/account/profile');
+})
 
 router.get('/register', function(req, res) {
     res.render('vwAccount/register');
