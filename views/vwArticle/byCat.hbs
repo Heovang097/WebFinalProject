@@ -11,7 +11,7 @@
 			{{#each this.CatArticles}}
 			<div class="col-sm-4 mb-3">
 				<div class="card h-100">
-					<img src={{ImageLink}} class="card-img-top" alt="{{ArtID}}"
+					<img src=/{{ImageLink}} class="card-img-top" alt="{{ArtID}}"
 						title="{{Title}}">
 					<div class="card-body">
 						<h5 class="card-title">{{Title}}</h5>
@@ -19,14 +19,14 @@
 						<p class="card-text">{{Abstract}}</p>
 					</div>
 					<div class="card-footer">
-						<a class="btn btn-outline-primary btn-sm" href="#" role="button">
+						<a class="btn btn-outline-primary btn-sm" href="/article/{{ArtID}}" role="button">
 							<i class="fa fa-eye" aria-hidden="true"></i>
-							Details
+							Chi tiết
 						</a>
-						<a class="btn btn-outline-success btn-sm" href="#" role="button">
+						{{!-- <a class="btn btn-outline-success btn-sm" href="#" role="button">
 							<i class="fa fa-cart-plus" aria-hidden="true"></i>
 							Add to cart
-						</a>
+						</a> --}}
 					</div>
 				</div>
 			</div>
