@@ -26,7 +26,7 @@ router.get('/test', async function(req, res) {
 router.get('/post', auth, function(req, res) {
     if (req.session.isWriter) {
         res.render('../views/vwWriter/post.hbs')
-        return
+        return;
     }
     const url = req.headers.referer || '/'
     res.redirect(url)

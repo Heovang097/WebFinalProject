@@ -67,7 +67,25 @@
                     {{#if isEditor}}
                     <a class="dropdown-item" href="/editor/list">
                         <i class="fa fa-list" aria-hidden="true"></i>
+                        Quản lý bài viết
+                    </a>
+                    {{/if}}
+                    {{#if isAdmin}}
+                    <a class="dropdown-item" href="/admin/categories">
+                        <i class="fa fa-list" aria-hidden="true"></i>
                         Quản lý chuyên mục
+                    </a>
+                    <a class="dropdown-item" href="/admin/tags">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        Quản lý nhãn
+                    </a>
+                    <a class="dropdown-item" href="/admin/articles">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        Quản lý bài viết
+                    </a>
+                    <a class="dropdown-item" href="/admin/users">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        Quản lý người dùng
                     </a>
                     {{/if}}
                     <a class="dropdown-item" href="javascript: $('#frmLogout').submit();">
