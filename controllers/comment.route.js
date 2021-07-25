@@ -20,7 +20,6 @@ router.post('/delete/:id', auth, async function(req, res) {
     const ArtID = await commentModel.findArticle(req.params.id)
     await commentModel.delete(req.session.authUser.UserID, req.params.id)
     res.json(true)
-    console.log(true)
 })
 
 module.exports = router

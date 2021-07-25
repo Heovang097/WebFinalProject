@@ -8,4 +8,11 @@ router.get('/auth', function(req, res) {
     // console.log(fullUrl)
 })
 
+router.get('/userid', function(req, res) {
+    if (req.session.auth)
+        res.json(req.session.authUser)
+    else
+        res.json(null)
+})
+
 module.exports = router
