@@ -103,6 +103,13 @@ INNER JOIN categories c1 on b1.CatID = c1.CatID
 WHERE c1.CatID = ${CatID}`;
         return db.raw(sql);
     },
+    allByCatID(CatID, offset) {
+        const sql = `SELECT * 
+from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+INNER JOIN categories c1 on b1.CatID = c1.CatID
+WHERE c1.CatID = ${CatID} limit 6 offset ${offset}`;
+        return db.raw(sql);
+    },
     allByBranchID(BranchID) {
         const sql = `SELECT * 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
@@ -110,6 +117,34 @@ WHERE c1.CatID = ${CatID}`;
         WHERE b1.BranchID = ${BranchID}`;
         return db.raw(sql);
     },
+    allByBranchID(BranchID, offset) {
+        const sql = `SELECT * 
+        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+        INNER JOIN categories c1 on b1.CatID = c1.CatID
+        WHERE b1.BranchID = ${BranchID} limit 6 offset ${offset}`;
+        return db.raw(sql);
+    },
+
+    async countByCatID(CatID){
+        const sql = `SELECT COUNT(*) as count 
+from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+INNER JOIN categories c1 on b1.CatID = c1.CatID
+WHERE c1.CatID = ${CatID}`;
+
+        const rows = await db.raw(sql);
+        return rows[0][0].count;
+    }, 
+    async countByBranchID(BranchID) {
+        const sql = `SELECT COUNT(*) as count 
+        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
+        INNER JOIN categories c1 on b1.CatID = c1.CatID
+        WHERE b1.BranchID = ${BranchID}`;
+        const rows = await db.raw(sql);
+        return rows[0][0].count;
+
+    },
+
+
     maxID() {
         return db('articles').max('ArtID as maxID');
     },

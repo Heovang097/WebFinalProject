@@ -36,6 +36,7 @@
   <div class="container-fluid h-100">
     <div class="row justify-content-center align-items-center h-100">
       <div class="col-sm-4 col-md-3">
+        <!-- Error message-->
         {{#if err_message}}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -44,7 +45,9 @@
           {{err_message}}
         </div>
         {{/if}}
+        {{!-- End of Error message --}}
 
+        {{!-- Form login --}}
         <form method="POST">
           <div class="form-group">
             <div class="input-group">
@@ -83,9 +86,39 @@
             </div>
           </div>
         </form>
-        <a href='./forget'>
-        <small  class="form-text text-muted float-right" style="color:red !important; font-weight: bold;">Quên mật khẩu?</small>
+        {{!-- End of Form login --}}
+
+        {{!-- Start register --}}
+        <p class="small text-center text-gray-soft">
+          Bạn vẫn chưa có tài khoản?
+          <a href="/account/register">Đăng kí</a>
+        </p>
+        {{!-- End register --}}
+
+        {{!-- Forget password --}}
+        <a href='./forget' class="d-flex flex-row-reverse">
+        <small  class="form-text text-muted" style="color:red !important; font-weight: bold;">Quên mật khẩu?</small>
         </a>
+        {{!-- End of forget password --}}
+
+        {{!-- Sign in with google, fb,... --}}
+        <p class="w-100 text-center">— Or Sign In With —</p>
+        <div class="d-flex text-center justify-content-center">
+	          	<a href="#" class="px-2 py-2 mr-md-1 rounded">
+                <button type="button" class="btn btn-primary">
+                  <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                  Facebook
+                </button>
+              </a>
+	          	<a href="/auth/google" class="px-2 py-2 mr-md-1 rounded">
+                <button type="button" class="btn btn-danger">
+                  <i class="fa fa-google-plus-official" aria-hidden="true"></i>
+                  Google 
+                </button>
+              </a>
+	          </div>
+        {{!-- End of Sign in with google, fb,... --}}
+        
       </div>
     </div>
   </div>

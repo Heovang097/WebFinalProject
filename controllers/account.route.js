@@ -133,6 +133,7 @@ router.post('/logout', auth, async function(req, res) {
     req.session.authUser = null;
     req.session.retUrl = '';
     const url = req.headers.referer || '/';
+    req.logout();
     res.redirect(url);
 })
 

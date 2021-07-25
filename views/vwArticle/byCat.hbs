@@ -7,31 +7,58 @@
 		<h5 class="card-title">Không có dữ liệu!</h5>
 		<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 		{{else}}
-		<div class="row">
-			{{#each this.CatArticles}}
-			<div class="col-sm-4 mb-3">
-				<div class="card h-100">
-					<img src=/{{ImageLink}} class="card-img-top" alt="{{ArtID}}"
-						title="{{Title}}">
-					<div class="card-body">
-						<h5 class="card-title">{{Title}}</h5>
-						{{!-- <h5 class="card-title text-danger">{{format_number Price}}</h5> --}}
-						<p class="card-text">{{Abstract}}</p>
-					</div>
-					<div class="card-footer">
-						<a class="btn btn-outline-primary btn-sm" href="/article/{{ArtID}}" role="button">
-							<i class="fa fa-eye" aria-hidden="true"></i>
-							Chi tiết
-						</a>
-						{{!-- <a class="btn btn-outline-success btn-sm" href="#" role="button">
-							<i class="fa fa-cart-plus" aria-hidden="true"></i>
-							Add to cart
-						</a> --}}
+		<div class="container shadow py-3">
+			<div class="row">
+				{{#each this.CatArticles}}
+				<div class="col-sm-4 mb-5">
+					<div class="card h-100 shadow">
+						<img src=/{{ImageLink}} class="card-img-top" alt="{{ArtID}}"
+							title="{{Title}}">
+						<div class="card-body">
+							<h5 class="card-title">{{Title}}</h5>
+							{{!-- <h5 class="card-title text-danger">{{format_number Price}}</h5> --}}
+							<p class="card-text">{{Abstract}}</p>
+						</div>
+						<div class="card-footer">
+							<a class="btn btn-outline-primary btn-sm" href="/article/{{ArtID}}" role="button">
+								<i class="fa fa-eye" aria-hidden="true"></i>
+								Chi tiết
+							</a>
+							{{!-- <a class="btn btn-outline-success btn-sm" href="#" role="button">
+								<i class="fa fa-cart-plus" aria-hidden="true"></i>
+								Add to cart
+							</a> --}}
+						</div>
 					</div>
 				</div>
+				{{/each}}
 			</div>
-			{{/each}}
-		</div>
+			<nav aria-label="...">
+				<ul class="pagination  justify-content-center">
+					<li class="page-item ">
+						<a class="page-link" href="?page={{prev_page}}" >Previous</a>
+					</li>
+					{{#each this.page_numbers}}
+						{{#if active}}
+							<li class="page-item active"><a class="page-link" href="?page={{value}}">{{value}}</a></li>
+						{{else}}
+							<li class="page-item "><a class="page-link" href="?page={{value}}">{{value}}</a></li>
+						{{/if}}
+
+					{{/each}}
+					<li class="page-item">
+						<a class="page-link" href="?page={{next_page}}">Next</a>
+					</li>	
+					{{!-- 
+					<li class="page-item active" aria-current="page">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					 --}}
+				</ul>
+			</nav>
+			
+			</div>
 		{{/if}}
 	</div>
 </div>
