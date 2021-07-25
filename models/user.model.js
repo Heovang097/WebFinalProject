@@ -23,6 +23,14 @@ module.exports = {
         return rows[0];
     },
 
+    async getPass(UserID, pass) {
+        const rows = await db('users').where('UserID', UserID).select('Password')
+        if (rows.length === 0) {
+            return null;
+        }
+        return rows[0]
+    },
+
     updateAvailable(id, state) {
         return db('users').where('UserID', id).update({ Available: state });
     },

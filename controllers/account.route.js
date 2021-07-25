@@ -12,7 +12,7 @@ const Config = require('../utils/config');
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-    user: '',
+        user: '',
         pass: ''
     }
 });
@@ -53,6 +53,29 @@ router.post('/profile/:id', auth, async function(req, res) {
     delete User.Password
     req.session.authUser = User
     res.redirect('/account/profile');
+})
+
+router.get('/change-password', auth, function(req, res) {
+    res.render('vwAccount/changePassword', {
+        UserID: req.session.authUser.UserID,
+    });
+});
+
+router.post('/change-password/:id', auth, async function(req, res) {
+    const UserID = parseInt(req.params.id);
+    if (UserID !== req.session.authUser.UserID) {
+        res.redirect('/404')
+        return
+    }
+    console.log(req.body)
+    const user = await userModel.getPass(UserID);
+    const ret = bcrypt.compareSync(req.body.oldPass, user.Password);
+    if (ret === false) {
+        res.json(false)
+    }
+    hash = bcrypt.hashSync(req.body.password, 10);
+    await userModel.updatePassword(UserID, hash);
+    res.json(true);
 })
 
 router.get('/register', function(req, res) {
@@ -133,6 +156,7 @@ router.post('/logout', auth, async function(req, res) {
     req.session.authUser = null;
     req.session.retUrl = '';
     const url = req.headers.referer || '/';
+    req.logout();
     res.redirect(url);
 })
 
