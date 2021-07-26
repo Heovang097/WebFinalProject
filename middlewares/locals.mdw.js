@@ -25,6 +25,10 @@ function groupCat(data) {
         });
     });
 
+    for (let i = 0; i < list.length; i++) {
+        list[i].isEmpty = list[i].branchList.length === 0;
+    }
+
     return list
 }
 

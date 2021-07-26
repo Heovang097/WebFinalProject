@@ -13,6 +13,7 @@ module.exports = function (app) {
     app.use('/article', require('../controllers/article.route'));
     app.use('/writer', require('../controllers/writer.route'));
     app.use('/editor', require('../controllers/editor.route'));
+    app.use('/admin', require('../controllers/admin.route'));
     app.use('/comment', require('../controllers/comment.route'));
     app.use('/api', require('../controllers/api.route'));
     app.use('/auth', require('../controllers/auth.route'));

@@ -13,8 +13,30 @@ module.exports = {
         return db('branches').where('BranchLink', link);
     },
 
-    add(article) {
-        return db('branches').insert(article);
+    add(branch) {
+        return db('branches').insert(branch);
+    },
+
+    patch(branch) {
+        const id = branch.BranchID;
+        delete branch.BranchID;
+
+        return db('branches')
+            .where('BranchID', id)
+            .update(branch);
+    },
+
+    del(BranchID) {
+        return db('branches')
+            .where('BranchID', BranchID)
+            .del();
+    },
+
+    async findByBranchName(branchName) {
+        const rows = await db('branches').where('BranchName', branchName);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
     },
 
     async findAllByCatId(id) {

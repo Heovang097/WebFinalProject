@@ -1,0 +1,78 @@
+{{#section 'js'}}
+<script>
+    $(`.btn-category-collapse`).click(function () {
+        let chevron_down = $(this).find(".fa-chevron-down");
+        let chevron_right = $(this).find(".fa-chevron-right");
+        if (chevron_down.length == 0) {
+            chevron_right.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+        }
+        else {
+            chevron_down.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+        }
+    })
+
+    $("#collapseAll").click( function() {
+        $(".category-collapse").collapse('hide');
+    })
+    $("#showAll").click( function() {
+        $(".category-collapse").collapse('show');
+    })
+</script>
+{{/section}}
+<div class="d-flex justify-content-end">
+    <a id="showAll" class="btn btn-outline-primary text-right mx-2 my-2">
+        Mở tất cả
+    </a>
+    <a id="collapseAll" class="btn btn-outline-primary text-right mx-2 my-2">
+        Đóng tất cả
+    </a>
+</div>
+
+{{!-- Các chuyên mục --}}
+{{#each lcCategories}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        <a class="btn btn-category-collapse" data-toggle="collapse" href="#CollapseCategory{{CatID}}" role="button"
+            aria-expanded="false" aria-controls="CollapseCategory{{CatID}}">
+            <i id="chevron-icon-{{CatID}}" class="fa fa-chevron-down" aria-hidden="true"></i>
+            {{CatName}}
+        </a>
+        <a class="btn btn-outline-success" href="/admin/categories/{{CatID}}/add" role="button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Thêm chuyên mục con
+        </a>
+    </h3>
+    <div id="CollapseCategory{{CatID}}" class="collapse show category-collapse">
+        <div class="card-body">
+            {{#if isEmpty}}
+            <h5 class="card-title">Không có chuyên mục con</h5>
+            <p class="card-text">Hãy tạo thêm chuyên mục con.</p>
+            {{else}}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Chuyên mục</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each branchList}}
+                    <tr>
+                        <th scope="row">{{BranchID}}</th>
+                        <td>{{BranchName}}</td>
+                        <td class="text-right">
+                            <a class="btn btn-primary btn-sm" href="/admin/categories/{{CatID}}/edit/{{BranchID}}" role="button" title="Edit">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+        </div>
+    </div>
+
+</div>
+{{/each}}
