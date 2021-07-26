@@ -7,6 +7,7 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+app.enable('trust proxy');
 
 
 app.use('/public', express.static('public'))
