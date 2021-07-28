@@ -16,6 +16,13 @@ module.exports = {
         return true
     },
 
+    extendPremium(UserID) {
+        const query = `update users
+        set ExpiredDate = DATE_ADD(NOW(), INTERVAL 7 DAY)
+        where UserID = ${UserID}`
+        return db.raw(query);
+    },
+
     async findByUsername(username) {
         const rows = await db('users').where('Username', username);
         if (rows.length === 0)

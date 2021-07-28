@@ -101,4 +101,8 @@ router.get('/download/:id', auth, async function(req, res) {
         })
 })
 
+router.get('/test/:id', async function(req, res) {
+    await userModel.extendPremium(req.params.id);
+})
+
 module.exports = router;
