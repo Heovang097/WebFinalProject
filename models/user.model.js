@@ -9,6 +9,13 @@ module.exports = {
         return db('users').insert(user);
     },
 
+    async isPremium(UserID) {
+        const rows = await db('users').where('UserID', UserID).whereRaw('ExpiredDate > NOW()');
+        if (rows.length === 0)
+            return false
+        return true
+    },
+
     async findByUsername(username) {
         const rows = await db('users').where('Username', username);
         if (rows.length === 0)
