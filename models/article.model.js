@@ -220,5 +220,16 @@ WHERE c1.CatID = ${CatID}`;
                 "State": Config.ARTICLE_STATE.APPROVED,
                 "DateOfPublish": dateOfPublish
             });
+    },
+    async allByTag(tag){
+        const sql = `SELECT * 
+FROM tags, articles
+WHERE tags.ArticleID = articles.ArtID AND tags.TagName = '${tag}'`;
+        const rows = await db.raw(sql);
+        return rows[0];
+    },
+    async countByTag(tag){
+        const rows = await db('tags').where('TagName', tag);
+        return rows.length;
     }
 };

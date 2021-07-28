@@ -17,6 +17,7 @@ module.exports = function (app) {
     app.use('/comment', require('../controllers/comment.route'));
     app.use('/api', require('../controllers/api.route'));
     app.use('/auth', require('../controllers/auth.route'));
+    app.use('/tags', require('../controllers/tags.route'));
 
 
 }
