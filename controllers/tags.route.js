@@ -10,8 +10,8 @@ router.get('/:tag', async function(req, res){
 	// const CatInfo = await categoryModel.findCatByLink(req.params.CatLink);
 	// console.log(CatInfo[0]);
 	const limit = 6;
-	const total = await articleModel.countByTag(req.params.tag);
-	// console.log(total);
+	const total = await articleModel.countByPublishedTag(req.params.tag);
+	console.log(total);
 	// console.log(total['count'])
 	var nPage = Math.floor(total/limit);
 	if (total % limit > 0) nPage = nPage + 1;
@@ -30,7 +30,7 @@ router.get('/:tag', async function(req, res){
 	const offset = (page - 1)*limit;
 	// const raw_CatArticles = await articlesModel.allByCatID(CatInfo[0].CatID, offset);
 	// const CatArticles = raw_CatArticles[0];
-	const TagArticles = await articleModel.allByTag(req.params.tag, offset);
+	const TagArticles = await articleModel.publishedByTag(req.params.tag, offset);
 	res.render('vwArticle/byCat', {
 		CatInfo: null,
 		CatArticles: TagArticles,
