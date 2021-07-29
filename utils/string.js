@@ -20,6 +20,11 @@ const StringUtils = {
         str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
         str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
         return str;
+    },
+    generateLinkFromName: function(str) {
+        let link = this.nonAccentVietnamese(str);
+        link = link.replace(/ /g,'-');
+        return link;
     }
 }
 

@@ -1,0 +1,80 @@
+{{#section 'js'}}
+
+{{/section}}
+
+<div class="card">
+    <h4 class="card-header">
+        Thông tin người dùng
+    </h4>
+    <div class="card-body">
+        <form id="addCat" method="POST">
+            <div class="form-group">
+                <label for="CatName">Tên tài khoản</label>
+                <input type="text" class="form-control" disabled name="CatName" autofocus
+                    value="{{this.user.Username}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            <div class="form-group">
+                <label for="CatName">Tên người dùng</label>
+                <input type="text" class="form-control" disabled name="CatName" autofocus value="{{this.user.Name}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            <div class="form-group">
+                <label for="CatName">Email</label>
+                <input type="text" class="form-control" disabled name="CatName" autofocus value="{{this.user.Email}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            <div class="form-group">
+                <label for="CatName">Ngày sinh</label>
+                <input type="text" class="form-control txtDate" disabled name="CatName" autofocus
+                    value="{{this.user.DOB}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            <div class="form-group">
+                <label for="CatName">Chức năng</label>
+                <input type="text" class="form-control" disabled name="CatName" autofocus value="{{this.user.role}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            {{#if this.isSubscriber}}
+            <div class="form-group">
+                <label for="CatName">Ngày hết hạn</label>
+                <input type="text" class="form-control txtDate" disabled name="CatName" autofocus
+                    value="{{this.user.ExpiredDate}}">
+                <small id="CatNameHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            {{/if}}
+            <a class="btn btn-primary" href="/admin/users/" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Quay trở về
+            </a>
+            {{!-- Check if admin --}}
+            {{#if this.isAdmin}}
+            {{else}}
+            <a class="btn btn-danger" href="/admin/users/{{this.user.UserID}}/del" role="button">
+                <i class="fas fa-cross"></i>
+                Xóa người dùng
+            </a>
+            {{/if}}
+            {{!-- Gia hạn tài khoản đối với người dùng độc giả --}}
+            {{#if this.isSubscriber}}
+            <a class="btn btn-secondary" href="/admin/users/{{this.user.UserID}}/subscriber-extend" role="button">
+                <i class="fas fa-clock    "></i>
+                Gia hạn tài khoản
+            </a>
+            {{/if}}
+            {{!-- Phân công chuyên mục cho biên tập viên --}}
+            {{#if this.isEditor}}
+            <a class="btn btn-secondary" href="/admin/users/{{this.user.UserID}}/manage-category" role="button">
+                <i class="fa fa-list" aria-hidden="true"></i>
+                Phân công chuyên mục quản lý
+            </a>
+            {{/if}}
+        </form>
+    </div>
+</div>

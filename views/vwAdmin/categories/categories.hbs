@@ -10,16 +10,21 @@
             chevron_down.removeClass("fa-chevron-down").addClass("fa-chevron-right");
         }
     })
-
-    $("#collapseAll").click( function() {
+    $("#collapseAll").click(function () {
         $(".category-collapse").collapse('hide');
+        $(".fa-chevron-down").removeClass("fa-chevron-down").addClass("fa-chevron-right");
     })
-    $("#showAll").click( function() {
+    $("#showAll").click(function () {
         $(".category-collapse").collapse('show');
+        $(".fa-chevron-right").removeClass("fa-chevron-right").addClass("fa-chevron-down");
     })
 </script>
 {{/section}}
 <div class="d-flex justify-content-end">
+    <a class="btn btn-outline-success text-right mx-2 my-2" href="/admin/categories/add" role="button">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        Thêm chuyên mục
+    </a>
     <a id="showAll" class="btn btn-outline-primary text-right mx-2 my-2">
         Mở tất cả
     </a>
@@ -37,10 +42,15 @@
             <i id="chevron-icon-{{CatID}}" class="fa fa-chevron-down" aria-hidden="true"></i>
             {{CatName}}
         </a>
-        <a class="btn btn-outline-success" href="/admin/categories/{{CatID}}/add" role="button">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            Thêm chuyên mục con
-        </a>
+        <div>
+            <a class="btn btn-outline-success" href="/admin/categories/{{CatID}}/add" role="button">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Thêm chuyên mục con
+            </a>
+            <a class="btn btn-primary btn-sm" href="/admin/categories/edit/{{CatID}}" role="button" title="Edit">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+        </div>
     </h3>
     <div id="CollapseCategory{{CatID}}" class="collapse show category-collapse">
         <div class="card-body">
@@ -62,7 +72,8 @@
                         <th scope="row">{{BranchID}}</th>
                         <td>{{BranchName}}</td>
                         <td class="text-right">
-                            <a class="btn btn-primary btn-sm" href="/admin/categories/{{CatID}}/edit/{{BranchID}}" role="button" title="Edit">
+                            <a class="btn btn-primary btn-sm" href="/admin/categories/{{CatID}}/edit/{{BranchID}}"
+                                role="button" title="Edit">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </td>

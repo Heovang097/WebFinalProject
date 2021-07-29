@@ -1,0 +1,151 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $('.date-of-publish').datetimepicker({
+        format: 'd/m/Y H:i',
+        timepicker: true,
+        mask: true
+    });
+</script>
+{{/section}}
+
+{{!-- Các bài báo chờ duyệt --}}
+<div class="card">
+    <h4 class="card-header">
+        Các bài báo nháp
+    </h4>
+    <div class="card-body">
+        {{#if this.articleList.pending.empty}}
+        <h5 class="card-title">Không có dữ liệu!</h5>
+        {{else}}
+        <div class="row">
+            {{#each this.articleList.pending.list}}
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100">
+                    <img src="../{{ImageLink}}" class="card-img-top">
+                    <div class="card-body">
+                        <h4 class="card-title">{{Title}}</h4>
+                        <p class="card-text">{{Abstract}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Button Từ chối -->
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#denyModal{{ArtID}}">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Từ chối
+                        </button>
+
+                        {{!-- Button Duyệt --}}
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#approveModal{{ArtID}}">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Duyệt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Từ chối-->
+            <div class="modal fade" id="denyModal{{ArtID}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Từ chối bài báo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{!-- Form Từ chối --}}
+                            <form method="POST" id="denyForm{{ArtID}}">
+                                <div class="form-group" hidden>
+                                    <label for="txtCatID">#</label>
+                                    <input type="text" readonly class="form-control" id="txtCatID" name="ArtID"
+                                        value="{{ArtID}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtCatName">Lý do</label>
+                                    <input type="text" class="form-control" id="txtCatName" name="Reason" autofocus
+                                        value="{{this.category.CatName}}">
+                                </div>
+                            </form>
+                        </div>
+                        {{!-- Nút xác nhạn --}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Hủy
+                            </button>
+                            <button type="submit" form="denyForm{{ArtID}}" class="btn btn-success"
+                                formaction="/editor/deny/{{ArtID}}">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Duyet-->
+            <div class="modal fade" id="approveModal{{ArtID}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Duyệt bài báo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{!-- Form Duyệt --}}
+                            <form method="POST" id="approveForm{{ArtID}}">
+                                <div class="form-group" hidden>
+                                    <label for="txtCatID">#</label>
+                                    <input type="text" readonly class="form-control" id="txtCatID" name="ArtID"
+                                        value="{{ArtID}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
+                                    <select name="CatID" class="form-control" id="exampleFormControlSelect1">
+                                        {{#each ../lcCategories}}
+                                        <option value="{{CatID}}">{{CatName}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tag</label>
+                                    <input type="text" class="form-control" name="Tag">
+                                </div>
+                                <div class="form-group">
+                                    <label>Chọn ngày đăng</label>
+                                    <input type="text" class="form-control date-of-publish" name="DateOfPublish">
+                                </div>
+                            </form>
+                        </div>
+                        {{!-- Nút xác nhạn --}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Hủy
+                            </button>
+                            <button type="submit" form="approveForm{{ArtID}}" class="btn btn-success"
+                                formaction="/editor/approve/{{ArtID}}">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+</div>

@@ -22,13 +22,18 @@ module.exports = {
             return null;
         return rows[0];
     },
-
-    async getPass(UserID, pass) {
-        const rows = await db('users').where('UserID', UserID).select('Password')
-        if (rows.length === 0) {
+    
+    async getEditorBranchesByID(editorID) {
+        const sql = `SELECT * FROM branches, branch_user RIGHT JOIN users on EditorID = UserID 
+        where users.UserID = ${editorID} AND branches.BranchID = branch_user.BranchID`;
+        const rows = await db.raw(sql);
+        if (rows[0].length == 0)
             return null;
-        }
-        return rows[0]
+        return rows[0];
+    },
+
+    async patchExpiredDate(id, ExpireDate) {
+        return db('users').where('UserID', id).update("ExpiredDate", ExpireDate);
     },
 
     updateAvailable(id, state) {

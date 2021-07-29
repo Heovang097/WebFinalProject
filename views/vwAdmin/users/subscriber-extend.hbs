@@ -1,0 +1,36 @@
+{{#section 'js'}}
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $('#ExpiredDate').datetimepicker({
+        format: 'd/m/Y H:i',
+        timepicker: true,
+        mask: false
+    });
+</script>
+{{/section}}
+
+<div class="card">
+    <h4 class="card-header">
+        Chỉnh sửa {{this.category.CatName}}
+    </h4>
+    <div class="card-body">
+        <form id="editCat" method="POST">
+            <div class="form-group">
+                <label for="ExpiredDate">Chọn ngày hết hạn</label>
+                <input type="text" class="form-control" id="ExpiredDate" name="ExpiredDate" autofocus
+                    value="{{this.user.ExpiredDate}}">
+                <small id="ExpiredDateHelp" class="form-text text-muted"
+                    style="color:red !important; font-weight: bold;"></small>
+            </div>
+            <a class="btn btn-primary" href="../" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Quay trở về
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Lưu
+            </button>
+        </form>
+    </div>
+</div>

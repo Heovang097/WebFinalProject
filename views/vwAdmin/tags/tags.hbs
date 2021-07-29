@@ -1,0 +1,41 @@
+{{#section 'js'}}
+{{/section}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        Quản lý nhãn
+        <a class="btn btn-outline-success" href="/admin/tags/add/{{TagID}}/" role="button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Thêm nhãn
+        </a>
+    </h3>
+    <div class="card-body">
+        {{#if isEmpty}}
+        <h5 class="card-title">Không có nhãn</h5>
+        <p class="card-text">Hãy tạo thêm nhãn.</p>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nhãn</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each tagList}}
+                <tr>
+                    <th scope="row">{{ArticleID}}</th>
+                    <td>{{TagName}}</td>
+                    <td class="text-right">
+                        <a class="btn btn-primary btn-sm" href="/admin/tags/edit/{{TagName}}" role="button" title="Edit">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+    </div>
+
+</div>

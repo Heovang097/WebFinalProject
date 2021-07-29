@@ -7,8 +7,6 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-
-
 app.use('/public', express.static('public'))
 app.use('/utils', express.static('utils'))
 
