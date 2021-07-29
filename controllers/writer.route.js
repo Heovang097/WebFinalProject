@@ -83,4 +83,53 @@ router.post('/post', auth, async function(req, res) {
     })
 })
 
+router.get('/edit/:id', auth, async function(req, res) {
+    const article = await articleModel.detail(req.params.id);
+    if (article !== null && req.session.authUser.UserID === article.UserID && (article.State === 2 || article.State === 1)) {
+        const query = await tagModel.findTagsByArticle(req.params.id);
+        var tagsList = []
+        query.forEach(el => {
+            tagsList.push(el.TagName)
+        })
+        const tags = tagsList.join(',')
+        console.log(tags)
+        res.render('../views/vwWriter/edit.hbs', {
+            article,
+            tags
+        })
+        return;
+    }
+    const url = req.headers.referer || '/'
+    res.redirect(url)
+})
+
+router.post('/edit/:id', auth, async function(req, res) {
+    const article = await articleModel.detail(req.params.id);
+    if (article === null || req.session.authUser.UserID !== article.UserID || article.State === 0 || article.State === 3) {
+        res.redirect('/404')
+        return
+    }
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            cb(null, './public/articles')
+        },
+        filename: function(req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+            cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+        }
+    })
+
+    const upload = multer({
+        storage
+    })
+
+    upload.single('cover')(req, res, async function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(req.file)
+        }
+    })
+})
+
 module.exports = router
