@@ -63,7 +63,7 @@ module.exports = {
     },
 
     findByUserID(UserID){
-        return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason');    
+        return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason', 'ArtID');    
     },
 
     // Bai viet lien quan
