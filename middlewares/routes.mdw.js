@@ -4,7 +4,7 @@ module.exports = function (app) {
         res.redirect('/mainpage')
     });
     app.get('/404', function (req, res) {
-        res.sendfile('404.html')
+        res.sendFile('404.html')
     });
 
 

@@ -99,7 +99,6 @@ module.exports = {
     patch(article) {
         const id = article.ArtID;
         delete article.ArtID;
-
         return db('articles')
             .where('ArtID', id)
             .update(article);

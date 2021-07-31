@@ -1,6 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 
 const articleModel = require('../models/article.model')
 const tagModel = require('../models/tag.model')
@@ -59,7 +60,7 @@ router.post('/post', auth, async function(req, res) {
                 Title: req.body.title,
                 Abstract: req.body.abstract,
                 Content: req.body.content,
-                Premium: req.body.premium === "on",
+                Premium: (req.body.Premium)? 1:0,
                 State: 1,
                 Views: 0,
             }
@@ -92,10 +93,14 @@ router.get('/edit/:id', auth, async function(req, res) {
             tagsList.push(el.TagName)
         })
         const tags = tagsList.join(',')
-        console.log(tags)
+        var Premium = false
+        if (article.Premium === 1){
+            Premium = true
+        }
         res.render('../views/vwWriter/edit.hbs', {
             article,
-            tags
+            tags,
+            Premium
         })
         return;
     }
@@ -104,7 +109,9 @@ router.get('/edit/:id', auth, async function(req, res) {
 })
 
 router.post('/edit/:id', auth, async function(req, res) {
-    const article = await articleModel.detail(req.params.id);
+    const ArtID = req.params.id
+    const article = await articleModel.detail(ArtID);
+    const ImageLink = article.ImageLink
     if (article === null || req.session.authUser.UserID !== article.UserID || article.State === 0 || article.State === 3) {
         res.redirect('/404')
         return
@@ -127,7 +134,40 @@ router.post('/edit/:id', auth, async function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(req.file)
+            await tagModel.delete(ArtID)
+            const article = {
+                ArtID: ArtID,
+                UserID: req.session.authUser.UserID,
+                BranchID: req.body.branch,
+                Title: req.body.title,
+                Abstract: req.body.abstract,
+                Content: req.body.content,
+                Premium: (req.body.Premium)? 1:0,
+                State: 1,
+                Views: 0,
+            }
+            if (req.file){
+                try {
+                    fs.unlinkSync(ImageLink)
+                    article.ImageLink = req.file.path
+                } catch(err) {
+                    fs.unlinkSync(req.file.path)
+                    console.error(err)
+                }                  
+            }
+            await articleModel.patch(article)
+
+            // save tags in data
+            var listTags = req.body.tags.split(',')
+            var tags = []
+            listTags.forEach(element => {
+                var obj = {}
+                obj['ArticleID'] = ArtID
+                obj['TagName'] = element
+                tags.push(obj)
+            })
+            await tagModel.insert(tags)
+            res.redirect('/writer/edit/' + ArtID)
         }
     })
 })
