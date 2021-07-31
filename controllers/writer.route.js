@@ -7,7 +7,14 @@ const articleModel = require('../models/article.model')
 const tagModel = require('../models/tag.model')
 const auth = require('../middlewares/auth.mdw')
 
+const moment = require('moment');
+moment.locale("vi")
+
 const router = express.Router()
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 router.get('/test', async function(req, res) {
     const query = await tagModel.name()
@@ -145,6 +152,7 @@ router.post('/edit/:id', auth, async function(req, res) {
                 Premium: (req.body.Premium)? 1:0,
                 State: 1,
                 Views: 0,
+                Reason: "",
             }
             if (req.file){
                 try {
@@ -169,6 +177,39 @@ router.post('/edit/:id', auth, async function(req, res) {
             await tagModel.insert(tags)
             res.redirect('/writer/edit/' + ArtID)
         }
+    })
+})
+
+router.get('/list', auth, async function(req,res){
+    const articles = await articleModel.findByUserID(req.session.authUser.UserID);
+    var published = []
+    var pending = []
+    var denied = []
+    var approved = []
+    articles.forEach(el => {
+        el.DateOfPublish = capitalizeFirstLetter(moment(el.DateOfPublish).format('LLLL'));
+        switch (el.State) {
+            case 0:
+                published.push(el);
+                break;
+            case 1:
+                pending.push(el);
+                break;
+            case 2:
+                denied.push(el);
+                break;
+            case 3:
+                approved.push(el);
+                break;
+            default:
+                break;
+        }
+    })
+    res.render('../views/vwWriter/list.hbs', {
+        published,
+        pending,
+        denied,
+        approved
     })
 })
 

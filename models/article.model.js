@@ -62,6 +62,10 @@ module.exports = {
         return db.raw(query)
     },
 
+    findByUserID(UserID){
+        return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason');    
+    },
+
     // Bai viet lien quan
     relatedArticle(ArtID, BranchID) {
         const query = `select ArtID, Title, ImageLink, DateOfPublish from articles

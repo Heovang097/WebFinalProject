@@ -10,8 +10,8 @@ const commentModel = require('../models/comment.model');
 const userModel = require('../models/user.model')
 
 const moment = require('moment');
-const router = express.Router();
 moment.locale("vi")
+const router = express.Router();
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -21,6 +21,9 @@ router.get('/:id', async function(req, res) {
     req.session.retUrl = req.originalUrl;
     //Article
     const article = await articleModel.detail(req.params.id);
+    if (article.Premium === 1){
+
+    }
     article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'));
     const auth = req.session.auth
     if (article === null || article.State !== 0) {
