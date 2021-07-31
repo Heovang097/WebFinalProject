@@ -1,0 +1,103 @@
+<div class="shadow-lg p-2 mb-3">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-published-tab" data-toggle="tab" href="#nav-published"
+                role="tab" aria-controls="nav-published" aria-selected="true">Đã xuất bản</a>
+            <a class="nav-item nav-link" id="nav-approved-tab" data-toggle="tab" href="#nav-approved" role="tab"
+                aria-controls="nav-approved" aria-selected="false">Đã được duyệt</a>
+            <a class="nav-item nav-link" id="nav-denied-tab" data-toggle="tab" href="#nav-denied" role="tab"
+                aria-controls="nav-denied" aria-selected="false">Bị từ chối</a>
+            <a class="nav-item nav-link" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab"
+                aria-controls="nav-pending" aria-selected="false">Chưa được duyệt</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-published" role="tabpanel" aria-labelledby="nav-published-tab">
+            {{#each published}}
+            <div class="card my-4">
+                <div class="row no-gutters">
+                    <div class="col-sm-2">
+                        <a href="/article/{{ArtID}}">
+                            <img src="/{{ImageLink}}" class="img-responsive" width="100%" height="auto">
+                        </a>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="card-body">
+                            <a href="/article/{{ArtID}}">
+                                <h6 class="card-title">{{Title}}</h6>
+                            </a>
+                            <p class="card-text"><small class="text-muted">{{DateOfPublish}}</small></p>
+                            <p class="card-text">{{Abstract}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="tab-pane fade" id="nav-approved" role="tabpanel" aria-labelledby="nav-approved-tab">
+            {{#each approved}}
+            <div class="card my-4">
+                <div class="row no-gutters">
+                    <div class="col-sm-2">
+                        <a href="/article/{{ArtID}}">
+                            <img src="/{{ImageLink}}" class="img-responsive" width="100%" height="auto">
+                        </a>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="card-body">
+                            <a href="/article/{{ArtID}}">
+                                <h6 class="card-title">{{Title}}</h6>
+                            </a>
+                            <p class="card-text"><small class="text-muted">{{DateOfPublish}}</small></p>
+                            <p class="card-text">{{Abstract}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="tab-pane fade" id="nav-denied" role="tabpanel" aria-labelledby="nav-denied-tab">
+            {{#each denied}}
+            <div class="card my-4">
+                <div class="row no-gutters">
+                    <div class="col-sm-2">
+                        <a href="/edit/{{ArtID}}">
+                            <img src="/{{ImageLink}}" class="img-responsive" width="100%" height="auto">
+                        </a>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="card-body">
+                            <a href="/edit/{{ArtID}}">
+                                <h6 class="card-title">{{Title}}</h6>
+                            </a>
+                            <p class="card-text"><small class="text-danger"><strong>Lý do từ chối: </strong>{{Reason}}</small></p>
+                            <p class="card-text">{{Abstract}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+         <div class="tab-pane fade" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+             {{#each pending}}
+            <div class="card my-4">
+                <div class="row no-gutters">
+                    <div class="col-sm-2">
+                        <a href="/edit/{{ArtID}}">
+                            <img src="/{{ImageLink}}" class="img-responsive" width="100%" height="auto">
+                        </a>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="card-body">
+                            <a href="/edit/{{ArtID}}">
+                                <h6 class="card-title">{{Title}}</h6>
+                            </a>
+                            <p class="card-text">{{Abstract}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+         </div>
+    </div>
+</div>

@@ -2,37 +2,44 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput.min.css" media="all"
-  rel="stylesheet" type="text/css" />
+    rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css"
-  crossorigin="anonymous">
-<link rel="stylesheet" href="../public/src/jquery.tagsinput.css">
+    crossorigin="anonymous">
+<link rel="stylesheet" href="/public/src/jquery.tagsinput.css">
 {{/section}}
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-<script src="https://cdn.tiny.cloud/1/m4zhypnx9ouptuxtx7ibv7qndzp79hrqocbbjyasva701uya/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/m4zhypnx9ouptuxtx7ibv7qndzp79hrqocbbjyasva701uya/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="../public/src/jquery.tagsinput.js"></script>
+<script src="/public/src/jquery.tagsinput.js"></script>
 <script>
-    document.title = 'Editor';
+    document.title = 'Writer post';
+    $('#txtCover').fileinput({
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        dropZoneEnabled: false,
+    });
+    $('#tags').tagsInput({
+        'width': 'auto',
+        'height': 'auto',
+        'unique': true,
+        'maxChars': 30,
+        'placeholderColor': '#666666',
+    });
+    $("textarea").each(function () {
+        this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+    }).on("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    });
     tinymce.init({
         selector: '#txtContent',
         plugins: 'paste image link autolink lists table media',
         menubar: false,
         toolbar: [
-        'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
         ],
-    });
-	$('#txtCover').fileinput({
-		allowedFileExtensions: ['jpg', 'png', 'gif'],
-		dropZoneEnabled: false,
-	});
-    $('#tags').tagsInput({
-        'width': 'auto',
-        'height': 'auto',
-        'unique': true,
-        'maxChars' : 30,
-        'placeholderColor' : '#666666',
     });
 </script>
 {{/section}}
@@ -46,15 +53,15 @@
             <div class="form-group">
                 <label for="txtTitle">Tiêu đề</label>
                 <input type="text" class="form-control" id="txtTitle" name="title" autofocus required>
-		    </div>
+            </div>
 
             <div class="form-group">
                 <label for="chooseBranch">Chuyên mục</label>
-                <select class="selectpicker" id="chooseBranch" name="branch">
+                <select class="selectpicker" data-style="btn-info" id="chooseBranch" name="branch">
                     {{#each lcCategories}}
                     <optgroup label="{{CatName}}">
                         {{#each branchList}}
-                            <option value='{{BranchID}}'>{{BranchName}}</option>
+                        <option value='{{BranchID}}'>{{BranchName}}</option>
                         {{/each}}
                     </optgroup>
                     {{/each}}
@@ -64,38 +71,39 @@
             <div class="form-group">
                 <label for="txtCover">Ảnh đại diên</label>
                 <input type="file" class="form-control" id="txtCover" name="cover" multiple>
-		    </div>
+            </div>
 
             <div class="form-group">
                 <label for="txtAbstract">Tóm tắt</label>
-                <input type="text" class="form-control" id="txtAbstract" name="abstract" required>
-		    </div>
+                <textarea class="form-control" name="abstract" id="txtAbstract" maxlength="1000" required></textarea>
+            </div>
+
 
             <div class="form-group">
                 <label for="txtContent">Nội dung</label>
                 <textarea id="txtContent" name="content" rows="20"></textarea>
             </div>
-            
+
             <div class="form-group">
                 <label for="tags">Tags</label>
-                <input name="tags" id="tags"/>
+                <input name="tags" id="tags" />
             </div>
-            
+
             <div class="form-group">
                 <div class="pretty p-switch">
-                <input type="checkbox" name="Premium" />
-                <div class="state p-primary">
-                <label>Premium</label>
+                    <input type="checkbox" name="Premium" value="1"/>
+                    <div class="state p-primary">
+                        <label>Premium</label>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <button type="submit" class="btn btn-success">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                Lưu
-                </button>
-            </div>
-            
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        Lưu
+                    </button>
+                </div>
+
         </form>
     </div>
 </div>

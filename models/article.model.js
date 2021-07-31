@@ -3,7 +3,7 @@ const { findAllByCatId } = require('./branch.model');
 const Config = require('../utils/config');
 const { default: knex } = require('knex');
 
-const groupArticleByState = function (articlesList) {
+const groupArticleByState = function(articlesList) {
     const approved = [];
     const denied = [];
     const pending = [];
@@ -62,6 +62,10 @@ module.exports = {
         return db.raw(query)
     },
 
+    findByUserID(UserID){
+        return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason');    
+    },
+
     // Bai viet lien quan
     relatedArticle(ArtID, BranchID) {
         const query = `select ArtID, Title, ImageLink, DateOfPublish from articles
@@ -78,7 +82,8 @@ module.exports = {
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'articles.UserID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
+            .select('ArtID', 'articles.UserID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'Abstract',
+                'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
             return null
         return rows[0]
@@ -98,7 +103,6 @@ module.exports = {
     patch(article) {
         const id = article.ArtID;
         delete article.ArtID;
-
         return db('articles')
             .where('ArtID', id)
             .update(article);
@@ -118,26 +122,11 @@ WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
 ORDER BY Views DESC`;
         return db.raw(sql);
     },
-    mostViewPublishedArticles(){
-        const sql = `SELECT *
-FROM articles a, branches b, categories c
-WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID AND a.State = 0
-ORDER BY Views DESC`;
-        return db.raw(sql);
-    },
     newestArticles() {
         // return db('articles').orderBy('DateOfPublish', 'desc');
         const sql = `SELECT *
 FROM articles a, branches b, categories c
 WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
-ORDER BY DateOfPublish DESC`;
-        return db.raw(sql);
-    },
-    newestPublishedArticles() {
-        // return db('articles').orderBy('DateOfPublish', 'desc');
-        const sql = `SELECT *
-FROM articles a, branches b, categories c
-WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID AND a.State = 0
 ORDER BY DateOfPublish DESC`;
         return db.raw(sql);
     },
@@ -150,18 +139,6 @@ ORDER BY DateOfPublish DESC`;
         from (articles a INNER JOIN branches b on a.BranchID = b.BranchID)
         INNER JOIN categories c on b.CatID = c.CatID
          WHERE c1.CatID = c.CatID)
-            `;
-        return db.raw(sql);
-    },
-    newestPublishedArticleByCat() {
-        const sql = `SELECT * 
-        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
-        INNER JOIN categories c1 on b1.CatID = c1.CatID
-        WHERE a1.State = 0 AND DateOfPublish = (
-        SELECT MAX(DateOfPublish)
-        from (articles a INNER JOIN branches b on a.BranchID = b.BranchID)
-        INNER JOIN categories c on b.CatID = c.CatID
-         WHERE c1.CatID = c.CatID AND a.State = 0)
             `;
         return db.raw(sql);
     },
@@ -178,15 +155,7 @@ from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
 INNER JOIN categories c1 on b1.CatID = c1.CatID
 WHERE c1.CatID = ${CatID} limit 6 offset ${offset}`;
         return db.raw(sql);
-    },  
-    publishedByCatID(CatID, offset) {
-        const sql = `SELECT * 
-from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
-INNER JOIN categories c1 on b1.CatID = c1.CatID
-WHERE c1.CatID = ${CatID} AND a1.State = 0 limit 6 offset ${offset}`;
-        return db.raw(sql);
     },
-
     allByBranchID(BranchID) {
         const sql = `SELECT * 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
@@ -201,15 +170,8 @@ WHERE c1.CatID = ${CatID} AND a1.State = 0 limit 6 offset ${offset}`;
         WHERE b1.BranchID = ${BranchID} limit 6 offset ${offset}`;
         return db.raw(sql);
     },
-    publishedByBranchID(BranchID, offset) {
-        const sql = `SELECT * 
-        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
-        INNER JOIN categories c1 on b1.CatID = c1.CatID
-        WHERE a1.State = 0 AND b1.BranchID = ${BranchID} limit 6 offset ${offset}`;
-        return db.raw(sql);
-    },
 
-    async countByCatID(CatID){
+    async countByCatID(CatID) {
         const sql = `SELECT COUNT(*) as count 
 from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
 INNER JOIN categories c1 on b1.CatID = c1.CatID
@@ -217,30 +179,12 @@ WHERE c1.CatID = ${CatID}`;
 
         const rows = await db.raw(sql);
         return rows[0][0].count;
-    }, 
-    async countByPublishedCatID(CatID){
-        const sql = `SELECT COUNT(*) as count 
-from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
-INNER JOIN categories c1 on b1.CatID = c1.CatID
-WHERE a1.State = 0 AND c1.CatID = ${CatID}`;
-
-        const rows = await db.raw(sql);
-        return rows[0][0].count;
-    }, 
+    },
     async countByBranchID(BranchID) {
         const sql = `SELECT COUNT(*) as count 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
         INNER JOIN categories c1 on b1.CatID = c1.CatID
         WHERE b1.BranchID = ${BranchID}`;
-        const rows = await db.raw(sql);
-        return rows[0][0].count;
-
-    },
-    async countByPublishedBranchID(BranchID) {
-        const sql = `SELECT COUNT(*) as count 
-        from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
-        INNER JOIN categories c1 on b1.CatID = c1.CatID
-        WHERE a1.State = 0 AND b1.BranchID = ${BranchID}`;
         const rows = await db.raw(sql);
         return rows[0][0].count;
 
@@ -281,30 +225,15 @@ WHERE a1.State = 0 AND c1.CatID = ${CatID}`;
                 "DateOfPublish": dateOfPublish
             });
     },
-    async allByTag(tag){
+    async allByTag(tag) {
         const sql = `SELECT * 
 FROM tags, articles
 WHERE tags.ArticleID = articles.ArtID AND tags.TagName = '${tag}'`;
         const rows = await db.raw(sql);
         return rows[0];
     },
-    async publishedByTag(tag){
-        const sql = `SELECT * 
-FROM tags, articles
-WHERE tags.ArticleID = articles.ArtID AND articles.State = 0 AND tags.TagName = '${tag}'`;
-        const rows = await db.raw(sql);
-        return rows[0];
-    },
-    async countByTag(tag){
+    async countByTag(tag) {
         const rows = await db('tags').where('TagName', tag);
         return rows.length;
-    },
-    async countByPublishedTag(tag){
-        // const rows = await db('tags').where('TagName', tag);
-        const sql = `SELECT COUNT(*) as count
-FROM tags, articles
-WHERE tags.ArticleID = articles.ArtID AND articles.State = 0 AND tags.TagName = '${tag}'`;
-        const rows = await db.raw(sql);
-        return rows[0][0].count;
-    },
+    }
 };
