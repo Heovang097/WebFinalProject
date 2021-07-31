@@ -29,7 +29,7 @@
             Quay về
         </a>
         <a class="btn btn-success" href="#" role="button">
-            fa <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="fa fa-check" aria-hidden="true"></i>
             Lưu
         </a>
     </dir>
@@ -57,7 +57,7 @@
     </h3>
     <div id="CollapseCategoryAlready" class="collapse show category-collapse">
         <div class="card-body">
-            {{#if this.managedBranches.isEmpty}}
+            {{#if this.branches.managedBranchListIsEmpty}}
             <h5 class="card-title">Không quản lý chuyên mục nào</h5>
             <p class="card-text">Hãy thêm chuyên mục bên dưới.</p>
             {{else}}
@@ -70,16 +70,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each this.managedBranches}}
+                    {{#each this.branches.managedBranchList}}
                     <tr>
                         <th scope="row">{{BranchID}}</th>
                         <td>{{BranchName}}</td>
                         <td class="text-right">
-                            <a class="btn btn-primary btn-sm" href="/admin/categories/{{CatID}}/edit/{{BranchID}}"
-                                role="button">
-                                Bỏ
-                                <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
-                            </a>
+                            <form action="./editor-manage/del" method="POST">
+                                <div hidden class="form-group">
+                                    <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
+                                </div>
+                                <button class="btn btn-danger">
+                                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    Xoá
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     {{/each}}
@@ -90,7 +94,6 @@
     </div>
 </div>
 
-
 {{!-- Các chuyên mục có thể quản lý--}}
 <div class="card my-1" data-toggle="collapse">
     <h3 class="card-header d-flex justify-content-between">
@@ -99,15 +102,10 @@
             <i id="chevron-icon-Available" class="fa fa-chevron-down" aria-hidden="true"></i>
             Các chuyên mục có thể quản lý
         </a>
-        <div>
-            <a class="btn btn-primary btn-sm" href="/admin/categories/edit/{{CatID}}" role="button" title="Edit">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-        </div>
     </h3>
-    <div class="collapse show category-collapse">
+    <div id="CollapseCategoryAvailable" class="collapse show category-collapse">
         <div class="card-body">
-            {{#if this.availableBranches}}
+            {{#if this.branches.unmanagedBranchListIsEmpty}}
             <h5 class="card-title">Không còn chuyên mục con nào để quản lý</h5>
             <p class="card-text">Hãy thêm chuyên mục con.</p>
             {{else}}
@@ -120,15 +118,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each this.availableBranches}}
+                    {{#each this.branches.unmanagedBranchList}}
                     <tr>
                         <th scope="row">{{BranchID}}</th>
                         <td>{{BranchName}}</td>
                         <td class="text-right">
-                            <a class="btn btn-primary btn-sm" href="#" role="button" title="Edit">
-                                Thêm
-                                <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
-                            </a>
+                            <form action="./editor-manage/add" method="POST">
+                                <div hidden class="form-group">
+                                    <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
+                                </div>
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                    Thêm
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     {{/each}}

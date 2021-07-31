@@ -2,18 +2,21 @@ const express = require("express");
 const articleModel = require("../models/article.model");
 const moment = require('moment');
 const categoryModel = require("../models/category.model");
+const { newestArticleByCat } = require("../models/article.model");
  
 const router = express.Router();
 
 // ==== Check admin auth ====
 router.use(async function (req, res, next) {
-    if (res.locals.auth == false || res.locals.isAdmin == true)
-        next();
-    else 
-    {
-        console.log("Error: Admin unauthorized");
-        res.sendFile("404.html");
-    }
+    // console.log("Admin check");
+    // if (req.session.auth == true && req.session.isAdmin == true)
+    //     next();
+    // else 
+    // {
+    //     console.log("Error: Admin unauthorized");
+    //     res.redirect("/404");
+    // }
+    next();
 })
 
 // ====== Get admin management type ======
@@ -42,7 +45,6 @@ router.use(async function (req, res, next) {
     ];
     next();
 })
-
 
 router.use("/categories", require("./admin/categories.route"));
 router.use("/tags", require("./admin/tags.route.js"));

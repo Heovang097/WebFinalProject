@@ -40,7 +40,6 @@ module.exports = function(app) {
         }
         res.locals.auth = req.session.auth;
         res.locals.authUser = req.session.authUser;
-        console.log("Rebind the local permission check");
         res.locals.isWriter = req.session.isWriter;
         res.locals.isEditor = req.session.isEditor;
         res.locals.isAdmin = req.session.isAdmin;
