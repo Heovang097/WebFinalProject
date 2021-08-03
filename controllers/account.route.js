@@ -240,4 +240,14 @@ router.post('/reset', async function(req, res) {
     res.redirect('login');
 })
 
+router.get('/premium', auth, function(req,res){
+    res.render('../views/vwAccount/premium.hbs');
+})
+
+router.post('/premium', auth, async function(req,res){
+    await userModel.extendPremium(req.session.authUser.UserID);
+    const url = req.session.retUrl || '/';
+    res.redirect(url)
+})
+
 module.exports = router;

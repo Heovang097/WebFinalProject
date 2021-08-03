@@ -154,10 +154,16 @@
 					}
 				</style>
 				<h2>{{article.Title}}</h2>
-				<a class="badge badge-pill badge-primary">
+				{{#if article.Premium}}
+				<span class="badge badge-pill badge-warning">
+					<i class="fa fa-diamond" aria-hidden="true"></i>
+					Premium
+				</span>
+				{{/if}}
+				<span class="badge badge-pill badge-primary">
 					<i class="fa fa-user-circle" aria-hidden="true"></i>
 					{{article.PenName}}
-				</a>
+				</span>
 				<span class="badge badge-pill badge-success">
 					<i class="fa fa-eye" aria-hidden="true"></i>
 					{{article.Views}}
@@ -172,7 +178,9 @@
 				</span>
 				<br>
 				<img src="/{{article.ImageLink}}" class="img-fluid mx-auto" alt="">
-				{{{article.Content}}}
+				{{#if article.Content}}
+					{{{article.Content}}}
+				{{/if}}
 				{{#if isPremium}}
 				<form method="GET" action="/article/download/{{article.ArtID}}">
 					<button class="btn" style="width:100%" id="download" type="submit">
