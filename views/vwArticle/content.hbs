@@ -1,11 +1,21 @@
-<div class="shadow-lg p-5 mb-3">
-    <h2>{{article.Title}}</h2>
-    <h3></h3>
-    <a class="badge badge-pill badge-primary">
-        <i class="fa fa-user-circle" aria-hidden="true"></i>
-        {{article.PenName}}
-    </a>
-    <br>
-    <img src="/{{article.ImageLink}}" class="img-fluid mx-auto" alt="">
-    {{{article.Content}}}
+<div class="container-fluid d-flex">
+    <div class="row justify-content-center">
+        <div class = "col-sm-11">
+            <div class="shadow-lg p-5 mb-3">
+                <h2>{{article.Title}}</h2>
+                <h3></h3>
+                <a class="badge badge-pill badge-primary">
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    {{article.PenName}}
+                </a>
+                <span class="badge badge-pill badge-info">
+					<i class="fa fa-calendar" aria-hidden="true"></i>
+					{{article.DateOfPublish}}
+				</span>
+                <br>
+                <img src="/{{article.ImageLink}}" class="img-fluid mx-auto" alt="">
+                {{{article.Content}}}
+            </div>
+        </div>
+    </div>
 </div>

@@ -60,8 +60,13 @@ router.get('/:id', async function(req, res) {
 });
 
 router.get('/content/:id', auth, async function(req, res) {
-    const article = await articleModel.detail(req.params.id);
-    res.render('../views/vwArticle/content.hbs', { article })
+    var article = await articleModel.detail(req.params.id);
+    if (res.locals.isWriter && req.session.authUser.UserID===article.UserID){
+        article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'));
+        res.render('../views/vwArticle/content.hbs', { article });
+        return;
+    }
+    res.redirect('/404');
 })
 
 router.get('/download/:id', auth, async function(req, res) {
