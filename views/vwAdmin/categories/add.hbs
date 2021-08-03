@@ -1,0 +1,49 @@
+{{#section 'js'}}
+<script>
+  $("#addBranch").on("submit", function (e) {
+    e.preventDefault();
+    let valuecheck = $('#BranchName').val();
+    if (valuecheck.length === 0) {
+      // alert('Invalid data.');
+      $('#BranchName').focus();
+      $('#BranchNameHelp').text('Vui lòng nhập tên chuyên mục con')
+      // console.log("name null");
+      return;
+    }
+    const branchName = $('#BranchName').val();
+    $.getJSON(`/admin/categories/is-branch-available?branchName=${branchName}`, function (data) {
+      if (data === false) {
+      $('#BranchNameHelp').text('Chuyên mục này đã tồn tại')
+      } else {
+        $("#addBranch").off("submit").submit();
+      }
+    });
+  })
+</script>
+{{/section}}
+
+
+
+<div class="card">
+  <h4 class="card-header">
+    Thêm chuyên mục con trong {{CatName}}
+  </h4>
+  <div class="card-body">
+    <form id="addBranch" method="POST">
+      <div class="form-group">
+        <label for="BranchName">Tên chuyên mục con</label>
+        <input type="text" class="form-control" id="BranchName" name="BranchName" autofocus>
+        <small id="BranchNameHelp" class="form-text text-muted"
+          style="color:red !important; font-weight: bold;"></small>
+      </div>
+      <a class="btn btn-primary" href="/admin/categories/" role="button">
+        <i class="fa fa-backward" aria-hidden="true"></i>
+        Quay trở về
+      </a>
+      <button type="submit" class="btn btn-success">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Lưu
+      </button>
+    </form>
+  </div>
+</div>

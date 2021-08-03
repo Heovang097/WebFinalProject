@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 not found</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        .body-style {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-align-content: center;
+            align-content: center;
+            margin-top: 30vh;
+            font-family: Sans-serif;
+        }
+        
+        .button-style {
+            color: white;
+            background-color: #34ADF6;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="body-style">
+            <div style="width:40%;">
+                <img src="/public/404.png" style="float: right;">
+            </div>
+            <div style="width:45%;float:left;margin-left:50px;">
+                <h1 style="font-weight:bold;font-size:34px;">Page Not Found</h1>
+                <div style="font-size:25px;text-align:left;">We can't find the page you're looking for.You can either return to the previous page,visit our homepage or contact our support team.
+                </div>
+                <div>
+                    <br/>
+                    <button class="button-style" onclick="window.location.href='/mainpage'">Visit Homepage</button>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
