@@ -127,7 +127,8 @@ ORDER BY Views DESC`;
         const sql = `SELECT *
 FROM articles a, branches b, categories c
 WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID AND a.State = 0
-ORDER BY Views DESC`;
+ORDER BY Views DESC
+limit 10`;
         return db.raw(sql);
     },
     newestArticles() {
@@ -135,7 +136,8 @@ ORDER BY Views DESC`;
         const sql = `SELECT *
 FROM articles a, branches b, categories c
 WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
-ORDER BY DateOfPublish DESC`;
+ORDER BY DateOfPublish DESC
+limit 10`;
         return db.raw(sql);
     },
     newestPublishedArticles() {
@@ -167,6 +169,7 @@ ORDER BY DateOfPublish DESC`;
         from (articles a INNER JOIN branches b on a.BranchID = b.BranchID)
         INNER JOIN categories c on b.CatID = c.CatID
          WHERE c1.CatID = c.CatID AND a.State = 0)
+         limit 10
             `;
         return db.raw(sql);
     },
