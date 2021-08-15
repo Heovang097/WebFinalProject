@@ -25,18 +25,26 @@ router.get('/:id', async function(req, res) {
 
     }
     article.DateOfPublish = capitalizeFirstLetter(moment(article.DateOfPublish).format('LLLL'));
-    const auth = req.session.auth
     if (article === null || article.State !== 0) {
         res.redirect('/404')
         return
     }
-    res.locals.isPremium = null
-    if (auth) {
-        res.locals.isPremium = await userModel.isPremium(req.session.authUser.UserID)
+    const auth = req.session.auth
+    if (article.Premium){
+        if (!auth){
+            res.redirect('/account/login');
+            return
+        }
+        if (auth && article.Premium===1) {
+            const isPremium = await userModel.isPremium(req.session.authUser.UserID);
+            if (!isPremium){
+                res.redirect('/account/premium')
+            }
+        }
     }
     //tags
     const tags = await tagsModel.findTagsByArticle(req.params.id)
-        //comment
+    //comment
     comments = await commentModel.findCommentsByArticle(req.params.id)
     comments.forEach(element => {
         element.Date = capitalizeFirstLetter(moment(element.Date).format('LLLL'))
@@ -50,6 +58,7 @@ router.get('/:id', async function(req, res) {
     relatedArticle.forEach(el => {
         el.Time = moment(el.DateOfPublish).fromNow();
     });
+    article.Premium = article.Premium === 1;
     res.render('../views/vwArticle/detail.hbs', {
         article,
         tags,
@@ -107,10 +116,6 @@ router.get('/download/:id', auth, async function(req, res) {
         .catch(error => {
             console.error(error)
         })
-})
-
-router.get('/test/:id', async function(req, res) {
-    await userModel.extendPremium(req.params.id);
 })
 
 module.exports = router;
