@@ -7,8 +7,12 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+app.enable('trust proxy');
+
+
 app.use('/public', express.static('public'))
 app.use('/utils', express.static('utils'))
+app.use('/css', express.static('css'))
 
 // console.log(keys.googleClientID);
 var userProfile;

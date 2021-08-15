@@ -12,8 +12,8 @@ const Config = require('../utils/config');
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: 'baodientu2021@gmail.com',
+        pass: 'baodientu'
     }
 });
 
@@ -238,6 +238,16 @@ router.post('/reset', async function(req, res) {
     await userModel.updatePassword(user.UserID, hash);
     await userModel.updateAvailable(user.UserID, 1);
     res.redirect('login');
+})
+
+router.get('/premium', auth, function(req,res){
+    res.render('../views/vwAccount/premium.hbs');
+})
+
+router.post('/premium', auth, async function(req,res){
+    await userModel.extendPremium(req.session.authUser.UserID);
+    const url = req.session.retUrl || '/';
+    res.redirect(url)
 })
 
 module.exports = router;

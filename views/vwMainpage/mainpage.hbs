@@ -1,5 +1,10 @@
-<div class="container">
-	<h2>Top bài viết nổi bật</h2>
+{{#section 'css'}}
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+	<link rel="stylesheet" href="../../css/mainpage.css">
+{{/section}}
+
+<div class="container mt-5">
+	<h1>Top bài viết nổi bật</h1>
 	<div class="container-fluid">
 		<div id="myCarousel" class="carousel slide container-fluid" data-ride="carousel">
 			<!--
@@ -24,7 +29,7 @@
 				{{#if @first}}
 				<div class="carousel-item active">
 					{{else}}
-					<div class="carousel-item">
+					<div class="carousel-item" >
 						{{/if}}
 						<div class="jumbotron text-white rounded bg-dark">
 							<div class="row">
@@ -54,7 +59,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container my-4">
+	<div class="container my-5">
 		<h1>Top bài viết mới nhất</h1>
 		<!--Carousel Wrapper-->
 		<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
@@ -117,14 +122,14 @@
 
 	{{!-- Start multiple Card --}}
 	<div class="container">
-		<h1 class="display-3"> Bài báo mới nhất mỗi chuyên mục</h1>
+		<h1>Bài báo mới nhất mỗi chuyên mục</h1>
 		<div class="row mb-2 container">
 			{{#each this.newestArticleByCat}}
 			<div class="col-md-6">
 				<div class="card h-100">
 					<div class='card-body'>
 						<div
-							class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+							class="row no-gutters  rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
 							<div class="col col-md-6 p-4 d-flex flex-column position-static">
 								<strong class="d-inline-block mb-2 text-primary">{{CatName}}</strong>
 								<h4 class="mb-0">{{Title}}</h4>

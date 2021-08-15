@@ -1,0 +1,103 @@
+<div class="container">
+	<h2 class="my-3">Tìm kiếm</h2>
+	<hr>
+	{{!-- Search --}}
+	<form method="POST">
+		<div class="input-group my-3">
+			<input type="text" name="content" class="form-control" placeholder="Nội dung tìm kiếm"
+				aria-label="Recipient's username" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm
+					kiếm</button>
+			</div>
+		</div>
+		{{!-- End Search --}}
+		{{!-- Select type --}}
+		{{!-- <h4>Tìm kiếm theo</h4> --}}
+		<div class="form-group">
+			<label for="">Tìm kiếm theo</label>
+			{{!-- <input type="text" name="" id="" class="form-control" placeholder=""
+				aria-describedby="helpId"> --}}
+			<select name="type" class="custom-select custom-select-lg mb-3">
+				{{!-- <option selected>Tìm kiếm theo</option> --}}
+				<option value="1">Tiêu đề</option>
+				<option value="2">Nội dung tóm tắt</option>
+				<option value="3">Nội dung đầy đủ</option>
+			</select>
+			{{!-- <small id="helpId" class="text-muted">Help text</small> --}}
+		</div>
+		{{!-- end select type --}}
+
+	</form>
+	<hr>
+	<h1 class="display-5">Kết quả tìm kiếm</h1>
+	<div class="card">
+		<h4 class="card-header">
+		</h4>
+		<div class="card-body">
+			{{#if this.empty}}
+			<h5 class="card-title">Không có dữ liệu!</h5>
+			<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+			{{else}}
+			<div class="container shadow py-3">
+				<div class="row">
+					{{#each this.Articles}}
+					<div class="col-sm-4 mb-5">
+						<div class="card h-100 shadow">
+							<img src=/{{ImageLink}} class="card-img-top" alt="{{ArtID}}"
+								title="{{Title}}">
+							<div class="card-body">
+								<h5 class="card-title">{{Title}}</h5>
+								{{!-- <h5 class="card-title text-danger">{{format_number
+									Price}}</h5> --}}
+								<p class="card-text">{{Abstract}}</p>
+							</div>
+							<div class="card-footer">
+								<a class="btn btn-outline-primary btn-sm"
+									href="/article/{{ArtID}}" role="button">
+									<i class="fa fa-eye" aria-hidden="true"></i>
+									Chi tiết
+								</a>
+								{{!-- <a class="btn btn-outline-success btn-sm" href="#"
+									role="button">
+									<i class="fa fa-cart-plus"
+										aria-hidden="true"></i>
+									Add to cart
+								</a> --}}
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+				<nav aria-label="...">
+					<ul class="pagination  justify-content-center">
+						<li class="page-item ">
+							<a class="page-link" href="{{../url}}&page={{prev_page}}">Previous</a>
+						</li>
+						{{#each this.page_numbers}}
+						{{#if active}}
+						<li class="page-item active"><a class="page-link"
+								href="{{../url}}&page={{value}}">{{value}}</a></li>
+						{{else}}
+						<li class="page-item "><a class="page-link"
+								href="{{../url}}&page={{value}}">{{value}}</a></li>
+						{{/if}}
+
+						{{/each}}
+						<li class="page-item">
+							<a class="page-link" href="{{../url}}&page={{next_page}}">Next</a>
+						</li>
+						{{!--
+						<li class="page-item active" aria-current="page">
+							<a class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">3</a></li>
+						--}}
+					</ul>
+				</nav>
+
+			</div>
+			{{/if}}
+		</div>
+	</div>
+</div>
