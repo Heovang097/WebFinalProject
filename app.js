@@ -22,8 +22,8 @@ require('./middlewares/session.mdw')(app);
 require('./middlewares/view.mdw')(app);
 require('./middlewares/locals.mdw')(app);
 require('./middlewares/routes.mdw.js')(app);
-const schedule = require('./middlewares/schedule.mdw')
-setInterval(schedule.updateState, 60000)
+const schedule = require('./middlewares/schedule.mdw');
+schedule.run()
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function() {

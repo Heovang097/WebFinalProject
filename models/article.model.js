@@ -62,6 +62,12 @@ module.exports = {
         return db.raw(query)
     },
 
+    updateLastWeekViews(){
+        const query = `Update articles
+        Set LastWeekViews = Views`
+        return db.raw(query);
+    },
+
     findByUserID(UserID){
         return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason', 'ArtID');    
     },
