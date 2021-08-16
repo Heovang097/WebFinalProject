@@ -4,15 +4,37 @@
 {{/section}}
 
 {{#section 'js'}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="../../public/src/registerCheck.js">
-</script> 
+</script>
 <script>
-$('#txtDOB').datetimepicker({
-	format: 'd/m/Y',
-	timepicker: false,
-	mask: true
-});
+  $('#txtDOB').datetimepicker({
+    format: 'd/m/Y',
+    timepicker: false,
+    mask: true
+  });
+  document.getElementById('subscribeForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const username = $("#txtUsername").val();
+    const raw_password = $("#txtPassword").val();
+    const name = $('#txtName').val();
+    const email = $('#txtEmail').val();
+    const captcha = document.querySelector('#g-recaptcha-response').value;
+    const raw_dob = $('#txtDOB').val();
+    return fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({ name, email, captcha })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        alert(data.msg);
+        if (data.success) return location.reload();
+      });
+  });
 </script>
 {{/section}}
 
@@ -50,6 +72,9 @@ $('#txtDOB').datetimepicker({
       <div class="form-group">
         <label for="txtDOB">DOB</label>
         <input type="text" class="form-control" id="txtDOB" name="raw_dob">
+      </div>
+      <div class="form-group">
+        <div class="g-recaptcha" data-sitekey="6LdaVwQcAAAAAP_HTFLJkRY8i78FgwenX--_0DEs"></div>
       </div>
       <button type="submit" class="btn btn-success">
         <i class="fa fa-check" aria-hidden="true"></i>

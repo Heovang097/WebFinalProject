@@ -77,11 +77,10 @@ $('#frmRegister').on('submit', function (e) {
 	}
 	$('#EmailHelp').text('')
 	//END check for email format
-	console.log("abc");
 	const username = $('#txtUsername').val();
 	$.getJSON(`/account/is-available?user=${username}`, function (data) {
 		if (data === false) {
-			alert('Not available!');
+			alert('User not available!');
 		} else {
 			$('#frmRegister').off('submit').submit();
 		}
