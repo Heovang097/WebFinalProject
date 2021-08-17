@@ -1,0 +1,60 @@
+{{#section 'js'}}
+{{/section}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        Quản lý nhãn
+        <a class="btn btn-outline-success" href="/admin/tags/add/{{TagID}}/" role="button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Thêm nhãn
+        </a>
+    </h3>
+    <div class="card-body">
+        {{#if isEmpty}}
+        <h5 class="card-title">Không có nhãn</h5>
+        <p class="card-text">Hãy tạo thêm nhãn.</p>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nhãn</th>
+                    <th scope="col">Bài báo</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each tagList}}
+                <tr>
+                    <th scope="row">{{ArticleID}}</th>
+                    <td>
+                        <form id="{{ArticleID}}{{TagName}}" method="POST">
+                            <div hidden class="form-group">
+                                <input type="text" name="OldTagName" class="form-control" autofocus
+                                    value="{{TagName}}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="TagName" class="form-control" autofocus
+                                    value="{{TagName}}">
+                            </div>
+                        </form>
+                    <td>
+                        <a href="/article/{{ArticleID}}">
+                            {{Title}}
+                        </a>
+                    </td>
+                    <td class="text-right">
+                        <button type="submit" form="{{ArticleID}}{{TagName}}" formaction="/admin/tags/save" class="btn btn-success">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                        <button type="submit" form="{{ArticleID}}{{TagName}}" formaction="/admin/tags/del" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+    </div>
+
+</div>

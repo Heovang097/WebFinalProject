@@ -1,0 +1,84 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<link rel="stylesheet" href="/public/src/jquery.tagsinput.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="/public/src/jquery.tagsinput.js"></script>
+<script>
+$('#txtDateOfPublish').datetimepicker({
+	format: 'd/m/Y H:00',
+    minDate:new Date(),
+	timepicker: true,
+	mask: true
+});
+</script>
+<script>
+    $('.tags').tagsInput({
+        'width': 'auto',
+        'height': 'auto',
+        'unique': true,
+        'maxChars' : 30,
+        'placeholderColor' : '#666666',
+    });
+</script>
+{{/section}}
+
+<div class="card">
+    <h4 class="card-header">
+        Thông tin bài viết
+    </h4>
+    <div class="card-body">
+        <form id="publish" method="POST">
+            <div class="form-group">
+                <label>Tên bài viết</label>
+                <input type="text" class="form-control" disabled autofocus
+                    value="{{this.article.Title}}">
+            </div>
+            <a class="btn btn-primary text-right" href="../../article/{{this.article.ArtID}}" role="button">Xem bài viết</a>
+            <div class="form-group">
+                <label>Tác giả</label>
+                <input type="text" class="form-control" disabled autofocus value="{{this.article.UserName}}">
+            </div>
+            <a class="btn btn-primary text-right" href="../users/{{this.article.UserID}}" role="button">Xem tác giả</a>
+            <div class="form-group">
+                <label>Trạng thái</label>
+                <input type="text" class="form-control" disabled autofocus value="{{this.article.Status}}">
+            </div>
+            <div class="form-group">
+                <label>Ngày Xuất Bản</label>
+                <input type="text" id="txtDateOfPublish" name="DateOfPublish" class="form-control txtDate" autofocus
+                    value="{{this.article.DateOfPublish}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
+                <select name="CatID" class="form-control" id="exampleFormControlSelect1">
+                    {{#each lcCategories}}
+                    <option value="{{CatID}}">{{CatName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tag</label>
+                <input class="tags form-control" name="tags" value="{{tags}}">
+                {{tags}}                                    
+            </div>
+            <a class="btn btn-primary" href="/admin/articles/" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Quay trở về
+            </a>
+            {{!-- Xuất bản --}}            
+            <button type="submit" formaction="/admin/articles/{{this.article.ArtID}}/publish" class="btn btn-success" {{#if this.isPublished}}disabled{{/if}}>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Xuất bản
+            </button>
+            {{!-- Xuất bản ngay --}}            
+            <button type="submit" formaction="/admin/articles/{{this.article.ArtID}}/publishInstantly" class="btn btn-success" {{#if this.isPublished}}disabled{{/if}}>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Xuất bản ngay
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+{{/section}}
+
+<div class="card">
+    <h4 class="card-header">
+        Thông tin bài viết
+    </h4>
+    <div class="card-body">
+        <form id="addCat" method="POST">
+            <div class="form-group">
+                <label for="CatName">Tên bài viết</label>
+                <input type="text" class="form-control" disabled autofocus
+                    value="{{this.article.Title}}">
+            </div>
+            <a class="btn btn-primary text-right" href="../../article/{{this.article.ArtID}}" role="button">Xem bài viết</a>
+            <div class="form-group">
+                <label for="CatName">Tác giả</label>
+                <input type="text" class="form-control" disabled autofocus value="{{this.article.UserName}}">
+            </div>
+            <a class="btn btn-primary text-right" href="../users/{{this.article.UserID}}" role="button">Xem tác giả</a>
+            <div class="form-group">
+                <label for="CatName">Trạng thái</label>
+                <input type="text" class="form-control" disabled autofocus value="{{this.article.Status}}">
+            </div>
+            {{#if this.hasDateOfPublish}}
+                <div class="form-group">
+                    <label for="CatName">Ngày Xuất Bản</label>
+                    <input type="text" id="txtDateOfPublish" class="form-control txtDate" disabled autofocus
+                        value="{{this.article.DateOfPublish}}">
+                </div>
+            {{/if}}
+            <div class="form-group">
+                <label for="CatName">Chuyên mục</label>
+                <input type="text" class="form-control" disabled autofocus value="{{this.article.CatName}}/{{this.article.BranchName}}">
+            </div>
+            <a class="btn btn-primary" href="/admin/articles/" role="button">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+                Quay trở về
+            </a>
+            {{!-- Xóa bài viết --}}
+            <a class="btn btn-danger" href="/admin/articles/{{this.article.ArtID}}/del" role="button">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Xóa bài viết
+            </a>
+            {{!-- Chỉnh sửa bài viết --}}
+            <a class="btn btn-primary" href="/writer/edit/{{this.article.ArtID}}/" role="button">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Chỉnh sửa bài viết
+            </a>
+            {{!-- Xuất bản --}}            
+            <a class="btn btn-success" href="/admin/articles/{{this.article.ArtID}}/publish" role="button">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Xuất bản
+            </a>
+        </form>
+    </div>
+</div>

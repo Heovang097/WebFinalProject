@@ -1,27 +1,49 @@
 {{#section 'js'}}
+<script>
+  $("#patchSubmit").on("click", function (e) {
+    e.preventDefault();
+    let valuecheck = $('#CatName').val();
+    if (valuecheck.length === 0) {
+      // alert('Invalid data.');
+      $('#CatName').focus();
+      $('#CatNameHelp').text('Vui lòng nhập tên chuyên mục')
+      // console.log("name null");
+      return;
+    }
+    const CatName = $('#CatName').val();
+    $.getJSON(`/admin/categories/is-category-available?CatName=${CatName}`, function (data) {
+      if (data === false) {
+        $('#CatNameHelp').text('Chuyên mục này đã tồn tại')
+      } else {
+        $("#patchSubmit").off("click").click();
+      }
+    });
+  })
+</script>
 {{/section}}
 
 <div class="card">
   <h4 class="card-header">
-    Chỉnh sửa {{this.category.CatName}}/ {{this.branch.BranchName}}
+    Chỉnh sửa {{this.category.CatName}}
   </h4>
   <div class="card-body">
-    <form id="editBranch" method="POST">
+    <form id="editCat" method="POST">
       <div class="form-group">
-        <label for="BranchName">Đổi tên chuyên mục con</label>
-        <input type="text" class="form-control" id="BranchName" name="BranchName" autofocus value="{{this.branch.BranchName}}">
-        <small id="BranchNameHelp" class="form-text text-muted"
-          style="color:red !important; font-weight: bold;"></small>
+        <label for="CatName">Đổi tên chuyên mục</label>
+        <input type="text" class="form-control" id="CatName" name="CatName" autofocus value="{{this.category.CatName}}">
+        <small id="CatNameHelp" class="form-text text-muted" style="color:red !important; font-weight: bold;"></small>
       </div>
       <a class="btn btn-primary" href="/admin/categories/" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Quay trở về
       </a>
-      <button type="submit" class="btn btn-danger" formaction="/admin/categories/{{this.category.CatID}}/edit/{{this.branch.BranchID}}/del">
+      <button id="delSubmit" type="submit" class="btn btn-danger"
+        formaction="/admin/categories/edit/{{this.category.CatID}}/del">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         Xoá
       </button>
-      <button type="submit" class="btn btn-success" formaction="/admin/categories/{{this.category.CatID}}/edit/{{this.branch.BranchID}}/patch">
+      <button id="patchSubmit" type="submit" class="btn btn-success"
+        formaction="/admin/categories/edit/{{this.category.CatID}}/patch">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>

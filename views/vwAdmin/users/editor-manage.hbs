@@ -1,0 +1,143 @@
+{{#section 'js'}}
+<script>
+    $(`.btn-category-collapse`).click(function () {
+        let chevron_down = $(this).find(".fa-chevron-down");
+        let chevron_right = $(this).find(".fa-chevron-right");
+        if (chevron_down.length == 0) {
+            chevron_right.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+        }
+        else {
+            chevron_down.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+        }
+    })
+    $("#collapseAll").click(function () {
+        $(".category-collapse").collapse('hide');
+        $(".fa-chevron-down").removeClass("fa-chevron-down").addClass("fa-chevron-right");
+    })
+    $("#showAll").click(function () {
+        $(".category-collapse").collapse('show');
+        $(".fa-chevron-right").removeClass("fa-chevron-right").addClass("fa-chevron-down");
+    })
+</script>
+{{/section}}
+
+<div class="d-flex justify-content-between">
+    <h1>Biên tập viên: {{this.user.Name}}</h1>
+    <dir>
+        <a class="btn btn-primary" href="#" role="button">
+            <i class="fa fa-backward" aria-hidden="true"></i>
+            Quay về
+        </a>
+        <a class="btn btn-success" href="#" role="button">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Lưu
+        </a>
+    </dir>
+</div>
+
+<div class="d-flex justify-content-end">
+    <div>
+        <a id="showAll" class="btn btn-outline-primary text-right mx-2 my-2">
+            Mở tất cả
+        </a>
+        <a id="collapseAll" class="btn btn-outline-primary text-right mx-2 my-2">
+            Đóng tất cả
+        </a>
+    </div>
+</div>
+
+{{!-- Các chuyên mục đang quản lý--}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        <a class="btn btn-category-collapse" data-toggle="collapse" href="#CollapseCategoryAlready" role="button"
+            aria-expanded="false" aria-controls="CollapseCategoryAlready">
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            Các chuyên mục đang quản lý
+        </a>
+    </h3>
+    <div id="CollapseCategoryAlready" class="collapse show category-collapse">
+        <div class="card-body">
+            {{#if this.branches.managedBranchListIsEmpty}}
+            <h5 class="card-title">Không quản lý chuyên mục nào</h5>
+            <p class="card-text">Hãy thêm chuyên mục bên dưới.</p>
+            {{else}}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Chuyên mục</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.branches.managedBranchList}}
+                    <tr>
+                        <th scope="row">{{BranchID}}</th>
+                        <td>{{BranchName}}</td>
+                        <td class="text-right">
+                            <form action="./editor-manage/del" method="POST">
+                                <div hidden class="form-group">
+                                    <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
+                                </div>
+                                <button class="btn btn-danger">
+                                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    Xoá
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+{{!-- Các chuyên mục có thể quản lý--}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        <a class="btn btn-category-collapse" data-toggle="collapse" href="#CollapseCategoryAvailable" role="button"
+            aria-expanded="false" aria-controls="CollapseCategoryAvailable">
+            <i id="chevron-icon-Available" class="fa fa-chevron-down" aria-hidden="true"></i>
+            Các chuyên mục có thể quản lý
+        </a>
+    </h3>
+    <div id="CollapseCategoryAvailable" class="collapse show category-collapse">
+        <div class="card-body">
+            {{#if this.branches.unmanagedBranchListIsEmpty}}
+            <h5 class="card-title">Không còn chuyên mục con nào để quản lý</h5>
+            <p class="card-text">Hãy thêm chuyên mục con.</p>
+            {{else}}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Chuyên mục</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.branches.unmanagedBranchList}}
+                    <tr>
+                        <th scope="row">{{BranchID}}</th>
+                        <td>{{BranchName}}</td>
+                        <td class="text-right">
+                            <form action="./editor-manage/add" method="POST">
+                                <div hidden class="form-group">
+                                    <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
+                                </div>
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                    Thêm
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+        </div>
+    </div>
+</div>
