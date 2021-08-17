@@ -120,6 +120,16 @@ module.exports = {
             .where('ArtID', id)
             .del();
     },
+    async mostPopularArticles(){
+ 
+        const sql = `SELECT *, Views - LastWeekViews as weekViews
+FROM articles a, branches b, categories c
+WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
+ORDER BY weekViews DESC limit 4`;
+        const rows = await db.raw(sql);
+        return rows[0];
+    }
+    ,
     mostViewArticles() {
         // return db('articles').orderBy('Views', 'desc');
         const sql = `SELECT *
