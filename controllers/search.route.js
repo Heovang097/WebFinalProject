@@ -38,19 +38,19 @@ router.get('/', async function(req, res){
 		// res.send(1);
 		resultArticles = await articleModel.searchByTitle(search);
 		total = resultArticles.length;
-		resultArticles = await articleModel.searchByTitleOffset(search, offset);
+		resultArticles = await articleModel.searchByTitleOffsetPremium(search, offset);
 		// console.log(resultArticles);
 	}
 	if (type == 2){
 		// console.log(2);
 		resultArticles = await articleModel.searchByAbstract(search);
 		total = resultArticles.length;
-		resultArticles = await articleModel.searchByAbstractOffset(search, offset);
+		resultArticles = await articleModel.searchByAbstractOffsetPremium(search, offset);
 	}
 	if (type == 3){
 		resultArticles = await articleModel.searchByContent(search);
 		total = resultArticles.length;
-		resultArticles = await articleModel.searchByContentOffset(search, offset);
+		resultArticles = await articleModel.searchByContentOffsetPremium(search, offset);
 	} 
 	var nPage = Math.floor(total/limit);
 	if (total % limit > 0) nPage = nPage + 1;

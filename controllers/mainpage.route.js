@@ -24,13 +24,18 @@ function TakeNewArticles(numberElement, data){
 }
 
 router.get('/', async function(req, res){
+	const mostPopularArticles = await articleModel.mostPopularArticles();
 	const data = await articlesModel.mostViewPublishedArticles();
 	// console.log(data[0]);
-	const mostViewArticles = data[0].slice(0, 3);
+	const mostViewArticles = data[0];
 	const newestArticlesRaw = await(articlesModel.newestPublishedArticles());
 	const newestArticles = TakeNewArticles(10, newestArticlesRaw[0]);
 	const raw_newestArticleByCat = await articlesModel.newestPublishedArticleByCat();
 	const newestArticleByCat = raw_newestArticleByCat[0];
+	for(key in mostPopularArticles){
+		mostPopularArticles[key].DateOfPublish = capitalizeFirstLetter(moment(mostPopularArticles[key].DateOfPublish).format('L'));
+		// console.log(article);
+	}
 	for(key in mostViewArticles){
 		mostViewArticles[key].DateOfPublish = capitalizeFirstLetter(moment(mostViewArticles[key].DateOfPublish).format('L'));
 		// console.log(article);
@@ -44,6 +49,7 @@ router.get('/', async function(req, res){
 	// console.log(newestArticleByCat);
 	// console.log(res.locals.lcCategories);
 	res.render('vwMainpage/mainpage', {
+		mostPopularArticles: mostPopularArticles,
 		mostViewArticles: mostViewArticles,
 		newestArticles: newestArticles,
 		newestArticleByCat:  newestArticleByCat,

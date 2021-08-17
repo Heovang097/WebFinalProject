@@ -17,4 +17,5 @@ module.exports = function (app) {
     app.use('/api', require('../controllers/api.route'));
     app.use('/auth', require('../controllers/auth.route'));
     app.use('/tags', require('../controllers/tags.route'));
+    app.use('/search', require('../controllers/search.route'));
 }

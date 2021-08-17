@@ -62,6 +62,12 @@ module.exports = {
         return db.raw(query)
     },
 
+    updateLastWeekViews(){
+        const query = `Update articles
+        Set LastWeekViews = Views`
+        return db.raw(query);
+    },
+
     findByUserID(UserID){
         return db('articles').where('UserID', UserID).select('Title', 'ImageLink', 'Abstract', 'Views', 'State', 'DateOfPublish', 'Reason', 'ArtID');    
     },
@@ -114,6 +120,16 @@ module.exports = {
             .where('ArtID', id)
             .del();
     },
+    async mostPopularArticles(){
+ 
+        const sql = `SELECT *, Views - LastWeekViews as weekViews
+FROM articles a, branches b, categories c
+WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
+ORDER BY weekViews DESC limit 4`;
+        const rows = await db.raw(sql);
+        return rows[0];
+    }
+    ,
     mostViewArticles() {
         // return db('articles').orderBy('Views', 'desc');
         const sql = `SELECT *
@@ -127,7 +143,8 @@ ORDER BY Views DESC`;
         const sql = `SELECT *
 FROM articles a, branches b, categories c
 WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID AND a.State = 0
-ORDER BY Views DESC`;
+ORDER BY Views DESC
+limit 10`;
         return db.raw(sql);
     },
     newestArticles() {
@@ -135,7 +152,8 @@ ORDER BY Views DESC`;
         const sql = `SELECT *
 FROM articles a, branches b, categories c
 WHERE a.BranchID = b.BranchID AND b.CatID = c.CatID
-ORDER BY DateOfPublish DESC`;
+ORDER BY DateOfPublish DESC
+limit 10`;
         return db.raw(sql);
     },
     newestPublishedArticles() {
@@ -167,6 +185,7 @@ ORDER BY DateOfPublish DESC`;
         from (articles a INNER JOIN branches b on a.BranchID = b.BranchID)
         INNER JOIN categories c on b.CatID = c.CatID
          WHERE c1.CatID = c.CatID AND a.State = 0)
+         limit 10
             `;
         return db.raw(sql);
     },
@@ -174,14 +193,18 @@ ORDER BY DateOfPublish DESC`;
         const sql = `SELECT * 
 from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
 INNER JOIN categories c1 on b1.CatID = c1.CatID
-WHERE c1.CatID = ${CatID} AND a1.State = 0 limit 6 offset ${offset}`;
+WHERE c1.CatID = ${CatID} AND a1.State = 0
+ORDER BY Premium DESC
+limit 6 offset ${offset}`;
         return db.raw(sql);
     },
         publishedByBranchID(BranchID, offset) {
         const sql = `SELECT * 
         from (articles a1 INNER JOIN branches b1 on a1.BranchID = b1.BranchID)
         INNER JOIN categories c1 on b1.CatID = c1.CatID
-        WHERE a1.State = 0 AND b1.BranchID = ${BranchID} limit 6 offset ${offset}`;
+        WHERE a1.State = 0 AND b1.BranchID = ${BranchID} 
+        ORDER BY Premium DESC
+        limit 6 offset ${offset}`;
         return db.raw(sql);
     },
         async countByPublishedCatID(CatID){
@@ -350,6 +373,33 @@ WHERE tags.ArticleID = articles.ArtID AND tags.TagName = '${tag}'`;
         const sql = `SELECT *
         FROM articles
         WHERE MATCH(Content) AGAINST('${title}') limit 6 offset ${offset}`
+        const rows = await db.raw(sql);
+        return rows[0];
+    },
+    async searchByContentOffsetPremium(title, offset){
+        const sql = `SELECT *, MATCH(Content) AGAINST('${title}') as score
+        FROM articles
+        WHERE MATCH(Content) AGAINST('${title}') 
+        ORDER BY Premium DESC, score DESC
+        limit 6 offset ${offset}`
+        const rows = await db.raw(sql);
+        return rows[0];
+    },
+    async searchByTitleOffsetPremium(title, offset){
+        const sql = `SELECT *, MATCH(Title) AGAINST('${title}') as score
+        FROM articles
+        WHERE MATCH(Title) AGAINST('${title}') 
+        ORDER BY Premium DESC, score DESC
+        limit 6 offset ${offset}`
+        const rows = await db.raw(sql);
+        return rows[0];
+    },
+    async searchByAbstractOffsetPremium(title, offset){
+        const sql = `SELECT *, MATCH(Abstract) AGAINST('${title}') as score
+        FROM articles
+        WHERE MATCH(Abstract) AGAINST('${title}') 
+        ORDER BY Premium DESC, score DESC
+        limit 6 offset ${offset}`
         const rows = await db.raw(sql);
         return rows[0];
     },
