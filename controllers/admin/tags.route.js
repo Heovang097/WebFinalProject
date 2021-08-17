@@ -16,10 +16,31 @@ router.use(async function (req, res, next) {
 
 router.get("/", async function(req, res) {
     const tagList = await tagModel.all(); 
+    if (tagList == null)
+        tagList = [];
     res.render("vwAdmin/tags/tags.hbs", {
         tagList: tagList,
+        isEmpty: tagList.length == 0,
         layout: "admin.hbs"
     })
 });
+
+router.post('/save', async function (req, res) {
+    const tagName = req.body.tagName;
+    const oldTagName = req.body.tagName;
+    await tagModel.patch(oldTagName, tagName);
+
+    res.redirect('./');
+})
+// ------------- END Thêm branch-------------
+
+router.post('/del', async function (req, res) {
+    const tagName = req.body.tagName;
+    
+    await tagModel.deleteTagName(tagName);
+    res.redirect('./');
+})
+// ------------- END Thêm branch-------------
+
 
 module.exports = router;

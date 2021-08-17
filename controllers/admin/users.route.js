@@ -84,7 +84,6 @@ router.post("/:UserID/subscriber-extend", async function (req, res) {
 })
 
 // ========= Phân chuyên mục cho biên tập viên ============
-
 router.get("/:UserID/editor-manage", async function (req, res) {
     const user = await userModel.findByUserID(req.params.UserID);
     if (user == null || user.Permission != Config.PERMISSION.EDITOR)
@@ -109,7 +108,6 @@ router.get("/:UserID/editor-manage/del", async function (req, res) {
     const userID = req.params.UserID;
     const branchID = req.body.BranchID;
     await userModel.delBranchFromEditor(userID, branchID);
-
     res.redirect("./");
 })
 

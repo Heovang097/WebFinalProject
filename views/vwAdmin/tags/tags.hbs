@@ -18,6 +18,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nhãn</th>
+                    <th scope="col">Bài báo</th>
                     <th scope="col">&nbsp;</th>
                 </tr>
             </thead>
@@ -25,11 +26,29 @@
                 {{#each tagList}}
                 <tr>
                     <th scope="row">{{ArticleID}}</th>
-                    <td>{{TagName}}</td>
-                    <td class="text-right">
-                        <a class="btn btn-primary btn-sm" href="/admin/tags/edit/{{TagName}}" role="button" title="Edit">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <td>
+                        <form id="{{ArticleID}}{{TagName}}" method="POST">
+                            <div hidden class="form-group">
+                                <input type="text" name="OldTagName" class="form-control" autofocus
+                                    value="{{TagName}}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="TagName" class="form-control" autofocus
+                                    value="{{TagName}}">
+                            </div>
+                        </form>
+                    <td>
+                        <a href="/article/{{ArticleID}}">
+                            {{Title}}
                         </a>
+                    </td>
+                    <td class="text-right">
+                        <button type="submit" form="{{ArticleID}}{{TagName}}" formaction="/admin/tags/save" class="btn btn-success">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                        <button type="submit" form="{{ArticleID}}{{TagName}}" formaction="/admin/tags/del" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
                     </td>
                 </tr>
                 {{/each}}
