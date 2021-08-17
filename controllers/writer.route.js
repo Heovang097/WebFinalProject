@@ -87,7 +87,7 @@ router.post('/post', auth, async function(req, res) {
                 tags.push(obj)
             })
             await tagModel.insert(tags)
-            res.redirect('/content/' + id)
+            res.redirect('/article/content/' + id)
         }
     })
 })
