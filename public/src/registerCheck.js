@@ -80,9 +80,63 @@ $('#frmRegister').on('submit', function (e) {
 	const username = $('#txtUsername').val();
 	$.getJSON(`/account/is-available?user=${username}`, function (data) {
 		if (data === false) {
-			alert('User not available!');
+			Swal.fire({
+				icon: 'error',
+				title: 'Error!!!',
+				text: 'User not available!',
+			})
 		} else {
-			$('#frmRegister').off('submit').submit();
+			const captcha = document.querySelector('#g-recaptcha-response').value;
+			if (!captcha){
+				Swal.fire({
+					icon: 'error',
+					title: 'Lỗi xảy ra!!!',
+					text: 'Mời bạn nhập captcha!',
+				})
+				return
+			}
+			const raw_dob = $('#txtDOB').val();
+			$.ajax({
+				url: location.protocol + '//' + location.host + '/account/register',
+				method: "post",
+				data: jQuery.param({
+					username : $("#txtUsername").val(),
+					raw_password : $("#txtPassword").val(),
+					name : $('#txtName').val(),
+					email : $('#txtEmail').val(),
+					captcha,
+					raw_dob : $('#txtDOB').val(),
+				}),
+				success: function(data){
+					console.log(data)
+					if (data.success){
+						Swal.fire({
+							icon: 'success',
+							title: 'Bạn đã đăng ký thành công',
+							confirmButtonText: 'Đăng nhập'
+						}).then(result => {
+							if (result.isConfirmed) {
+								window.location.replace(location.protocol + '//' + location.host + '/account/login')
+							}
+						})
+					}
+					else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Lỗi xảy ra!',
+							text: data.msg,
+						})
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					Swal.fire({
+						title: 'Lỗi xảy ra!',
+						text: textStatus + " " + errorThrown,
+						icon: 'error',
+						confirmButtonText: 'Xác nhận'
+					})
+				}
+			})
 		}
 	});
 });
