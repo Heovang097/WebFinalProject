@@ -1,37 +1,39 @@
 {{#section 'js'}}
 <script>
-  $("#addCat").on("submit", function (e) {
+  $("#addBranch").on("submit", function (e) {
     e.preventDefault();
-    let valuecheck = $('#CatName').val();
+    let valuecheck = $('#BranchName').val();
     if (valuecheck.length === 0) {
       // alert('Invalid data.');
-      $('#CatName').focus();
-      $('#CatNameHelp').text('Vui lòng nhập tên chuyên mục')
+      $('#BranchName').focus();
+      $('#BranchNameHelp').text('Vui lòng nhập tên chuyên mục con')
       // console.log("name null");
       return;
     }
-    const CatName = $('#CatName').val();
-    $.getJSON(`/admin/categories/is-category-available?CatName=${CatName}`, function (data) {
+    const branchName = $('#BranchName').val();
+    $.getJSON(`/admin/categories/is-branch-available?branchName=${branchName}`, function (data) {
       if (data === false) {
-      $('#CatNameHelp').text('Chuyên mục này đã tồn tại')
+      $('#BranchNameHelp').text('Chuyên mục này đã tồn tại')
       } else {
-        $("#addCat").off("submit").submit();
+        $("#addBranch").off("submit").submit();
       }
     });
   })
 </script>
 {{/section}}
 
+
+
 <div class="card">
   <h4 class="card-header">
-    Thêm chuyên mục
+    Thêm chuyên mục con trong {{CatName}}
   </h4>
   <div class="card-body">
-    <form id="addCat" method="POST">
+    <form id="addBranch" method="POST">
       <div class="form-group">
-        <label for="CatName">Tên chuyên mục</label>
-        <input type="text" class="form-control" id="CatName" name="CatName" autofocus>
-        <small id="CatNameHelp" class="form-text text-muted"
+        <label for="BranchName">Tên chuyên mục con</label>
+        <input type="text" class="form-control" id="BranchName" name="BranchName" autofocus>
+        <small id="BranchNameHelp" class="form-text text-muted"
           style="color:red !important; font-weight: bold;"></small>
       </div>
       <a class="btn btn-primary" href="/admin/categories/" role="button">

@@ -1,0 +1,43 @@
+{{#section 'js'}}
+<script>
+    
+</script>
+{{/section}}{{#section 'js'}}
+{{/section}}
+<div class="card my-1" data-toggle="collapse">
+    <h3 class="card-header d-flex justify-content-between">
+        Quản lý người dùng
+    </h3>
+    <div class="card-body">
+        {{#if isEmpty}}
+        <h5 class="card-title">Không có nhãn</h5>
+        <p class="card-text">Hãy tạo thêm nhãn.</p>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Tài khoản</th>
+                    <th scope="col">Chức năng</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each userList}}
+                <tr>
+                    <th scope="row">{{UserID}}</th>
+                    <td>{{Username}}</td>
+                    <td scope="col">{{role}}</td>
+                    <td class="text-right">
+                        <a class="btn btn-primary btn-sm" href="/admin/users/{{UserID}}" role="button" title="Edit">
+                            Xem chi tiết
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+    </div>
+
+</div>
