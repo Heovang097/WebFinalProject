@@ -134,7 +134,7 @@ router.get("/login", async function (req, res) {
 router.post("/login", async function (req, res) {
   const user = await userModel.findByUsername(req.body.username);
   var err_message = "Tên đăng nhập không tồn tại";
-  if (user.Available == 0) err_message = "Tài khoản hiện đang không kích hoạt";
+  if (user != null && user.Available == 0) err_message = "Tài khoản hiện đang không kích hoạt";
   if (user === null || user.Available == 0) {
     return res.render("vwAccount/login", {
       layout: false,
