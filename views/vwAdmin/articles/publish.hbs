@@ -49,14 +49,18 @@ $('#txtDateOfPublish').datetimepicker({
             </div>
             <div class="form-group">
                 <label>Ngày Xuất Bản</label>
-                <input type="text" id="txtDateOfPublish" name="DateOfPublish" class="form-control txtDate" autofocus
+                <input type="text" id="txtDateOfPublish" name="DateOfPublish" class="form-control txtDate" required autofocus
                     value="{{this.article.DateOfPublish}}">
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
-                <select name="CatID" class="form-control" id="exampleFormControlSelect1">
+                <select name="BranchID" class="form-control" id="exampleFormControlSelect1" required>
                     {{#each lcCategories}}
-                    <option value="{{CatID}}">{{CatName}}</option>
+                    <optgroup label="{{CatName}}">
+                        {{#each branchList}}
+                            <option value='{{BranchID}}'>{{BranchName}}</option>
+                        {{/each}}
+                    </optgroup>
                     {{/each}}
                 </select>
             </div>

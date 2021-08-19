@@ -60,6 +60,13 @@ router.get("/:UserID", async function (req, res) {
     })
 });
 
+
+// ========= Xóa người dùng ============
+router.post("/:UserID/del", async function (req, res) {
+    await userModel.del(req.params.UserID);
+    res.redirect("../");
+})
+
 // ========= Gia hạn cho độc giả ============
 router.get("/:UserID/subscriber-extend", async function (req, res) {
     const user = await userModel.findByUserID(req.params.UserID);
@@ -74,7 +81,6 @@ router.get("/:UserID/subscriber-extend", async function (req, res) {
         user: user,
     })
 })
-
 
 router.post("/:UserID/subscriber-extend", async function (req, res) {
     const subsciberID = req.params.id;

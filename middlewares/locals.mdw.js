@@ -33,7 +33,6 @@ function groupCat(data) {
 }
 
 module.exports = function(app) {
-
     app.use(function(req, res, next) {
         if (typeof(req.session.auth) === 'undefined') {
             req.session.auth = false;

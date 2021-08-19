@@ -85,6 +85,11 @@ module.exports = {
             BranchID: branchID,
         }).del();
     },
+    del(userID) {
+        return db("users").
+        where("UserID", userID)
+        .del();
+    },
 
     updateAvailable(id, state) {
         return db('users').where('UserID', id).update({ Available: state });
