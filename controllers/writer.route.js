@@ -94,7 +94,7 @@ router.post('/post', auth, async function(req, res) {
 
 router.get('/edit/:id', auth, async function(req, res) {
     const article = await articleModel.detail(req.params.id);
-    if (article !== null && req.session.authUser.UserID === article.UserID && (article.State === 2 || article.State === 1)) {
+    if (article !== null && (req.session.isAdmin == true || req.session.authUser.UserID === article.UserID && (article.State === 2 || article.State === 1))) {
         const query = await tagModel.findTagsByArticle(req.params.id);
         var tagsList = []
         query.forEach(el => {
