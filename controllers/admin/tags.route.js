@@ -28,7 +28,7 @@ router.get("/", async function(req, res) {
 
 router.post('/save', async function (req, res) {
     const tagName = req.body.TagName;
-    const oldTagName = req.body.TagName;
+    const oldTagName = req.body.OldTagName;
     await tagModel.patch(oldTagName, tagName);
 
     res.redirect('./');
