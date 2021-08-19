@@ -110,7 +110,7 @@ router.post("/:UserID/editor-manage/add", async function (req, res) {
     res.redirect("./");
 })
 
-router.get("/:UserID/editor-manage/del", async function (req, res) {
+router.post("/:UserID/editor-manage/del", async function (req, res) {
     const userID = req.params.UserID;
     const branchID = req.body.BranchID;
     await userModel.delBranchFromEditor(userID, branchID);

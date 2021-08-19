@@ -28,10 +28,6 @@
             <i class="fa fa-backward" aria-hidden="true"></i>
             Quay về
         </a>
-        <a class="btn btn-success" href="#" role="button">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            Lưu
-        </a>
     </dir>
 </div>
 
@@ -46,7 +42,7 @@
     </div>
 </div>
 
-{{!-- Các chuyên mục đang quản lý--}}
+{{!-- Các chuyên mục đang quản lý DEL--}}
 <div class="card my-1" data-toggle="collapse">
     <h3 class="card-header d-flex justify-content-between">
         <a class="btn btn-category-collapse" data-toggle="collapse" href="#CollapseCategoryAlready" role="button"
@@ -75,7 +71,7 @@
                         <th scope="row">{{BranchID}}</th>
                         <td>{{BranchName}}</td>
                         <td class="text-right">
-                            <form action="./editor-manage/del" method="POST">
+                            <form action="./del" method="POST">
                                 <div hidden class="form-group">
                                     <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
                                 </div>
@@ -94,7 +90,7 @@
     </div>
 </div>
 
-{{!-- Các chuyên mục có thể quản lý--}}
+{{!-- Các chuyên mục có thể quản lý ADD--}}
 <div class="card my-1" data-toggle="collapse">
     <h3 class="card-header d-flex justify-content-between">
         <a class="btn btn-category-collapse" data-toggle="collapse" href="#CollapseCategoryAvailable" role="button"
@@ -123,7 +119,7 @@
                         <th scope="row">{{BranchID}}</th>
                         <td>{{BranchName}}</td>
                         <td class="text-right">
-                            <form action="./editor-manage/add" method="POST">
+                            <form action="./add" method="POST">
                                 <div hidden class="form-group">
                                     <input type="text" class="form-control" name="BranchID" value="{{BranchID}}" autofocus>
                                 </div>

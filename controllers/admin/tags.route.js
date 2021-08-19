@@ -27,8 +27,8 @@ router.get("/", async function(req, res) {
 });
 
 router.post('/save', async function (req, res) {
-    const tagName = req.body.tagName;
-    const oldTagName = req.body.tagName;
+    const tagName = req.body.TagName;
+    const oldTagName = req.body.TagName;
     await tagModel.patch(oldTagName, tagName);
 
     res.redirect('./');
@@ -42,7 +42,6 @@ router.post('/del', async function (req, res) {
     res.redirect('./');
 })
 // ------------- END Thêm branch-------------
-
 
 router.get("/add", async function(req, res) {
     const articleList = await articleModel.allWithBranchName();
