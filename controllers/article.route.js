@@ -64,6 +64,7 @@ router.get('/:id', async function(req, res) {
         tags,
         comments,
         relatedArticle,
+        isPremium,
     })
     await articleModel.increaseView(article.ArtID, article.Views + 1)
 });

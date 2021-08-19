@@ -181,7 +181,7 @@
 				{{#if article.Content}}
 					{{{article.Content}}}
 				{{/if}}
-				{{#if isPremium}}
+				{{#if article.Premium}}
 				<form method="GET" action="/article/download/{{article.ArtID}}">
 					<button class="btn" style="width:100%" id="download" type="submit">
 						<i class="fa fa-download"></i>
