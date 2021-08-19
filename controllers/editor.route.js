@@ -38,9 +38,9 @@ router.post("/deny/:id", async function(req, res) {
 router.post("/approve/:id", async function(req, res) {
     console.log("Editor approve request: " + req.body);
     const dateOfPublish = moment(req.body.DateOfPublish, 'DD/MM/YYYY hh:mm').format('YYYY-MM-DD hh:mm:ss');
-    const tag = req.body.Tag
     const articleID = req.params.id;
-    await articleModel.approve(articleID, tag, dateOfPublish);
+    const branchID = req.body.branchID;
+    await articleModel.approve(articleID, branchID, dateOfPublish);
     
     var listTags = req.body.tags.split(',')
             var query = await articleModel.maxID()

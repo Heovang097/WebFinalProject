@@ -11,8 +11,19 @@ module.exports = {
     findTagsByArticle(id) {
         return db('tags').where('ArticleID', id).select('TagName');
     },
-    insert(tags) {
-        return db('tags').insert(tags);
+    insert(tag) {
+        // const query = `INSERT INTO tags () SELECT * FROM (SELECT ${tags.ArticleID}, ${tags.TagName}) as tmp WHERE NOT EXISTS (SELECT * FROM tags WHERE ArticleID = ${tags.ArticleID} AND TagName = ${tags.TagName}) LIMIT 1;`
+        // return db.raw(query);
+        return db("tags")
+        .insert(tag)
+        .onConflict(["ArticleID", "TagName"])
+        .ignore();
+    },
+    insertMultiple(tags) {
+        return db("tags")
+        .insert(tags)
+        .onConflict(["ArticleID", "TagName"])
+        .ignore();
     },
     delete(ArtID){
         return db('tags').where('ArticleID', ArtID).delete();

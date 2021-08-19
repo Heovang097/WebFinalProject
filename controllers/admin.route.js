@@ -9,14 +9,14 @@ const router = express.Router();
 // ==== Check admin auth ====
 router.use(async function (req, res, next) {
     // console.log("Admin check");
-    // if (req.session.auth == true && req.session.isAdmin == true)
-    //     next();
-    // else 
-    // {
-    //     console.log("Error: Admin unauthorized");
-    //     res.redirect("/404");
-    // }
-    next();
+    if (req.session.auth == true && req.session.isAdmin == true)
+        next();
+    else 
+    {
+        console.log("Error: Admin unauthorized");
+        res.redirect("/404");
+    }
+    // next();
 })
 
 // ====== Get admin management type ======

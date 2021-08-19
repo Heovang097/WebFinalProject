@@ -126,6 +126,8 @@ router.post('/login', async function(req, res) {
         })
     }
 
+    
+
     const ret = bcrypt.compareSync(req.body.password, user.Password);
     if (ret === false) {
         return res.render('vwAccount/login', {
@@ -135,6 +137,9 @@ router.post('/login', async function(req, res) {
     }
 
     delete user.Password;
+    req.session.isEditor = false;
+    req.session.isAdmin = false;
+    req.session.isWriter = false;
     switch (user.Permission) {
         case Config.PERMISSION.EDITOR:
             req.session.isEditor = true;

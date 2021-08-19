@@ -7,7 +7,7 @@
         Thông tin người dùng
     </h4>
     <div class="card-body">
-        <form id="addCat" method="POST">
+        <form id="userForm" method="POST">
             <div class="form-group">
                 <label for="CatName">Tên tài khoản</label>
                 <input type="text" class="form-control" disabled name="CatName" autofocus
@@ -56,10 +56,10 @@
             {{!-- Check if admin --}}
             {{#if this.isAdmin}}
             {{else}}
-            <a class="btn btn-danger" href="/admin/users/{{this.user.UserID}}/del" role="button">
+            <button class="btn btn-danger" formaction="/admin/users/{{this.user.UserID}}/del" form="userForm">
                 <i class="fas fa-cross"></i>
                 Xóa người dùng
-            </a>
+            </button>
             {{/if}}
             {{!-- Gia hạn tài khoản đối với người dùng độc giả --}}
             {{#if this.isSubscriber}}

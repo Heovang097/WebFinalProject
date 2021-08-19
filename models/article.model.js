@@ -61,8 +61,24 @@ const groupArticleByState = function(articlesList) {
             empty: published.length === 0,
         },
     }
-
 }
+
+const setStatus = function(article) {
+    switch (article.State) {
+        case Config.ARTICLE_STATE.APPROVED:
+            article.Status = "Đã duyệt";
+            break;
+        case Config.ARTICLE_STATE.DENIED:
+            article.Status = "Đã từ chối";
+            break;
+        case Config.ARTICLE_STATE.PENDING:
+            article.Status = "Đang chờ duyệt";
+            break;
+        case Config.ARTICLE_STATE.PUBLISHED:
+            article.Status = "Đã xuất bản";
+            break;
+    }
+} 
 
 module.exports = {
     all() {
@@ -78,7 +94,12 @@ module.exports = {
         const rows = await db.raw(query);
         if (rows.length === 0)
             return null;
-        return rows[0]
+        const articleList = rows[0];
+        
+        articleList.forEach(article => {
+            setStatus(article);
+        });
+        return articleList;
     },
 
     findById(id) {
@@ -116,8 +137,10 @@ module.exports = {
             .select('ArtID', 'articles.UserID', "users.UserName", 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'Abstract',
                 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
-            return null
-        return rows[0]
+            return null;
+        const article = rows[0];
+        setStatus(article);
+        return article;
     },
 
     // Them bai viet
@@ -140,10 +163,9 @@ module.exports = {
     },
 
     //Xoa bai viet
-    del(id) {
-        db('articles')
-            .where('ArtID', id)
-            .del();
+    async del(id) {
+        const query = `DELETE FROM articles WHERE ArtID = ${id}`
+        await db.raw(query);
         return db('tags')
             .where('ArticleID', id)
             .del();
@@ -322,17 +344,19 @@ WHERE c1.CatID = ${CatID}`;
                 "Reason": reason,
             });
     },
-    approve(id, dateOfPublish) {
+    async approve(id, branchID, dateOfPublish) {
+        const BranchID = branchID;
         return db('articles')
             .where('ArtID', id)
             .update({
+                "BranchID": branchID,
                 "State": Config.ARTICLE_STATE.APPROVED,
                 "DateOfPublish": dateOfPublish
             });
     },
-    publishInstantly(id, dateOfPublish) {
+    publishInstantly(id, branchID) {
         const query = `update articles
-        set DateOfPublish = NOW(), State = 0
+        set DateOfPublish = NOW(), State = 0, BranchID = ${branchID}
         where ArtID = ${id}`
         return db.raw(query);
     },

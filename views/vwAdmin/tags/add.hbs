@@ -1,0 +1,61 @@
+<div class="card">
+    <h3 class="card-header d-flex justify-content-between">
+        Thêm tags
+    </h3>
+    <div class="card-body">
+        {{#if isEmpty}}
+        <h5 class="card-title">Không có bài viết</h5>
+        <p class="card-text">Hãy tạo thêm bài viết.</p>
+        {{else}}
+        <label for="tagName"> Nhập vào tên tag</label><br>
+        <div class="input-group flex-nowrap">
+            <input type="text" form="addTag" name="TagName" class="form-control" aria-describedby="addon-wrapping" required>
+        </div>
+        {{!-- Table --}}
+        <table class="table table-hover">
+            <colgroup>
+                <col style="width: 5%">
+                <col style="width: 40%">
+                <col style="width: 5%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Bài Viết</th>
+                    <th scope="col">Tác giả</th>
+                    <th scope="col">Chuyên mục</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form id="addTag" method="POST">
+                    {{#each this.articleList}}
+                    <tr>
+                        <th scope="row">{{ArtID}}</th>
+                        <td>{{Title}}</td>
+                        <td>{{Username}}</td>
+                        <td>{{CatName}}/{{BranchName}}</td>
+                        <td>{{Status}}</td>
+                        <td>
+                            <div class="form-group">
+                                <input type="checkbox" name="articles[{{ArtID}}]" value="{{ArtID}}">
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </form>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="/admin/tags/" role="button">
+            <i class="fa fa-backward" aria-hidden="true"></i>
+            Quay trở về
+        </a>
+        {{!-- Lưu --}}
+        <button type="submit" form="addTag" class="btn btn-success">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Lưu
+        </button>
+        {{/if}}
+    </div>
+</div>

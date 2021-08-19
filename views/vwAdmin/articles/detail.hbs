@@ -54,7 +54,11 @@
                 Chỉnh sửa bài viết
             </a>
             {{!-- Xuất bản --}}            
-            <a class="btn btn-success" href="/admin/articles/{{this.article.ArtID}}/publish" role="button">
+            <a {{#if this.isPublished}}
+                 class="btn btn-success disabled"
+            {{else}}
+                 class="btn btn-success"
+            {{/if}} href="/admin/articles/{{this.article.ArtID}}/publish" role="button">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Xuất bản
             </a>
