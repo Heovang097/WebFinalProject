@@ -46,7 +46,12 @@ module.exports = {
         return rows;
     },
 
-    withCategory(id) {
-        return db('branches').join('categories', 'branches.CatID', 'categories.CatID');
+    async withCategory() {
+        const query = "SELECT categories.*, branches.BranchID, branches.BranchName, branches.BranchLink FROM categories left join branches on categories.CatID = branches.CatID"
+        
+        const branches = await db.raw(query);
+        if (branches.length === 0)
+            return null;
+        return branches[0];
     }
 };
