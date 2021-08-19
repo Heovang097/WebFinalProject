@@ -124,8 +124,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
-                                    <select name="Branch" class="form-control" id="exampleFormControlSelect1">
-                                        {{#each lcCategories}}
+                                    <select name="BranchID" class="form-control" id="exampleFormControlSelect1" value="{{BranchID}}">
+                                        {{#each ../lcCategories}}
                                         <optgroup label="{{CatName}}">
                                             {{#each branchList}}
                                                 <option value='{{BranchID}}'>{{BranchName}}</option>

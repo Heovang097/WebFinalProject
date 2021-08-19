@@ -1,6 +1,7 @@
 const express = require("express");
 const articleModel = require("../models/article.model");
 const moment = require('moment');
+const tagModel = require("../models/tag.model");
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.post("/approve/:id", async function(req, res) {
     console.log("Editor approve request: " + req.body);
     const dateOfPublish = moment(req.body.DateOfPublish, 'DD/MM/YYYY hh:mm').format('YYYY-MM-DD hh:mm:ss');
     const articleID = req.params.id;
-    const branchID = req.body.branchID;
+    const branchID = req.body.BranchID;
     await articleModel.approve(articleID, branchID, dateOfPublish);
     
     var listTags = req.body.tags.split(',')
