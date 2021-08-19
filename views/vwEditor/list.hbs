@@ -1,16 +1,27 @@
 {{#section 'css'}}
 <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<link rel="stylesheet" href="/public/src/jquery.tagsinput.css">
 {{/section}}
 
 {{#section 'js'}}
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="/public/src/jquery.tagsinput.js"></script>
 <script>
     $('.date-of-publish').datetimepicker({
         format: 'd/m/Y H:i',
         timepicker: true,
         mask: true
+    });
+</script>
+<script>
+    $('.tags').tagsInput({
+        'width': 'auto',
+        'height': 'auto',
+        'unique': true,
+        'maxChars' : 30,
+        'placeholderColor' : '#666666',
     });
 </script>
 {{/section}}
@@ -113,15 +124,20 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Chọn chuyên mục</label>
-                                    <select name="CatID" class="form-control" id="exampleFormControlSelect1">
-                                        {{#each ../lcCategories}}
-                                        <option value="{{CatID}}">{{CatName}}</option>
+                                    <select name="Branch" class="form-control" id="exampleFormControlSelect1">
+                                        {{#each lcCategories}}
+                                        <optgroup label="{{CatName}}">
+                                            {{#each branchList}}
+                                                <option value='{{BranchID}}'>{{BranchName}}</option>
+                                            {{/each}}
+                                        </optgroup>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Tag</label>
-                                    <input type="text" class="form-control" name="Tag">
+                                    <input class="tags form-control" name="tags" value="{{tags}}">
+                                    {{tags}}                                    
                                 </div>
                                 <div class="form-group">
                                     <label>Chọn ngày đăng</label>

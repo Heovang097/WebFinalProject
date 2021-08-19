@@ -97,7 +97,7 @@ router.post("/register", async function (req, res) {
   const body = await fetch(verifyURL).then(res => res.json());
   if (body.success !== undefined && !body.success)
     return res.json({ success: false, msg: 'Failed captcha verification' });
-    
+
   const hash = bcrypt.hashSync(req.body.raw_password, 10);
   const dob = moment(req.body.raw_dob, "DD/MM/YYYY").format("YYYY-MM-DD");
   const user = {
@@ -134,7 +134,7 @@ router.get("/login", async function (req, res) {
 router.post("/login", async function (req, res) {
   const user = await userModel.findByUsername(req.body.username);
   var err_message = "Tên đăng nhập không tồn tại";
-  if (user.Available == 0) err_message = "Tài khoản hiện đang không kích hoạt";
+  if (user != null && user.Available == 0) err_message = "Tài khoản hiện đang không kích hoạt";
   if (user === null || user.Available == 0) {
     return res.render("vwAccount/login", {
       layout: false,
@@ -151,6 +151,9 @@ router.post("/login", async function (req, res) {
   }
 
   delete user.Password;
+    req.session.isEditor = false;
+    req.session.isAdmin = false;
+    req.session.isWriter = false;
   switch (user.Permission) {
     case Config.PERMISSION.EDITOR:
       req.session.isEditor = true;

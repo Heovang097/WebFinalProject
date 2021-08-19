@@ -32,7 +32,7 @@ router.get('/test', async function(req, res) {
 })
 
 router.get('/post', auth, function(req, res) {
-    if (req.session.isWriter) {
+    if (req.session.isWriter || req.session.isAdmin) {
         res.render('../views/vwWriter/post.hbs')
         return;
     }
@@ -87,7 +87,7 @@ router.post('/post', auth, async function(req, res) {
                 tags.push(obj)
             })
             await tagModel.insert(tags)
-            res.redirect('/content/' + id)
+            res.redirect('/article/content/' + id)
         }
     })
 })

@@ -1,0 +1,66 @@
+{{#section 'css'}}
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $('.date-of-publish').datetimepicker({
+        format: 'd/m/Y H:i',
+        timepicker: true,
+        mask: true
+    });
+</script>
+{{/section}}
+
+<div class="card">
+    <h3 class="card-header d-flex justify-content-between">
+        Quản lý bài viết
+        <a class="btn btn-outline-success text-right mx-2 my-2" href="/writer/post" role="button">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        Thêm bài viết
+    </a>
+    </h3>
+    <div class="card-body">
+        {{#if isEmpty}}
+        <h5 class="card-title">Không có bài viết</h5>
+        <p class="card-text">Hãy tạo thêm bài viết.</p>
+        {{else}}
+        <table class="table table-hover">
+            <colgroup>
+            <col style="width: 5%">
+            <col style="width: 40%">
+            <col style="width: 5%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Bài Viết</th>
+                    <th scope="col">Tác giả</th>
+                    <th scope="col">Chuyên mục</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.articleList}}
+                <tr>
+                    <th scope="row">{{ArtID}}</th>
+                    <td>{{Title}}</td>
+                    <td>{{Username}}</td>
+                    <td>{{CatName}}/{{BranchName}}</td>
+                    <td>{{Status}}</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/admin/articles/{{ArtID}}" role="button" title="Edit">
+                            Xem chi tiết
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+    </div>
+</div>

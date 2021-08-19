@@ -3,24 +3,43 @@ const { findAllByCatId } = require('./branch.model');
 const Config = require('../utils/config');
 const { default: knex } = require('knex');
 
+const packTags = function(articleLists) {
+    packedArticleList = [];
+    articleLists.forEach(article => {
+        const lastPackedArticle = packedArticleList[packedArticleList.length - 1];
+        if (packedArticleList.length == 0 ||article.ArtID != lastPackedArticle.ArtID)
+        {
+            packedArticleList.push(article);
+            packedArticleList[packedArticleList.length - 1].tags = [];
+        }
+        packedArticleList[packedArticleList.length - 1].tags.push(article.TagName)
+    });
+    packedArticleList.forEach(article => {
+        article.tags = article.tags.join(',');
+    });
+    return packedArticleList;
+}
+
 const groupArticleByState = function(articlesList) {
+    const packedTagArticleList = packTags(articlesList);
     const approved = [];
     const denied = [];
     const pending = [];
     const published = [];
-    for (let i = 0; i < articlesList.length; i++) {
-        switch (articlesList[i].State) {
+    for (let i = 0; i < packedTagArticleList.length; i++) {
+        
+        switch (packedTagArticleList[i].State) {
             case Config.ARTICLE_STATE.APPROVED:
-                approved.push(articlesList[i]);
+                approved.push(packedTagArticleList[i]);
                 break;
             case Config.ARTICLE_STATE.DENIED:
-                denied.push(articlesList[i]);
+                denied.push(packedTagArticleList[i]);
                 break;
             case Config.ARTICLE_STATE.PENDING:
-                pending.push(articlesList[i]);
+                pending.push(packedTagArticleList[i]);
                 break;
             case Config.ARTICLE_STATE.PUBLISHED:
-                published.push(articlesList[i]);
+                published.push(packedTagArticleList[i]);
                 break;
         }
     }
@@ -42,12 +61,45 @@ const groupArticleByState = function(articlesList) {
             empty: published.length === 0,
         },
     }
-
 }
+
+const setStatus = function(article) {
+    switch (article.State) {
+        case Config.ARTICLE_STATE.APPROVED:
+            article.Status = "Đã duyệt";
+            break;
+        case Config.ARTICLE_STATE.DENIED:
+            article.Status = "Đã từ chối";
+            break;
+        case Config.ARTICLE_STATE.PENDING:
+            article.Status = "Đang chờ duyệt";
+            break;
+        case Config.ARTICLE_STATE.PUBLISHED:
+            article.Status = "Đã xuất bản";
+            break;
+    }
+} 
 
 module.exports = {
     all() {
         return db('articles');
+    },
+
+    async allWithBranchName() {
+        const query = `SELECT branches.BranchName,articles.*,users.Username, categories.CatName 
+        FROM branches, articles, users, categories
+        WHERE articles.BranchID = branches.BranchID 
+        AND articles.UserID = users.UserID
+        and categories.CatID = branches.BranchID;`
+        const rows = await db.raw(query);
+        if (rows.length === 0)
+            return null;
+        const articleList = rows[0];
+        
+        articleList.forEach(article => {
+            setStatus(article);
+        });
+        return articleList;
     },
 
     findById(id) {
@@ -88,11 +140,13 @@ module.exports = {
             .join('branches', 'articles.BranchID', 'branches.BranchID')
             .join('categories', 'branches.CatID', 'categories.CatID')
             .join('users', 'articles.UserID', 'users.UserID')
-            .select('ArtID', 'articles.UserID', 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'Abstract',
+            .select('ArtID', 'articles.UserID', "users.UserName", 'PenName', 'CatName', 'CatLink', 'articles.BranchID', 'BranchName', 'BranchLink', 'Title', 'Abstract',
                 'DateOfPublish', 'ImageLink', 'Content', 'Premium', 'State', 'Views')
         if (rows.length === 0)
-            return null
-        return rows[0]
+            return null;
+        const article = rows[0];
+        setStatus(article);
+        return article;
     },
 
     // Them bai viet
@@ -115,9 +169,11 @@ module.exports = {
     },
 
     //Xoa bai viet
-    del(id) {
-        return db('articles')
-            .where('ArtID', id)
+    async del(id) {
+        const query = `DELETE FROM articles WHERE ArtID = ${id}`
+        await db.raw(query);
+        return db('tags')
+            .where('ArticleID', id)
             .del();
     },
     async mostPopularArticles(){
@@ -311,17 +367,21 @@ WHERE c1.CatID = ${CatID}`;
                 "Reason": reason,
             });
     },
-    approve(id, tag, dateOfPublish) {
-        db('articles').insert({
-            "ArticleID": id,
-            "TagName": tag,
-        });
+    async approve(id, branchID, dateOfPublish) {
+        const BranchID = branchID;
         return db('articles')
             .where('ArtID', id)
             .update({
+                "BranchID": branchID,
                 "State": Config.ARTICLE_STATE.APPROVED,
                 "DateOfPublish": dateOfPublish
             });
+    },
+    publishInstantly(id, branchID) {
+        const query = `update articles
+        set DateOfPublish = NOW(), State = 0, BranchID = ${branchID}
+        where ArtID = ${id}`
+        return db.raw(query);
     },
     async allByTag(tag) {
         const sql = `SELECT * 

@@ -24,6 +24,12 @@
 								<div class="col-md-6 px-0 h-100">
 									<strong class="d-inline-block mb-2 mx-2 text-primary">{{CatName}}</strong>
 									<h1 class="display-5 font-italic">{{Title}}</h1>
+									{{#if Premium}}
+										<span class="badge badge-pill badge-warning">
+										<i class="fa fa-diamond" aria-hidden="true"></i>
+										Premium
+									</span>
+									{{/if}}
 									<p class="lead my-3"> {{DateOfPublish}}</p>
 									<p class="lead mb-0"><a href="/article/{{ArtID}}" class="text-white font-weight-bold">Continue
 											reading...</a></p>
@@ -66,6 +72,12 @@
 						<div class="row">
 							<div class="col-md-6 px-0 h-100">
 								<strong class="d-inline-block mb-2 mx-2 text-primary">{{CatName}}</strong>
+									{{#if Premium}}
+										<span class="badge badge-pill badge-warning">
+										<i class="fa fa-diamond" aria-hidden="true"></i>
+										Premium
+									</span>
+									{{/if}}
 								<h1 class="display-5 font-italic">{{Title}}</h1>
 								<p class="lead my-3"> {{DateOfPublish}}</p>
 								<p class="lead mb-0"><a href="/article/{{ArtID}}" class="text-white font-weight-bold">Continue
@@ -127,6 +139,12 @@
 						{{#each this}}
 						<div class="col-md-4 {{#if @first}}{{else}}clearfix d-none d-md-block{{/if}}">
 							<div class="card mb-2 h-100">
+									{{#if Premium}}
+										<span class="badge badge-pill badge-warning">
+										<i class="fa fa-diamond" aria-hidden="true"></i>
+										Premium
+									</span>
+									{{/if}}
 								<img class="card-img-top " src="{{ImageLink}}" alt="Card image cap">
 								<div class="card-body">
 									<h4 class="card-title">{{Title}}</h4>
@@ -155,12 +173,18 @@
 		<h1>Bài báo mới nhất mỗi chuyên mục</h1>
 		<div class="row mb-2 container">
 			{{#each this.newestArticleByCat}}
-			<div class="col-md-6">
+			<div class="col-md-6 mb-3">
 				<div class="card h-100">
 					<div class='card-body'>
 						<div
 							class="row no-gutters  rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
 							<div class="col col-md-6 p-4 d-flex flex-column position-static">
+									{{#if Premium}}
+										<span class="badge badge-pill badge-warning">
+										<i class="fa fa-diamond" aria-hidden="true"></i>
+										Premium
+									</span>
+									{{/if}}
 								<strong class="d-inline-block mb-2 text-primary">{{CatName}}</strong>
 								<h4 class="mb-0">{{Title}}</h4>
 								<div class="mb-1 text-muted">{{DateOfPublish}}</div>

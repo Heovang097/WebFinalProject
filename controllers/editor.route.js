@@ -1,14 +1,26 @@
 const express = require("express");
 const articleModel = require("../models/article.model");
 const moment = require('moment');
- 
 
 const router = express.Router();
+
+// ==== Check editor auth ====
+router.use(async function (req, res, next) {
+    // // console.log("Admin check");
+    // if (req.session.auth == true && req.session.isEditor == true)
+    //     next();
+    // else 
+    // {
+    //     console.log("Error: Admin unauthorized");
+    //     res.redirect("/404");
+    // }
+    next();
+})
 
 router.get("/list", async function(req, res) {
     const articleList = await articleModel.allByEditorID(req.session.authUser.UserID);
     // console.log(`====== Article List by Editor ID: ${req.session.authUser.UserID} ======`);
-    // console.log(articleList);
+    console.log(articleList);
     // console.log(`================================`);
     res.render("vwEditor/list", {
         articleList: articleList,
@@ -26,9 +38,22 @@ router.post("/deny/:id", async function(req, res) {
 router.post("/approve/:id", async function(req, res) {
     console.log("Editor approve request: " + req.body);
     const dateOfPublish = moment(req.body.DateOfPublish, 'DD/MM/YYYY hh:mm').format('YYYY-MM-DD hh:mm:ss');
-    const tag = req.body.Tag
     const articleID = req.params.id;
-    await articleModel.approve(articleID, tag, dateOfPublish);
+    const branchID = req.body.branchID;
+    await articleModel.approve(articleID, branchID, dateOfPublish);
+    
+    var listTags = req.body.tags.split(',')
+            var query = await articleModel.maxID()
+            query = query[0]
+            const id = query.maxID
+            var tags = []
+            listTags.forEach(element => {
+                var obj = {}
+                obj['ArticleID'] = id
+                obj['TagName'] = element
+                tags.push(obj)
+            })
+            await tagModel.insert(tags)
     res.redirect('../list');
 })
 module.exports = router

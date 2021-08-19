@@ -15,6 +15,12 @@
 						<img src=/{{ImageLink}} class="card-img-top" alt="{{ArtID}}"
 							title="{{Title}}">
 						<div class="card-body">
+							{{#if Premium}}
+								<span class="badge badge-pill badge-warning">
+								<i class="fa fa-diamond" aria-hidden="true"></i>
+								Premium
+							</span>
+							{{/if}}
 							<h5 class="card-title">{{Title}}</h5>
 							{{!-- <h5 class="card-title text-danger">{{format_number Price}}</h5> --}}
 							<p class="card-text">{{Abstract}}</p>
